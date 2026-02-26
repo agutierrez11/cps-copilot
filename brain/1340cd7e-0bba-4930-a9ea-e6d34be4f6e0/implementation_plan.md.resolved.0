@@ -1,0 +1,33 @@
+# Plan de Reestructuración de Jerarquía para Cosma
+
+Este plan organiza la información en el orden solicitado: **País > Cámara > Industria > Empresa**, y añade soporte para logos en el grafo de Cosma.
+
+## Cambios Propuestos
+
+### 1. Capa de Países (Nivel 1) [MODIFICAR]
+Actualizar los archivos en `Paises/` para que apunten a las Cámaras en lugar de directamente a las empresas o verticales de forma plana.
+- **Archivos:** `Paises/*_Full.md`
+- **Cambio:** Añadir `thumbnail` con la bandera del país y vincular a la Cámara respectiva.
+
+### 2. Capa de Cámaras (Nivel 2) [NUEVO]
+Crear una nueva carpeta `Camaras/` con archivos para las asociaciones principales.
+- **Archivos:** `Camaras/Asociacion_Fintech_MX.md`, `Camaras/Camara_Fintech_AR.md`, etc.
+- **Contenido:** Vínculo al País y vínculo a las Industrias (Verticales).
+
+### 3. Capa de Industrias/Verticales (Nivel 3) [MODIFICAR]
+Actualizar archivos en `Verticales/` para que actúen como hubs de empresas.
+- **Archivos:** `Verticales/*.md` (Paytech, Regtech, etc.)
+- **Cambio:** Vincular a las Cámaras correspondientes.
+
+### 4. Capa de Empresas (Nivel 4) [MODIFICAR]
+Actualizar los archivos de las empresas individuales (están en la carpeta raíz o subcarpetas según el listado anterior).
+- **Cambio:** Añadir propiedad `thumbnail` en el YAML para el logo.
+
+## Plan de Verificación
+
+### Verificación Manual
+1. **Inspección de Enlaces:** Abrir un archivo de empresa y verificar que el enlace hacia la vertical funciona.
+2. **Inspección de Hubs:** Abrir el archivo de una Vertical y verificar que vincula a la Cámara.
+3. **Visualización en Cosma:** El usuario deberá abrir el proyecto en Cosma y confirmar que:
+    - Los nodos de Países y Cámaras aparecen como centros gravitacionales.
+    - Los logos son visibles en los nodos que tienen la propiedad `thumbnail`.

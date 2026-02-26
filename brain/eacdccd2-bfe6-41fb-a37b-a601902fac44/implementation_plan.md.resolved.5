@@ -1,0 +1,34 @@
+# Implementation Plan: Hybrid Cloud + Local Visualization
+
+The objective is to enable visualization of the Fintech Ecosystem through **NotebookLM (Cloud)** as the primary tool for analysis and **Cosma (Local)** as a backup.
+
+## User Review Required
+
+> [!IMPORTANT]
+> To fix the "Authentication expired" error in NotebookLM, I will perform a **Deep Session Reset**. This involves deleting the local browser profile and cache for the MCP. You will need to complete a fresh login in a visible Chrome window.
+
+## Proposed Changes
+
+### [Cloud Analysis - NotebookLM MCP]
+
+#### [ACTION] Deep Session Reset
+- Kill any lingering [node](file:///c:/Users/Antonio/OneDrive/Escritorio/Ecosistema_Fintech_Global/cosma_workspace/node_modules/@graphlab-fr/cosma/dist/back.cjs#3-4) or `chrome` processes related to the MCP.
+- Delete `C:\Users\Antonio\AppData\Local\notebooklm-mcp\Data\chrome_profile`.
+- Delete `C:\Users\Antonio\AppData\Local\notebooklm-mcp\Data\browser_state`.
+- Re-run `npx notebooklm-mcp login` in non-headless mode.
+
+### [Local Recovery - Cosma]
+
+#### [REPAIR] Metadata Fix
+- [x] Run `fix_metadata.js` (Completed: 1,500+ files repaired).
+- [ ] Final Graph Export: Use `npx cosma modelize` with the global `.cosma.yml` in the root.
+
+## Verification Plan
+
+### Automated Verification
+1. Verify `mcp_notebooklm_notebook_list` returns actual notebooks after login.
+2. Run `mcp_notebooklm_research_start` to initialize the project library.
+
+### Manual Verification
+1. User completes Google Login in the visible Chrome window.
+2. User verifies the generated Cosma graph at `cosma_workspace/export/index.html`.

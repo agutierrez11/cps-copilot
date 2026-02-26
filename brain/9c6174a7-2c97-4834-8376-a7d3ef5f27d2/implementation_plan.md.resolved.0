@@ -1,0 +1,32 @@
+# Secure Deployment Plan
+
+## Goal
+Secure the bot's credentials and prepare it for 24/7 deployment on a free server (e.g., Render, Railway).
+
+## User Review Required
+> [!IMPORTANT]
+> I will remove the hardcoded tokens from [bot.py](file:///c:/Users/Antonio/.gemini/antigravity/scratch/telegram-study-bot/bot.py). Ensure your [.env](file:///c:/Users/Antonio/.gemini/antigravity/scratch/telegram-study-bot/.env) file has the correct `TOKEN`, `CHAT_ID`, and `GEMINI_KEY`.
+> This is critical for security: pushing tokens to GitHub (even private repos) is a bad practice, and for public repos, it leads to immediate compromise.
+
+## Proposed Changes
+
+### Configuration & Security
+#### [MODIFY] [bot.py](file:///c:/Users/Antonio/.gemini/antigravity/scratch/telegram-study-bot/bot.py)
+- Remove hardcoded default values for `TOKEN`, `CHAT_ID`, and `GEMINI_KEY`.
+- Integrate `python-dotenv` to load environment variables from [.env](file:///c:/Users/Antonio/.gemini/antigravity/scratch/telegram-study-bot/.env) when running locally.
+
+#### [MODIFY] [requirements.txt](file:///c:/Users/Antonio/.gemini/antigravity/scratch/telegram-study-bot/requirements.txt)
+- Add `python-dotenv` to the dependency list.
+
+### Git Preparation
+- Initialize a local Git repository if it doesn't exist.
+- Create an initial commit with all relevant files (ensuring [.env](file:///c:/Users/Antonio/.gemini/antigravity/scratch/telegram-study-bot/.env) and [archivos_config.json](file:///c:/Users/Antonio/.gemini/antigravity/scratch/telegram-study-bot/archivos_config.json) are ignored).
+
+## Verification Plan
+
+### Automated Tests
+- Run `python bot.py` locally and verify it loads the TOKEN from [.env](file:///c:/Users/Antonio/.gemini/antigravity/scratch/telegram-study-bot/.env) instead of a hardcoded string. I'll use a temporary test script to verify `os.getenv` works correctly without revealing values.
+
+### Manual Verification
+- The user should verify the bot responds to `/ping` locally after the changes.
+- Once pushed to GitHub, the user will need to add the same environment variables to the deployment platform's dashboard.

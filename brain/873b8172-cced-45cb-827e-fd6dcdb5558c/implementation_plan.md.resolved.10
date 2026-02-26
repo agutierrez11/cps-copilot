@@ -1,0 +1,32 @@
+# Plan de Mejora: Reporte de Estudio Noájida 100% Personalizado
+
+El objetivo es crear un reporte diario que respete la identidad Noájida del usuario, extrayendo las oraciones del libro proporcionado y automatizando el estudio de Torá, Talmud y Musar vía APIs.
+
+## User Review Required
+
+> [!IMPORTANT]
+> Extraeré los textos de **Shajarit, Minjá y Arvit** directamente del PDF `Libro de Oraciones para Noajidas (1).pdf`. Necesitaré confirmar si quieres que extraiga secciones específicas o si prefieres que anexe las páginas completas de las oraciones al reporte.
+
+## Proposed Cambios
+
+### 1. Extracción de Oraciones Noájidas
+- **Fuente**: `Libro de Oraciones para Noajidas (1).pdf` en Descargas.
+- **Proceso**: Utilizaré un script de Python para leer el texto del PDF y extraer las secciones correspondientes a las oraciones diarias para no judíos.
+- **Integración**: Estos textos sustituirán a cualquier liturgia judía estándar en el reporte.
+
+### 2. Torá y Talmud Dinámicos (APIs)
+- **Torá**: Porción diaria (Aliyá) de la Parashá semanal obtenida de Hebcal y Sefaria.
+- **Talmud**: Daf Yomi diario (sincronizado con Shas.org) incluyendo la hoja original.
+
+### 3. Musar Dinámico (Sefaria)
+- Lectura progresiva de textos universales de Musar (ej: *Mesilat Yesharim*) directamente desde Sefaria.
+
+### 4. Automatización y Entrega
+- Consolidación de todas las fuentes en un solo PDF profesional.
+- Envío diario automático a Telegram.
+
+## Plan de Verificación
+
+- **Localización**: Confirmar que el script encuentra el PDF en la carpeta de Descargas del usuario.
+- **Extracción**: Validar que el texto extraído del PDF sea legible y correcto.
+- **Generación**: Revisar que el PDF final en el escritorio contenga las oraciones noájidas y las lecturas del día.

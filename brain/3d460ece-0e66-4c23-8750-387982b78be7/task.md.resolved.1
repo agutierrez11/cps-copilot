@@ -1,0 +1,12 @@
+# Task: Fix Telegram Bot Message Delivery
+
+- [ ] Analyze the issue <!-- id: 0 -->
+    - [x] Check logs for errors <!-- id: 1 -->
+    - [x] Verify [.env](file:///C:/Users/Antonio/.gemini/antigravity/scratch/Mis%20Proyectos%20Antigravity/telegram-study-bot/.env) configuration <!-- id: 2 -->
+    - [x] Identify variable name mismatch (`TOKEN` vs `BOT_TOKEN`) <!-- id: 3 -->
+- [x] Fix configuration and logic <!-- id: 4 -->
+    - [x] Update [bot.py](file:///C:/Users/Antonio/.gemini/antigravity/scratch/Mis%20Proyectos%20Antigravity/telegram-study-bot/bot.py) or [.env](file:///C:/Users/Antonio/.gemini/antigravity/scratch/Mis%20Proyectos%20Antigravity/telegram-study-bot/.env) to fix variable mismatch <!-- id: 5 -->
+    - [x] Add try-except around `bot.answer_callback_query` in PDF sending block <!-- id: 6 -->
+- [/] Verify fix <!-- id: 7 -->
+    - [ ] Run [send_test_routine.py](file:///C:/Users/Antonio/.gemini/antigravity/scratch/Mis%20Proyectos%20Antigravity/telegram-study-bot/send_test_routine.py) to verify delivery <!-- id: 8 -->
+    - [ ] Check logs for successful delivery <!-- id: 9 -->

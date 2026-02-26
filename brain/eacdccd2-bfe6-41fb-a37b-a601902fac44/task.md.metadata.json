@@ -1,0 +1,6 @@
+{
+  "artifactType": "ARTIFACT_TYPE_TASK",
+  "summary": "Resetting task status to reflect the need for a fresh NotebookLM authentication before proceeding with coaching.",
+  "updatedAt": "2026-02-24T22:56:12.256240200Z",
+  "version": "30"
+}

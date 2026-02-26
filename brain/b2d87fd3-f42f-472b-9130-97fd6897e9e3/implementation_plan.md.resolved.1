@@ -1,0 +1,54 @@
+# Deploy del Bot de Estudio a Railway
+
+El bot corre actualmente solo cuando la PC está encendida. Lo vamos a subir a Railway para que corra 24/7 en la nube, sin depender de tu computadora.
+
+El código ya está listo:
+- ✅ [.gitignore](file:///c:/Users/Antonio/.gemini/antigravity/scratch/Mis%20Proyectos%20Antigravity/telegram-study-bot/.gitignore) protege el [.env](file:///c:/Users/Antonio/.gemini/antigravity/scratch/Mis%20Proyectos%20Antigravity/telegram-study-bot/.env) (las credenciales no se subirán)
+- ✅ [requirements.txt](file:///c:/Users/Antonio/.gemini/antigravity/scratch/Mis%20Proyectos%20Antigravity/telegram-study-bot/requirements.txt) tiene todas las dependencias  
+- ✅ [Procfile](file:///c:/Users/Antonio/.gemini/antigravity/scratch/Mis%20Proyectos%20Antigravity/telegram-study-bot/Procfile) ya dice `worker: python bot.py`
+
+## Pasos
+
+### Fase 1 — Subir código a GitHub
+
+> [!IMPORTANT]
+> Necesitas tener Git instalado y una cuenta en GitHub.
+
+1. Crear un repo **privado** en GitHub llamado `telegram-study-bot`
+2. Conectar el repo local con GitHub y hacer push:
+   ```
+   git remote add origin https://github.com/TU_USUARIO/telegram-study-bot.git
+   git push -u origin main
+   ```
+
+### Fase 2 — Crear proyecto en Railway
+
+1. Ir a [railway.app](https://railway.app) → **New Project** → **Deploy from GitHub repo**
+2. Seleccionar el repo `telegram-study-bot`
+3. Railway detectará automáticamente el [Procfile](file:///c:/Users/Antonio/.gemini/antigravity/scratch/Mis%20Proyectos%20Antigravity/telegram-study-bot/Procfile)
+
+En el panel de Railway → **Variables**, agregar:
+
+| Variable | Valor |
+|----------|-------|
+| `BOT_TOKEN` | Tu token del bot de Telegram |
+| `CHAT_ID` | Tu Chat ID |
+| `GEMINI_KEY` | Tu API key de Gemini |
+
+> [!WARNING]
+> NUNCA subas el archivo [.env](file:///c:/Users/Antonio/.gemini/antigravity/scratch/Mis%20Proyectos%20Antigravity/telegram-study-bot/.env) a GitHub. El [.gitignore](file:///c:/Users/Antonio/.gemini/antigravity/scratch/Mis%20Proyectos%20Antigravity/telegram-study-bot/.gitignore) ya lo protege, pero verifica antes de hacer push.
+
+### Fase 4 — Verificación
+
+- Railway mostrará logs en tiempo real
+- Enviar `/ping` al bot en Telegram → debe responder `¡Estoy vivo! 🦁`
+- Esperar el próximo horario programado para confirmar que los mensajes llegan
+
+## Horarios configurados en el bot
+
+| Hora | Bloque |
+|------|--------|
+| 06:12 | 🌅 Shajarit |
+| 09:00 | 📖 Estudio |
+| 13:00 | ☀️ Minjá |
+| 19:00 | 🌙 Arvit |

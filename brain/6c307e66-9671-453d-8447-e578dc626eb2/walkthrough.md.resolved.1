@@ -1,0 +1,16 @@
+# Walkthrough - Search Fix & Logo Removal
+
+I have resolved the "black screen" crash when searching and removed the Lovable logo.
+
+## Changes
+
+### 1. Fixed "Black Screen" on Search
+- **Cause**: The search filter was trying to look for a `tags` property on the tools, but this property doesn't exist in the data structure, causing the app to crash immediately.
+- **Fix**: Removed the faulty code in [src/pages/Index.tsx](file:///c:/Users/Antonio/OneDrive/Escritorio/tonos-tool-treasurebox/src/pages/Index.tsx). Search now correctly filters by Name, English Description, and Spanish Description.
+
+### 2. Removed Lovable Logo
+- **Action**: Deleted [favicon.ico](file:///c:/Users/Antonio/OneDrive/Escritorio/tonos-tool-treasurebox/dist/favicon.ico) from the public directory. The browser will now show a default icon until you provide a custom one.
+
+## Verification
+- **Build**: The application builds successfully without errors.
+- **Search**: Typing in the search bar allows you to filter tools without crashing the application.

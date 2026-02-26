@@ -1,0 +1,14 @@
+# Task: Implement Study Automation
+
+- [x] Create folder structure on Desktop
+- [x] Implement PDF Generation and Source Integration
+- [x] Create `ejecutar_estudio.bat` for easy launching
+- [x] Configure Telegram ID and Token
+- [x] Fix Batch File Encoding and UTF-8 issues
+- [x] Enrich PDF with initial prayer texts
+- [x] Integrate Torá, Talmud and Musar APIs
+    - [x] Implement Hebcal API for Weekly Parashah Aliyot
+    - [x] Implement Sefaria API for dynamic Musar (Mesilat Yesharim)
+    - [x] Add Noahide Prayer Book PDF extraction (Mañana, Tarde, Noche)
+    - [x] Implement Hybrid Telegram Delivery (Message + PDF)
+- [x] Final System Verification

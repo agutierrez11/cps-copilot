@@ -1,0 +1,26 @@
+# Walkthrough: Timezone Fix for Study Bot
+
+I have implemented timezone support to ensure the bot sends messages at the correct local time, regardless of where the server is hosted (e.g., Railway).
+
+## Changes Made
+
+### 1. Dependency Update
+Added `pytz` to [requirements.txt](file:///C:/Users/Antonio/.gemini/antigravity/scratch/Mis%20Proyectos%20Antigravity/telegram-study-bot/requirements.txt) to handle timezone conversions accurately.
+
+### 2. Timezone Integration in [bot.py](file:///C:/Users/Antonio/.gemini/antigravity/scratch/Mis%20Proyectos%20Antigravity/telegram-study-bot/bot.py)
+- **Configuration**: Added a `TIMEZONE` variable that defaults to `America/Bogota` but can be overridden via environment variables.
+- **Scheduling**: The `motor_tiempo` function now checks the time using the specified timezone:
+  ```python
+  ahora = datetime.now(pytz.timezone(TIMEZONE)).strftime("%H:%M")
+  ```
+- **Consistency**: Updated other time-related functions (file saving, Sefaria cache) to use the same timezone.
+
+## Verification
+
+### Logic Confirmation
+I created a [verification script](file:///C:/Users/Antonio/.gemini/antigravity/scratch/Mis%20Proyectos%20Antigravity/telegram-study-bot/verify_timezone.py) to check the offset. The logic correctly calculates the -5 hour difference for Bogota relative to UTC.
+
+## Next Steps for User
+1. **Redeploy**: Push these changes to Railway. Railway will automatically install the new `pytz` dependency.
+2. **Environment Variable**: In your Railway dashboard, ensure you have a variable `TIMEZONE` set to `America/Bogota` (or your preferred [TZ database name](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)).
+3. **Monitor**: The next scheduled message (e.g., at 13:00) should now arrive exactly at that local time.

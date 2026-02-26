@@ -1,0 +1,25 @@
+# Walkthrough: Bot de Estudio Finalizado
+
+El bot ya está operando con su configuración definitiva, combinando la simplicidad de enlaces estables con la riqueza de descripciones narrativas.
+
+## Características Implementadas
+
+### 🌅 Alerta Matutina Refinada
+- **Orden Jerárquico:** Modé Aní y Shemá Israel aparecen primero con texto para lectura directa.
+- **Libro de Oraciones:** Referencia directa a **Shajarit** (Pág. 10).
+- **Parashá:** Detalle completo de **Parshat Tetzave, Primera porción (Shemot 27:20-28:12)** con su descripción de Rashi.
+- **Shulján Arúj:** Sección específica de **Leyes al Despertar (Pág. 3)**.
+
+### 📚 Portales de Estudio
+- Se reemplazaron los links dinámicos por enlaces estables a los **Portales de Estudio Diario** (Chabad y Sefaria) para evitar errores 404.
+- **Sefer HaMitzvot:** Se agregó la **Mitzvá Diaria del Rambam** con su link oficial.
+
+### ⚙️ Automatización y Estabilidad
+- **Inicio Automático:** El bot se lanza solo al encender la PC y entrar a Windows.
+- **Nombres de Material:** Uso de formato claro como `[Material.pdf] (Pág. X)`.
+- **Limpieza:** Se eliminaron las secciones no deseadas (Orjot Tzadikim).
+
+## Verificación de Funcionamiento
+- [x] Motor de alertas activo (06:12, 09:00, 13:00, 19:00).
+- [x] Enlaces probados y funcionales en español.
+- [x] Texto de rezos legibles en fonética y español.

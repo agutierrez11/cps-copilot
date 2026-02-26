@@ -1,0 +1,24 @@
+# Plan de Mejora: Reporte "Bases Sólidas" Totalmente Cargado y Profesional
+
+Este plan aborda la desconfiguración visual del PDF y la integración completa de los 13 ciclos de estudio de la API de TorahCalc. El objetivo es un documento impecable de nivel ejecutivo.
+
+## Proposed Cambios
+
+### 1. Inclusión de los 13 Ciclos de Estudio (TorahCalc)
+- Se integrarán dinámicamente: **Daf Yomi, Mishnah Yomi, Nach Yomi, Yerushalmi Yomi, Chofetz Chaim, Daily Rambam (1 y 3 caps), Shemirat HaLashón, Daily Psalms, Weekly Daf, Arukh HaShulján, Kitzur Shulján Arúj, Sefer Hamitzvós y Pirkei Avot**.
+- Cada ciclo incluirá su nombre en hebreo/inglés y el enlace de estudio.
+
+### 2. Rediseño del Sistema de Layout (FPDF2)
+- **Eliminación de Celdas Flotantes**: Se usará un sistema de "Bloques Verticales" donde cada sección reinicia la posición `X` al margen izquierdo (`set_x(20)`).
+- **Control de Salto de Página**: Se implementará un chequeo de espacio antes de imprimir bloques grandes para evitar cortes antiestéticos.
+- **Formateo de Tablas**: Los ciclos de estudio se presentarán en una tabla estructurada y alineada para máxima claridad.
+
+### 3. Enriquecimiento y Estilo
+- **Títulos con Fondo**: Uso de colores profesionales (Azul Marino/Gris Claro) para separar secciones.
+- **Soporte de Caracteres**: Refuerzo de la conversión a Latin-1 para que acentos y caracteres especiales no rompan el diseño.
+
+## Plan de Verificación
+
+- **Visual**: Generar el PDF y validar que los 13 ciclos se vean alineados y el Shemá ya no tenga el error de alineación.
+- **Contenido**: Verificar que cada nombre de ciclo corresponda al día actual.
+- **Telegram**: Confirmar que el mensaje resumen también mencione la disponibilidad de todos los ciclos.

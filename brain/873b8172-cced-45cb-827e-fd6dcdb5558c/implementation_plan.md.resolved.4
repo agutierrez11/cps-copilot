@@ -1,0 +1,31 @@
+# Plan de Mejora: Reporte de Estudio Consolidado (Bases Sólidas)
+
+El usuario ha reportado que el PDF actual está incompleto y tiene problemas de diseño. Este plan se enfoca en corregir la estructura del PDF y enriquecer el contenido con textos completos y precisos.
+
+## User Review Required
+
+> [!IMPORTANT]
+> Los textos de las oraciones se basarán en versiones estándar para Noájidas. Si prefieres una liturgia específica de algún sidur que ya tengas, por favor indícamelo.
+
+## Proposed Cambios
+
+### 1. Enriquecimiento de Contenido (daily_sources.json)
+- **Modé Aní**: Texto completo en hebreo (transliterado) y español.
+- **Asher Iatzar**: Texto completo en español.
+- **Shemá Israel**: Primer párrafo completo con traducción.
+- **Minjá y Arvit**: Incluir fragmentos clave (Salmo 145/Ashré para Minjá, Aleinu para Arvit).
+- **Musar**: Aumentar la extensión de los textos de *Pele Yoetz* y *Shaar Habitachon*.
+- **Pirkei Avot**: Intentar dinámicamente obtener el capítulo correspondiente vía API si es posible, o incluir una reflexión más extensa.
+
+### 2. Estabilidad del PDF (lanzador_estudio.py)
+- **Corrección de Diseño**: Eliminar el uso errático de posiciones laterales. Todo el texto seguirá un flujo vertical estricto usando `pdf.multi_cell(0, ...)` con anchos de página completos.
+- **Integración de API Shas.org**: Usar `https://www.shas.org/daf-yomi-api/` para obtener el nombre de la masechta normalizado y asegurar que la descarga del PDF no falle.
+- **Formateo de Zmanim**: Asegurar que todos los horarios se listen en una columna clara y legible.
+
+### 3. Fusión de PDF
+- Asegurar que la página del Talmud se anexe al final sin afectar el numerado o el estilo de las páginas previas.
+
+## Plan de Verificación
+
+- **Automatizado**: Ejecutar el script y validar que no arroje errores de codificación o posiciones.
+- **Manual**: Generar el PDF y enviar captura de pantalla al usuario para validar que el contenido "se sienta completo".

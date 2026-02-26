@@ -1,0 +1,28 @@
+# Walkthrough - Organizing 2026 CVs
+
+I have organized your CVs from 2026 into a dedicated folder on your Desktop.
+
+## Changes Made
+- Created a new folder `CVs_2026` at `C:\Users\Antonio\OneDrive\Escritorio\CVs_2026`.
+- Scanned `C:\Users\Antonio\OneDrive\Downloads` for PDF files from 2026.
+- Copied 13 CV files into the new folder.
+
+## Verification Results
+- **Folder Created**: Verified at `C:\Users\Antonio\OneDrive\Escritorio\CVs_2026`.
+- **Files Copied**:
+    - `AntonioGutierrezJimenezResume (1).pdf`
+    - `AntonioGutierrezJimenezResume (2).pdf`
+    - `AntonioGutierrezJimenezResume (3).pdf`
+    - `AntonioGutierrezJimenezResume (4).pdf`
+    - `AntonioGutierrezJimenezResume (5).pdf`
+    - `AntonioGutierrezJimenezResume (6).pdf`
+    - `AntonioGutierrezJimenezResume.pdf`
+    - `Curriculum vitae Ángel Norzagaray 2026.pdf`
+    - `cv_optimizado_2026-01-15.pdf`
+    - `AGJ2026 (1).pdf`
+    - `AGJ2026.pdf`
+    - `AGJdlocal.pdf`
+    - `AGJShufti.pdf`
+
+> [!NOTE]
+> There was a minor encoding issue with the filename `Curriculum vitae Ángel Norzagaray 2026.pdf` due to the special character 'Á', but it has been handled and the file is correctly copied.

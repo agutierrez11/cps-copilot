@@ -1,0 +1,65 @@
+’	{
+  "collapse-filter": false,
+  "search": "",
+  "showTags": true,
+  "showAttachments": false,
+  "hideUnresolved": false,
+  "showOrphans": true,
+  "collapse-color-groups": false,
+  "colorGroups": [
+    {
+      "query": "folder:\"Empresas/Paytech\"",
+      "color": {
+        "a": 1,
+        "rgb": 16711680
+      }
+    },
+    {
+      "query": "folder:\"Empresas/Activos Digitales\"",
+      "color": {
+        "a": 1,
+        "rgb": 255255
+      }
+    },
+    {
+      "query": "folder:\"Empresas/Pr√©stamos y Cr√©dito\"",
+      "color": {
+        "a": 1,
+        "rgb": 65280
+      }
+    },
+    {
+      "query": "folder:\"Empresas/Insurtech\"",
+      "color": {
+        "a": 1,
+        "rgb": 16776960
+      }
+    },
+    {
+      "query": "folder:\"Empresas/Neobancos\"",
+      "color": {
+        "a": 1,
+        "rgb": 16711935
+      }
+    },
+    {
+      "query": "file:M√©xico",
+      "color": {
+        "a": 1,
+        "rgb": 32768
+      }
+    }
+  ],
+  "collapse-display": false,
+  "showArrow": true,
+  "textFadeMultiplier": 0,
+  "nodeSizeMultiplier": 1.5,
+  "lineSizeMultiplier": 1,
+  "collapse-forces": false,
+  "centerStrength": 0.5,
+  "repelStrength": 15,
+  "linkStrength": 1,
+  "linkDistance": 250,
+  "scale": 0.1,
+  "close": false
+}’	*cascade082[file:///c:/Users/Antonio/OneDrive/Escritorio/Ecosistema_Fintech_Global/.obsidian/graph.json

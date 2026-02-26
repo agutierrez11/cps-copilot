@@ -1,0 +1,23 @@
+# Vacancy Ranking and Direct Links
+
+This plan covers the implementation of match ranking, detailed vacancy view, and direct application links.
+
+## Proposed Changes
+
+### Backend
+#### [MODIFY] [job_radar.py](file:///c:/Users/Antonio/.gemini/antigravity/scratch/CareerBoosterAI/backend/job_radar.py)
+- Ensure the `url` and `description` are fully passed to the frontend.
+
+### Frontend
+#### [MODIFY] [JobRadar.jsx](file:///c:/Users/Antonio/.gemini/antigravity/scratch/CareerBoosterAI/frontend/src/pages/JobRadar.jsx)
+- Implement sorting: Add a "Best Match" filter to reorder the list once analyzed.
+- Direct Application: Map the `ExternalLink` button to open the job URL in a new tab.
+- Detailed View: Improve the match panel to show a "Why it fits" section based on the user's profile.
+
+## Verification Plan
+
+### Manual Verification
+1. Open the Job Radar page.
+2. Click the external link icon on a job card; it should open the original job board.
+3. Analyze a few jobs and verify they can be sorted or highlighted by "Best Match".
+4. Confirm the "Match Analysis" panel provides actionable details about the vacancy.

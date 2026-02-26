@@ -1,0 +1,12 @@
+# Task: Potenciar Bot (Botones + IA)
+
+- [x] Implementar motor de tiempo y alertas en Telegram
+- [x] Configurar inicio automático en Windows
+- [x] Adoptar formato narrativo con descripciones poéticas
+- [x] Estandarizar nombres de material y páginas: `[Material.pdf] (Pág. X)`
+- [x] Agregar textos de Modé Aní y Shemá Israel jerárquicamente
+- [x] Integrar Halajá vía Pnina Yomit (Peninei Halakha)
+- [x] Limpiar contenido: Enfoque 100% Parashá
+- [/] Potenciar: Añadir Botones Interactivos (UI Premium)
+- [ ] Potenciar: Integrar Gemini AI (Cerebro de explicaciones)
+- [ ] Validar funcionamiento final con el usuario

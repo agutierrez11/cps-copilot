@@ -1,0 +1,34 @@
+# Plan de Mejora: Reporte de Estudio API-First
+
+El objetivo es consolidar un reporte que cubra las tres oraciones diarias (Shajarit, Minjá, Arvit), el Shemá, y el estudio dinámico de Torá, Talmud y Musar usando únicamente APIs.
+
+## Proposed Cambios
+
+### 1. Oraciones Diarias (Servicios)
+- **Shajarit, Minjá y Arvit**: Incorporar los textos completos y estructurados para estas tres oraciones, además del Shemá.
+- **Formato**: Se presentarán de forma prominente como el marco temporal del día.
+
+### 2. Torá Dinámica (Hebcal + Sefaria)
+- Obtener la **Aliyá del día** (porción de la Parashá semanal) dinámicamente.
+- Domingo: 1ª Aliyá, Lunes: 2ª Aliyá, etc.
+- El texto vendrá directamente de Sefaria (Hebreo + Español/Inglés).
+
+### 3. Talmud (Shas.org / TorahCalc)
+- Mantener el **Daf Yomi** diario con la descarga de la hoja original del Talmud.
+
+### 4. Musar Progresivo (Sefaria)
+- Lectura secuencial de *Mesilat Yesharim* o similar, obteniendo una sección nueva cada día.
+
+### 5. Estructura del PDF
+- Secciones claras:
+    - Zmanim (Horarios).
+    - Oraciones (Shajarit, Minjá, Arvit + Shemá).
+    - Torá (Porción de la Parashá).
+    - Talmud (Daf Yomi).
+    - Musar (Lectura de Sefaria).
+
+## Plan de Verificación
+
+- Verificar la obtención de la Aliyá correcta según el día de la semana.
+- Confirmar que las tres oraciones se listen íntegramente.
+- Ejecutar el script y validar la recepción del PDF consolidado en Telegram.

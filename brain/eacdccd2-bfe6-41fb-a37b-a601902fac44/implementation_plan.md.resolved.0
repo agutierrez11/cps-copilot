@@ -1,0 +1,29 @@
+# Cleanup and Relocation of Cosma Configuration
+
+The user wants to remove all traces of the Cosma installation from the root of their Obsidian vault (`Ecosistema_Fintech_Global`) because it caused configuration issues with the graph. I will move all Cosma-related files to a separate directory called `cosma_workspace` within the project (or a sibling, but I'll stick to a subdirectory first unless specified otherwise, or perhaps a sibling folder to be safer).
+
+## Proposed Changes
+
+### [Cosma Cleanup]
+
+I will move the following files/folders from the vault root:
+
+- [cosma.yml](file:///c:/Users/Antonio/OneDrive/Escritorio/Ecosistema_Fintech_Global/cosma.yml) [MOVE]
+- [config.yml](file:///c:/Users/Antonio/OneDrive/Escritorio/Ecosistema_Fintech_Global/config.yml) [MOVE]
+- [package.json](file:///c:/Users/Antonio/OneDrive/Escritorio/Ecosistema_Fintech_Global/package.json) [MOVE]
+- [package-lock.json](file:///c:/Users/Antonio/OneDrive/Escritorio/Ecosistema_Fintech_Global/package-lock.json) [MOVE]
+- `export/` [MOVE]
+- `node_modules/` [DELETE] (to be reinstalled if needed in the new location)
+
+#### [NEW] [cosma_workspace/](file:///c:/Users/Antonio/OneDrive/Escritorio/Ecosistema_Fintech_Global/cosma_workspace)
+A new directory to house Cosma-related configurations.
+
+#### [MODIFY] [cosma_workspace/cosma.yml](file:///c:/Users/Antonio/OneDrive/Escritorio/Ecosistema_Fintech_Global/cosma_workspace/cosma.yml)
+Update the `entry` setting to point to the parent directory (the vault root) so Cosma can still analyze the markdown files without being located at the root.
+
+## Verification Plan
+
+### Manual Verification
+1.  Check the root of `Ecosistema_Fintech_Global` to ensure [cosma.yml](file:///c:/Users/Antonio/OneDrive/Escritorio/Ecosistema_Fintech_Global/cosma.yml), [config.yml](file:///c:/Users/Antonio/OneDrive/Escritorio/Ecosistema_Fintech_Global/config.yml), [package.json](file:///c:/Users/Antonio/OneDrive/Escritorio/Ecosistema_Fintech_Global/package.json), [package-lock.json](file:///c:/Users/Antonio/OneDrive/Escritorio/Ecosistema_Fintech_Global/package-lock.json), `node_modules`, and `export/` are gone.
+2.  Verify that `cosma_workspace/` contains the moved files.
+3.  Verify that the Obsidian vault remains functional and no longer shows Cosma configuration files in its file explorer.

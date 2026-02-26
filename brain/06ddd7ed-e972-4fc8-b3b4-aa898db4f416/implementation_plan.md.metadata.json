@@ -1,0 +1,5 @@
+{
+  "artifactType": "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
+  "summary": "Plan to improve the Cosma config.yml for the Ecosistema Fintech Global project. Changes include: adding record_types mapped to the actual category subdirectories (Paytech, Neobancos, Insurtech, etc.), improving graph physics for large graphs, adding record_metas to expose existing YAML fields (Company, Country, Vertical, Status), enabling hide_id_from_record_header, adding a link_symbol, and running cosma modelize to regenerate the cosmoscope for visual verification.",
+  "updatedAt": "2026-02-25T01:01:05.305933300Z"
+}

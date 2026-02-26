@@ -1,0 +1,39 @@
+# Plan de Expansión de Datos y Optimización Visual (Sumsub GTM)
+
+Hemos alcanzado un hito de **+800 nodos** en la carpeta `Empresas/`. El plan ahora es consolidar la información enviada recientemente y añadir el componente visual (logos) para que el grafo en Cosma sea verdaderamente funcional para la estrategia de ventas.
+
+## User Review Required
+
+> [!IMPORTANT]
+> - **Refinamiento del Mapa:** El archivo [Mapa_Maestro_Sumsub.md](file:///C:/Users/Antonio/OneDrive/Escritorio/Ecosistema_Fintech_Global/Mapa_Maestro_Sumsub.md) tiene algunas empresas en categorías que parecen incorrectas (ej. empresas regionales en Guyana). ¿Deseas que use el script para reorganizar esto basándome en el campo `Country` de cada archivo Markdown?
+> - **Límite de Logos:** El script de logos usará la API de Clearbit. Si no encuentra el dominio exacto, dejará el thumbnail vacío o usará un icono genérico por vertical.
+
+## Proposed Changes
+
+### [Automation Scripts]
+
+#### [MODIFY] [process_user_list.py](file:///C:/Users/Antonio/OneDrive/Escritorio/Ecosistema_Fintech_Global/process_user_list.py)
+Asegurar que el script procese el archivo [user_lending_mexico.txt](file:///C:/Users/Antonio/OneDrive/Escritorio/Ecosistema_Fintech_Global/Empresas/user_lending_mexico.txt) al 100% y manejar nombres con caracteres especiales para evitar errores de ruta en Windows.
+
+#### [NEW] [fetch_logos.py](file:///C:/Users/Antonio/OneDrive/Escritorio/Ecosistema_Fintech_Global/fetch_logos.py)
+Crear un nuevo script que:
+1. Recorra todas las carpetas en `Empresas/`.
+2. Extraiga el nombre de la empresa del YAML.
+3. Intente inferir el dominio (ej. `Albo` -> `albo.mx`).
+4. Inyecte `thumbnail: "https://logo.clearbit.com/dominio"` en el YAML si no tiene logo ya.
+
+### [Data Cleanup]
+
+#### [MODIFY] [Mapa_Maestro_Sumsub.md](file:///C:/Users/Antonio/OneDrive/Escritorio/Ecosistema_Fintech_Global/Mapa_Maestro_Sumsub.md)
+Limpiar y reorganizar las secciones de países menos poblados para asegurar que solo contengan empresas pertinentes o se marquen como "En Expansión".
+
+## Verification Plan
+
+### Automated Tests
+- Ejecutar [process_user_list.py](file:///C:/Users/Antonio/OneDrive/Escritorio/Ecosistema_Fintech_Global/process_user_list.py) y verificar el conteo de "Nuevos Nodos".
+- Ejecutar `fetch_logos.py` en una muestra de 5 empresas (ej. Albo, Konfio, Nubank) y verificar que el campo `thumbnail` se actualice correctamente.
+- Validar la sintaxis YAML de los archivos modificados.
+
+### Manual Verification
+- Abrir un archivo Markdown aleatorio en `Empresas/` y verificar que el link del logo cargue una imagen válida.
+- Visualizar el archivo [Mapa_Maestro_Sumsub.md](file:///C:/Users/Antonio/OneDrive/Escritorio/Ecosistema_Fintech_Global/Mapa_Maestro_Sumsub.md) renderizado para confirmar la jerarquía.

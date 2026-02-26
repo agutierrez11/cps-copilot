@@ -1,0 +1,5 @@
+# Task: Install and Verify Cosma
+
+- [/] Check Node.js version
+- [ ] Install @graphlab-fr/cosma globally
+- [ ] Verify Cosma installation

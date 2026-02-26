@@ -1,0 +1,12 @@
+# Task: Implement Systematic Noahide Telegram Notifier
+
+- [x] Create folder structure on Desktop
+- [x] Configure Telegram ID and Token
+- [x] Noahide Prayer Book PDF extraction (Page mapping: 11, 27, 30)
+- [x] Shuljan Aruj PDF Integration (Thematic link to Parasha)
+- [x] Systematic Morning Study Flow
+    - [x] Include Modeh Ani & Shema
+    - [x] Include Daily Torah & Psalms
+    - [x] Include Midrash & Talmud (Text or Link)
+- [x] Windows Persistence (Startup .bat)
+- [x] Final System Verification

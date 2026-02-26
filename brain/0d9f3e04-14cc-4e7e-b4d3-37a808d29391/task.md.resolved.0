@@ -1,0 +1,10 @@
+# Telegram Study Bot — Mejoras para Noajida
+
+- [x] Daf Yomi dinámico (Sefaria API)
+- [ ] Rediseñar bloques de estudio para enfoque Noajida
+  - [ ] Simplificar a 3 bloques: Mañana (oración + Torá), Estudio (Talmud), Noche (reflexión)
+  - [ ] Remover contenido judío específico (Tania, Arvit, Minjá)
+  - [ ] Agregar Parashat HaShavúa dinámica desde Sefaria
+- [ ] Corregir bug del PDF (botón no entrega archivo)
+- [ ] Corregir IA que falla en Telegram (Markdown parsing)
+- [ ] Mejorar prompt de la IA con contexto Noajida

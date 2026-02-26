@@ -1,0 +1,5 @@
+{
+  "artifactType": "ARTIFACT_TYPE_WALKTHROUGH",
+  "summary": "Walkthrough of the successful deployment of the Telegram study bot to Railway. Includes details of the build fix (renaming TOKEN to BOT_TOKEN) and confirmation of online status.",
+  "updatedAt": "2026-02-23T20:53:22.459711100Z"
+}

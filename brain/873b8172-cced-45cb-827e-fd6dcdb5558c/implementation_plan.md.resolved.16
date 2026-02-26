@@ -1,0 +1,23 @@
+# Plan de Mejora: Soporte de Hebreo y Diseño Profesional
+
+Este plan aborda el error de los signos de interrogación (`????`) en los nombres hebreos y refuerza la estabilidad del diseño del PDF.
+
+## Proposed Cambios
+
+### 1. Soporte Real de Hebreo (Unicode)
+- **Fuente TrueType**: Integraré la fuente `Arial.ttf` (del sistema Windows) en el generador de PDF. Las fuentes actuales (Helvetica) solo soportan caracteres europeos básicos.
+- **UTF-8 Nativo**: Eliminaré la restricción de `Latin-1` en el texto para permitir que los caracteres hebreos se rendericen correctamente.
+- **Jerarquía de Fuentes**: Usaremos Arial para todo el documento para asegurar que tanto el español (acentos) como el hebreo se vean perfectos.
+
+### 2. Estabilización de Pantalla (Display)
+- **Márgenes Rígidos**: Reforzaré el uso de `set_x(20)` antes de cada `multi_cell` para garantizar que ninguna sección se desplace a la derecha.
+- **Control de Tablas**: Los ciclos de estudio de TorahCalc se formatearán en un bloque unificado para evitar saltos de línea erróneos.
+
+### 3. Enriquecimiento de Datos
+- Asegurar que todos los campos de TorahCalc (los 13 ciclos) tengan su texto descriptivo completo.
+
+## Plan de Verificación
+
+- **Visual**: Generar el PDF y verificar que el hebreo sea legible (letras hebreas reales, no `????`).
+- **Alineación**: Confirmar que los márgenes izquierdo y derecho sean consistentes en todas las páginas.
+- **Telegram**: Validar que el archivo enviado siga siendo ligero y rápido de abrir.

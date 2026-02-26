@@ -1,0 +1,15 @@
+I0226 06:16:25.333469 14068 server.go:1130] Starting language server process with pid 14068
+I0226 06:16:25.357763 14068 server.go:265] Setting GOMAXPROCS to 4
+I0226 06:16:25.373667 14068 server.go:453] Language server will attempt to listen on host 127.0.0.1
+I0226 06:16:25.377351 14068 server.go:468] Language server listening on random port at 64954 for HTTPS
+I0226 06:16:25.377351 14068 server.go:475] Language server listening on random port at 64955 for HTTP
+I0226 06:16:25.924816 14068 reconnectable_client.go:151] Connecting to extension server at port 64952
+I0226 06:16:25.933700 14068 server.go:442] Created reconnectable extension server client at port 64952
+I0226 06:16:26.117892 14068 server.go:584] Using ApiServerClientV2
+W0226 06:16:26.185656 14068 launchmanager.go:78] Entering local chrome mode! This is WRONG unless you are running tests or in eval mode on Linux.
+I0226 06:16:26.323300 14068 server.go:1564] Wrote discovery file: C:\Users\Antonio\.gemini\antigravity\daemon\ls_54f119fb8e4ddbc4.json
+I0226 06:16:26.323300 14068 server.go:1488] initialized server successfully in 966.3236ms
+2026/02/26 06:16:26 http: TLS handshake error from 127.0.0.1:55938: read tcp 127.0.0.1:64954->127.0.0.1:55938: wsarecv: An established connection was aborted by the software in your host machine.
+E0226 06:16:26.517997 14068 interceptor.go:74] /exa.language_server_pb.LanguageServerService/RefreshMcpServers (unknown): loading already in progress
+E0226 06:16:27.390318 14068 log.go:380] failed to get git info for workspace c:\Users\Antonio\OneDrive\Downloads\Radar_Fintech_Latam_SUMSUB_MASTER_GTM (1): reference not found: reference not found
+I0226 06:30:21.632090 14068 client.go:416] UnifiedStateSyncClient disconnected.

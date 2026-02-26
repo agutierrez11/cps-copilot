@@ -1,0 +1,41 @@
+# Walkthrough: Cosma Cleanup and Relocation
+
+I have successfully removed the Cosma installation traces from the root of your Obsidian vault to resolve the graph configuration issues.
+
+## Changes Made
+
+- **Relocated Configuration**: Moved [cosma.yml](file:///c:/Users/Antonio/OneDrive/Escritorio/Ecosistema_Fintech_Global/cosma.yml), [config.yml](file:///c:/Users/Antonio/OneDrive/Escritorio/Ecosistema_Fintech_Global/config.yml), [package.json](file:///c:/Users/Antonio/OneDrive/Escritorio/Ecosistema_Fintech_Global/package.json), and [package-lock.json](file:///c:/Users/Antonio/OneDrive/Escritorio/Ecosistema_Fintech_Global/package-lock.json) to a new folder: [cosma_workspace/](file:///c:/Users/Antonio/OneDrive/Escritorio/Ecosistema_Fintech_Global/cosma_workspace).
+- **Cleaned Root**: Deleted `node_modules` and moved the `export/` folder to the workspace.
+- **Updated Config**: Modified [cosma.yml](file:///c:/Users/Antonio/OneDrive/Escritorio/Ecosistema_Fintech_Global/cosma_workspace/cosma.yml) to point to `../` so it can still analyze your vault files from its new location.
+
+## Verification Results
+
+- [x] **Root Clean**: The root of `Ecosistema_Fintech_Global` no longer contains Cosma files.
+- [x] **Relocation Verified**: Files are safely stored in `cosma_workspace/`.
+- [x] **Graph State**: Obsidian should no longer try to index or show these configuration files in your graph.
+
+```diff:cosma.yml
+# Configuración mínima absoluta
+project:
+  name: "Ecosistema Fintech"
+
+# IMPORTANTE: En Windows, a veces necesita la ruta completa o "./"
+entry: "./"
+
+# Forzamos a que ignore carpetas de sistema que podrían causar conflictos
+exclude:
+  - .obsidian
+  - node_modules
+===
+# Configuración mínima absoluta
+project:
+  name: "Ecosistema Fintech"
+
+# IMPORTANTE: En Windows, a veces necesita la ruta completa o "./"
+entry: "../"
+
+# Forzamos a que ignore carpetas de sistema que podrían causar conflictos
+exclude:
+  - .obsidian
+  - node_modules
+```

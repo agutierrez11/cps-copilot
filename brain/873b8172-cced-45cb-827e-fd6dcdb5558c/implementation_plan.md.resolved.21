@@ -1,0 +1,33 @@
+# Plan de Mejora: Notificador Noájida en Telegram (Tiempo Real)
+
+El objetivo es sustituir el reporte PDF por un sistema de mensajería activa en Telegram que envíe la porción diaria de la Torá y las oraciones noájidas en el momento exacto que corresponde a cada servicio (Shajarit, Minjá, Arvit).
+
+## User Review Required
+
+> [!IMPORTANT]
+> El sistema se basará en el sitio **messianictorah.org** para extraer la porción diaria de la Parashá semanal. Usaremos los horarios (Zmanim) de Cancún para programar los envíos.
+
+## Proposed Cambios
+
+### 1. Sistema de Notificación Activa
+- **Notificador (Bot)**: Un script que se ejecuta en segundo plano y monitorea el reloj.
+- **Mañana (Shajarit)**: Envío de *Modeh Aní* + Oración Matutina + Texto de la Parashá del día extraído de messianictorah.org.
+- **Tarde (Minjá)**: Oración Vespertina.
+- **Noche (Arvit)**: Oración del Anochecer + *Shemá Israel*.
+
+### 2. Extracción de Contenido
+- **Torá (messianictorah.org)**: Scraping diario de la porción correspondiente a la parashá actual.
+- **Oraciones (PDF Local)**: Uso de los textos ya extraídos del "Libro de Oraciones para Noajidas (1).pdf".
+- **Idioma**: 100% en español.
+
+### 3. Sincronización Horaria
+- Uso de **TorahCalc API** para obtener los Zmanim exactos de Cancún cada mañana y ajustar las alarmas del bot.
+
+### 4. Automatización en Windows
+- Creación de un archivo `.bat` persistente o una tarea programada para que el bot empiece a funcionar al encender la computadora.
+
+## Plan de Verificación
+
+- **Scraping**: Probar la extracción de datos desde messianictorah.org.
+- **Notificación**: Realizar un envío de prueba de cada bloque (Mañana, Tarde, Noche).
+- **Programación**: Validar que el bot espere al horario correcto antes de enviar.

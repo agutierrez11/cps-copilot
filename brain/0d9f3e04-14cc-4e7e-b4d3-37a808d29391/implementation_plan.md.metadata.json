@@ -1,0 +1,6 @@
+{
+  "artifactType": "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
+  "summary": "Plan to improve the Telegram Study Bot for Noahide study. 4 blocks: Shajarit (prayers+Parashá), Estudio (Daf Yomi+Salmos), Minjá (afternoon prayer), Arvit (evening prayer+Shemá). Also fixes PDF delivery bug and AI Markdown crashes. Adds Noahide context to Gemini prompt.",
+  "updatedAt": "2026-02-22T23:41:03.012982200Z",
+  "version": "1"
+}

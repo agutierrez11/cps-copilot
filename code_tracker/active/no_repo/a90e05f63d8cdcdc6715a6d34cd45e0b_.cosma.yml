@@ -1,0 +1,15 @@
+åproject:
+  name: "Ecosistema Fintech"
+entry: "./"
+export_target: "./cosma_workspace/export"
+
+exclude:
+  - .obsidian
+  - node_modules
+  - cosma_workspace
+  - .cosma
+  - "*.canvas"
+  - "*.js"
+  - "*.txt"
+  - "*.json"
+å*cascade082Qfile:///c:/Users/Antonio/OneDrive/Escritorio/Ecosistema_Fintech_Global/.cosma.yml

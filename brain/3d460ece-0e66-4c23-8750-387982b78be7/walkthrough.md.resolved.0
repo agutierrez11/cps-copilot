@@ -1,0 +1,28 @@
+# Walkthrough - Fix Telegram Bot Message Delivery
+
+I have fixed the issue where the bot was failing to send messages due to a configuration mismatch and improved its resilience against callback query timeouts.
+
+## Changes Made
+
+### Configuration Support
+Modified [bot.py](file:///C:/Users/Antonio/.gemini/antigravity/scratch/Mis%20Proyectos%20Antigravity/telegram-study-bot/bot.py) to support both `BOT_TOKEN` and `TOKEN` environment variables. This ensures the bot can start correctly using the current [.env](file:///C:/Users/Antonio/.gemini/antigravity/scratch/Mis%20Proyectos%20Antigravity/telegram-study-bot/.env) file configuration.
+
+### Improved Resilience
+Added error handling to the PDF delivery block in the callback handler. This prevents the bot from logging errors or failing when a user interacts with an "expired" button (callback query timeout).
+
+## Verification Results
+
+### Automated Tests
+- **Send Test Routine:** Successfully ran [send_test_routine.py](file:///C:/Users/Antonio/.gemini/antigravity/scratch/Mis%20Proyectos%20Antigravity/telegram-study-bot/send_test_routine.py). The bot correctly loaded the token and sent the study routine messages to the configured CHAT_ID.
+- **Connection Test:** Verified the bot can communicate with the Telegram API.
+
+### Logs
+The logs now show successful initialization and message delivery:
+```text
+2026-02-23 23:57:54 - INFO - 📖 Sefaria actualizado con todos los materiales.
+Prueba enviada.
+```
+
+## Next Steps
+- The bot is now ready to be deployed or restarted on your server (e.g., Railway).
+- Ensure that the `BOT_TOKEN` or `TOKEN` is correctly set in your deployment environment variables.

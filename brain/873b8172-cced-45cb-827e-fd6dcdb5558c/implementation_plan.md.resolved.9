@@ -1,0 +1,32 @@
+# Plan de Mejora: Reporte de Estudio 100% Dinámico + PDF Personalizado
+
+El objetivo es crear un reporte que combine las tres oraciones diarias, el estudio dinámico vía APIs y la integración de un libro de oraciones personal.
+
+## User Review Required
+
+> [!IMPORTANT]
+> El sistema buscará el archivo `Libro de Oraciones para Noajidas (1).pdf` en tu carpeta de Descargas. Si lo mueves de lugar, el script podría no encontrarlo.
+
+## Proposed Cambios
+
+### 1. Oraciones Dinámicas (Hebcal + Sefaria)
+- **Marco Temporal**: Inclusión de los servicios de **Shajarit, Minjá y Arvit** junto al Shemá.
+- **Torá**: Aliyá del día (1ª-7ª porción) obtenida automáticamente según el día de la semana.
+
+### 2. Estudio de Talmud y Musar (Shas.org + Sefaria)
+- **Daf Yomi**: Sincronización diaria con descarga del PDF original.
+- **Musar**: Lectura progresiva de *Mesilat Yesharim* vía Sefaria API.
+
+### 3. Integración de PDF Local
+- **Origen**: `C:\Users\Antonio\Downloads\Libro de Oraciones para Noajidas (1).pdf`.
+- **Acción**: El script anexará este PDF al final del reporte diario consolidado.
+
+### 4. Estructura y Estética
+- Rediseño profesional del PDF con secciones claras y soporte completo para acentos.
+- Entrega automatizada vía Telegram.
+
+## Plan de Verificación
+
+- Confirmar que el script localiza el PDF en Descargas.
+- Validar las lecturas de Torá y Musar desde Sefaria.
+- Verificar que el reporte final en Telegram contenga todas las secciones y el PDF anexo.

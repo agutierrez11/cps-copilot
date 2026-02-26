@@ -1,0 +1,12 @@
+# Task: Soporte de PDFs y Sincronización - EN CURSO
+
+- [x] Motor de tiempo y alertas en Telegram
+- [x] Inicio automático en Windows
+- [x] Sincronizar horarios (corregir desfase +/- 1h)
+- [ ] **Gestión de PDFs Interactivos:**
+  - [ ] Recibir y almacenar IDs de PDF
+  - [ ] Añadir botón "📄 Abrir PDF" a los bloques
+  - [ ] Persistencia en `archivos_config.json`
+- [x] Limpieza de contenidos (Mishné Torá, Tanaj, etc. eliminados)
+- [x] Gemini AI 2.0-flash integrado (con aviso de cuota 429)
+- [ ] Validar con el usuario enviando un PDF de prueba

@@ -1,0 +1,14 @@
+# Torah Study Automation Plan
+
+## Goal
+Implement a Python-based automation system that creates a daily study report using Torah APIs (TorahCalc, Shas.org) and sends it to Telegram.
+
+## Proposed Changes
+- [NEW] `lanzador_estudio.py`: Main Python script for automation.
+- [NEW] `config.json`: Configuration file for Telegram credentials and location.
+- [NEW] `ejecutar_estudio.bat`: Batch file to launch the script easily.
+
+## Verification
+- Run the script manually to verify API connections.
+- Test Telegram notification (if credentials provided).
+- Verify directory existence.

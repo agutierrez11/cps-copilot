@@ -1,0 +1,7 @@
+# Task List
+
+- [ ] Check `src/pages` for usage of `CategorySection` <!-- id: 0 -->
+- [ ] Verify which `CategorySection` is being imported <!-- id: 1 -->
+- [ ] Consolidate `CategorySection.tsx` into `src/components/` <!-- id: 2 -->
+- [ ] Delete duplicate `CategorySection.tsx` from root <!-- id: 3 -->
+- [ ] Verify application builds and runs <!-- id: 4 -->

@@ -1,0 +1,29 @@
+# Plan de Mejora: Integración de Sefaria y Musar Dinámico
+
+El objetivo es sustituir los fragmentos estáticos de Musar por lecturas dinámicas obtenidas directamente de la API de Sefaria, proporcionando una experiencia de estudio que progrese diariamente.
+
+## User Review Required
+
+> [!NOTE]
+> Sefaria ofrece traducciones mayoritariamente en inglés. Intentaré buscar si existe traducción al español disponible en su base de datos, de lo contrario, se incluirá en hebreo e inglés, o se mantendrá el texto estático en español como respaldo.
+
+## Proposed Cambios
+
+### 1. Integración de API Sefaria (lanzador_estudio.py)
+- Implementar una función para consultar `https://www.sefaria.org/api/texts/{Libro}`.
+- Libro inicial sugerido: **Mesilat Yesharim** (El Sendero de los Rectos).
+- **Lógica de estudio**: Dividir los capítulos por el día del año o seguir un calendario secuencial simple basado en la fecha.
+
+### 2. Formato del PDF
+- Añadir una nueva sección: "Lectura de Musar del Día (Sefaria)".
+- Incluir el texto en español (si está disponible) o el inglés junto al hebreo.
+- Añadir el enlace directo a Sefaria para lectura extendida.
+
+### 3. Ajustes de Estabilidad
+- Asegurar que si la API de Sefaria falla, el script use los textos locales de [daily_sources.json](file:///C:/Users/Antonio/.gemini/antigravity/scratch/torah_automation/daily_sources.json) como "Backup" para nunca dejar el reporte incompleto.
+
+## Plan de Verificación
+
+- **Prueba de API**: Verificar que el script obtenga correctamente el texto de *Mesilat Yesharim*.
+- **Diseño**: Asegurar que los textos largos de Sefaria se paginen correctamente en el PDF.
+- **Telegram**: Validar que el reporte final con contenido dinámico llegue al bot.

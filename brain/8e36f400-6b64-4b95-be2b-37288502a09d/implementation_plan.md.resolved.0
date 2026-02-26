@@ -1,0 +1,47 @@
+# Plan de Implementación: Integración de Calendarios de Sefaria
+
+Este plan detalla cómo reorganizar los bloques de estudio del bot de Telegram para que coincidan con la estructura y el contenido de los calendarios de aprendizaje de Sefaria (Learning Schedules).
+
+## Cambios Propuestos
+
+Se actualizará el archivo [bot.py](file:///C:/Users/Antonio/.gemini/antigravity/scratch/telegram-study-bot/bot.py) para reestructurar los mensajes generados en cada bloque, integrando las nuevas fuentes de Sefaria.
+
+### Estructura de Bloques Actualizada (22 Feb 2026)
+
+#### 🌅 BLOQUE 1: DESPERTAR (07:12 AM)
+- **Actitud:** Modé Aní + Shulján Arúj (Pág. 3).
+- **Torá (Parashá):** Tetzavé (Éxodo 27:20-30:10).
+- **Haftará:** I Samuel 15:2-34.
+- **Halajá Yomit:** Shulján Arúj, Oraj Jaim 158:1-3.
+- **Rezo:** Shemá Matutino + Shajarit (Pág. 10).
+
+#### 🧠 BLOQUE 2: LÓGICA Y ALMA (10:00 AM)
+- **Talmud (Daf a Week):** Nedarim 70 (JabruTouch).
+- **Talmud (Daf Yomi):** Menajot 42.
+- **Tanaj (929):** Números 9.
+- **Tehilim:** Salmos 29-34.
+- **Tanya Yomi:** Cap. 31.
+- **Hayom Yom:** Reflexión diaria.
+
+#### ☀️ BLOQUE 3: PRODUCTIVIDAD (14:00 PM)
+- **Ética:** Pele Yoetz + Pirkei Avot.
+- **Mishná Yomit:** Mishná Keritot 3:3-4.
+- **Rezo:** Minjá (Pág. 23) + Sustento (Pág. 26).
+
+#### 🌙 BLOQUE 4: PAZ Y LEY (20:00 PM)
+- **Ética:** Orjot Tzadikim + Perek Shalom.
+- **Rambam Diario (Mishné Torá):**
+  - Fundamentos de la Torá (Yesodei HaTorah) 8.
+  - Arrepentimiento (Teshuvah) 10.
+  - Lectura del Shemá 1-2.
+- **Rezo:** Arvit (Pág. 28) + Shemá Nocturno (Pág. 16).
+
+## Plan de Verificación
+
+### Pruebas Manuales
+1. **Verificar Envío de Prueba:**
+   - Ejecutar el bot.
+   - Enviar el comando `/plan` para ver el resumen actualizado.
+   - Forzar el envío del bloque 1 manualmente para verificar formato y links.
+2. **Validación de Enlaces:**
+   - Hacer clic en los nuevos enlaces de Sefaria (Haftará, Mishná Yomit, Rambam, Halajá Yomit) para asegurar que no den error 404.

@@ -1,0 +1,27 @@
+# Plan de Mejora: Estudio Noájida Simplificado y Fiable (Español)
+
+Este plan simplifica la obtención de datos para garantizar que el reporte siempre esté lleno de contenido relevante en español, manejando la falta de traducciones en Sefaria de forma inteligente.
+
+## Proposed Cambios
+
+### 1. Obtención de Textos con Respaldo (Fallback)
+- **Torá**: Buscar la Aliyá del día en español. Si no existe la versión específica, usar la versión estándar de Sefaria en español para el Pentateuco.
+- **Talmud / Musar**: 
+    - En lugar de buscar fragmentos complejos que pueden no estar traducidos, buscaré **comentarios clásicos** (como Rashi o Rambban) que suelen tener mejor cobertura en español o usaré una fuente de Musar fija de alta calidad en español (*Mesilat Yesharim*).
+    - Si un enlace temático no tiene español, el sistema buscará un tema general de la Parashá en una base de datos local de "Perlas de Torá" en español para que nunca salga vacío.
+
+### 2. Corrección de Horarios (Zmanim) y Diseño
+- **Chatzot N/A**: Corregir el mapeo de la API de TorahCalc para asegurar que el mediodía se muestre correctamente.
+- **Display PDF**: Reforzar el sistema de márgenes para que el diseño sea compacto y profesional, sin desconfiguraciones.
+
+### 3. Estructura del Reporte Compacto
+- **Sección 1**: Horarios de Cancún.
+- **Sección 2**: Oraciones Noájidas (del PDF local).
+- **Sección 3**: Torá semanal (Aliyá en español).
+- **Sección 4**: Reflexión de Sabiduría (Talmud/Musar o Comentario en español).
+
+## Plan de Verificación
+
+- **Contenido**: Verificar que las secciones de Torá y Sabiduría tengan texto y no digan "No disponible".
+- **Visual**: Confirmar que el PDF tenga un diseño limpio y el hebreo sea legible.
+- **Entrega**: Validar la recepción en Telegram.

@@ -1,0 +1,12 @@
+# Task: Refinar Bot de Estudio (Enfoque Parashá)
+
+- [x] Implementar motor de tiempo y alertas en Telegram
+- [x] Configurar inicio automático en Windows
+- [x] Adoptar formato narrativo con descripciones poéticas
+- [x] Estandarizar nombres de material y páginas: `[Material.pdf] (Pág. X)`
+- [x] Agregar textos de Modé Aní y Shemá Israel jerárquicamente
+- [x] Integrar Halajá vía Pnina Yomit (Peninei Halakha)
+- [x] Detallar sección de Shulján Arúj (Págs. 3 a 10)
+- [x] Añadir interactividad (Comandos /bloque1-4, /ayuda, /plan y respuestas automáticas)
+- [x] Limpiar contenido: Eliminar Hayom Yom, Pirkei Avot y Perek Shalom
+- [x] Validar funcionamiento final con el usuario

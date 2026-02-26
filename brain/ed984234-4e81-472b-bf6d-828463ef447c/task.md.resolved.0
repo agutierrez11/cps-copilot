@@ -1,0 +1,6 @@
+# NotebookLM MCP Integration Task
+
+- [/] Verification <!-- id: 0 -->
+    - [/] Confirm server is active <!-- id: 1 -->
+    - [ ] Verify functionality (list notebooks) <!-- id: 2 -->
+- [ ] Save project as Notebook <!-- id: 3 -->

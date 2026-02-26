@@ -1,0 +1,15 @@
+# Task: Implement Simplified Noahide Study
+
+- [x] Create folder structure on Desktop
+- [x] Configure Telegram ID and Token
+- [x] Fix Batch File Encoding
+- [x] Noahide Prayer Book PDF extraction
+- [/] Reliable API Integration (Spanish-First) [/]
+    - [ ] Implement robust Spanish text fetch for Torah
+    - [ ] Add thematic summaries/commentaries in Spanish for Talmud/Musar
+    - [ ] Fix Chatzot 'N/A' issue
+    - [ ] Integrate JabruTouch links
+- [/] Professional PDF Refinement [/]
+    - [ ] Fix Hebrew rendering permanently (Arial Unicode)
+    - [ ] Stabilize PDF layout (compact, aligned blocks)
+- [ ] Final System Verification

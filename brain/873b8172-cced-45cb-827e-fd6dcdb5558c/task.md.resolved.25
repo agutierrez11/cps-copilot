@@ -1,0 +1,16 @@
+# Task: Implement Interactive Advanced Study
+
+- [x] Create folder structure on Desktop
+- [x] Configure Telegram ID and Token
+- [x] Noahide Prayer Book PDF extraction (Page mapping: 9, 25, 28)
+- [x] Shuljan Aruj PDF Integration (Thematic link to Parasha)
+- [/] Advanced Interactive Expansion [/]
+    - [ ] **Create [virtudes_salmos.json](file:///C:/Users/Antonio/.gemini/antigravity/scratch/torah_automation/virtudes_salmos.json) with Chabad data**
+    - [ ] **Implement Interactive Polling (Threaded)**
+    - [ ] **Establish Weekly Musar Schedule (Pele Yoetz / Pirkei Avot)**
+    - [ ] **Integrate Musar links into Morning Report**
+    - [x] Implement Daily Daf Yomi fetch (Sefaria)
+    - [x] Implement Deep Analysis fetch (Rashi/Ramban)
+    - [x] Add Bot Links (@TorahBot, @DafYomiBot)
+- [x] Windows Persistence (Startup .bat)
+- [ ] Final Verification of Interactive Features

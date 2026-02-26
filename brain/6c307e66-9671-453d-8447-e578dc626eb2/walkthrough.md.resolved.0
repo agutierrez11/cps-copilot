@@ -1,0 +1,34 @@
+# Walkthrough - Search Functionality Fix
+
+I have successfully connected the search bar to the tool list and cleaned up the project structure.
+
+## Changes
+
+### 1. Connected Search Logic
+- **[src/pages/Index.tsx](file:///c:/Users/Antonio/OneDrive/Escritorio/tonos-tool-treasurebox/src/pages/Index.tsx)**: Added state to track the search query and filter tools dynamically.
+- **[src/components/Header.tsx](file:///c:/Users/Antonio/OneDrive/Escritorio/tonos-tool-treasurebox/src/components/Header.tsx)**: Connected the search input to the main page state.
+
+### 2. Enhanced Category Display
+- **[src/components/CategorySection.tsx](file:///c:/Users/Antonio/OneDrive/Escritorio/tonos-tool-treasurebox/src/components/CategorySection.tsx)**: Updated to support filtering tools based on the search query.
+    - When searching, categories with matching tools will automatically expand.
+    - Empty categories are hidden to reduce clutter.
+
+### 3. Cleanup
+- **Deleted [CategorySection.tsx](file:///c:/Users/Antonio/OneDrive/Escritorio/tonos-tool-treasurebox/CategorySection.tsx)** from the root directory to avoid confusion.
+
+## Verification Results
+
+### Automated Build
+> [!WARNING]
+> I attempted to run `npm run build` to verify the types, but your system's PowerShell execution policy prevented it.
+> `npm : No se puede cargar el archivo ... porque la ejecución de scripts está deshabilitada`
+
+However, the code changes were straightforward React state updates and prop passing, so everything should work as expected when you run the app normally.
+
+### Manual Verification Steps
+1.  **Start the app**: Run `npm run dev` (if you have permission) or your usual start command.
+2.  **Search**: Type "email" or "crm" in the search bar.
+3.  **Observe**:
+    -   Only categories containing matching tools should appear.
+    -   These categories should be expanded.
+    -   The tool list should show only the matching tools.

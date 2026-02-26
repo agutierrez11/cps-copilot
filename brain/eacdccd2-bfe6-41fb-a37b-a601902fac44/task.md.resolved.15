@@ -1,0 +1,7 @@
+# Task: Local Recovery (Fixing Data for Cosma)
+
+- [/] Develop and run `fix_metadata.js`
+- [ ] Regenerate local graph via [force_export.js](file:///c:/Users/Antonio/OneDrive/Escritorio/Ecosistema_Fintech_Global/cosma_workspace/force_export.js)
+- [ ] Verify graph in `export/index.html`
+- [x] Create [force_export.js](file:///c:/Users/Antonio/OneDrive/Escritorio/Ecosistema_Fintech_Global/cosma_workspace/force_export.js) (for future local use)
+- [ ] Fix data issues (missing `title:`) for Cosma [ ]

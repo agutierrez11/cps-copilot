@@ -1,0 +1,43 @@
+# Implementation Plan - Fix Search Functionality
+
+The application has a disconnected search feature. The [Header](file:///c:/Users/Antonio/OneDrive/Escritorio/tonos-tool-treasurebox/src/components/Header.tsx#14-123) component expects search props that are not provided by [Index.tsx](file:///c:/Users/Antonio/OneDrive/Escritorio/tonos-tool-treasurebox/src/pages/Index.tsx), and the [CategorySection](file:///c:/Users/Antonio/OneDrive/Escritorio/tonos-tool-treasurebox/CategorySection.tsx#42-203) component logic for search exists in a backup file but not in the active component.
+
+## User Review Required
+
+> [!IMPORTANT]
+> I will be overwriting [src/components/CategorySection.tsx](file:///c:/Users/Antonio/OneDrive/Escritorio/tonos-tool-treasurebox/src/components/CategorySection.tsx) with the version found in the root directory, which contains the search logic.
+
+## Proposed Changes
+
+### Pages
+
+#### [MODIFY] [Index.tsx](file:///c:/Users/Antonio/OneDrive/Escritorio/tonos-tool-treasurebox/src/pages/Index.tsx)
+- Add `searchQuery` state.
+- Create `filteredTools` derived state based on `searchQuery`.
+- Pass `searchQuery` and `setSearchQuery` to `<Header />`.
+- Pass `filteredTools` to `<CategorySection />`.
+- When search is active, render ALL categories (or filtered list) instead of just the selected one, or handle navigation differently.
+
+### Components
+
+#### [MODIFY] [CategorySection.tsx](file:///c:/Users/Antonio/OneDrive/Escritorio/tonos-tool-treasurebox/src/components/CategorySection.tsx)
+- Replace content with the root [CategorySection.tsx](file:///c:/Users/Antonio/OneDrive/Escritorio/tonos-tool-treasurebox/CategorySection.tsx) logic.
+- Ensure imports are correct.
+
+#### [DELETE] [CategorySection.tsx](file:///c:/Users/Antonio/OneDrive/Escritorio/tonos-tool-treasurebox/CategorySection.tsx)
+- Remove the duplicate file from root.
+
+#### [MODIFY] [Header.tsx](file:///c:/Users/Antonio/OneDrive/Escritorio/tonos-tool-treasurebox/src/components/Header.tsx)
+- Ensure props match the implementation (already seems correct, just need to verify).
+
+## Verification Plan
+
+### Automated Tests
+- Run `npm run build` (or `vite build`) to verify TypeScript types are correct.
+
+### Manual Verification
+1.  Open the application.
+2.  Type in the search bar (e.g., "email").
+3.  Verify that categories containing "email" tools expand.
+4.  Verify that non-matching categories are hidden.
+5.  Clear search and verify normal navigation works.

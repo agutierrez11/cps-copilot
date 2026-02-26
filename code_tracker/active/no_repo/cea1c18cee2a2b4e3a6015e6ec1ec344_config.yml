@@ -1,0 +1,91 @@
+ select_origin: directory
+files_origin: "Empresas_cosma"
+export_target: "."
+title: "Ecosistema Fintech Global"
+author: "Antonio"
+description: "Mapa interactivo del ecosistema Fintech en Latinoam√©rica"
+
+# --- EXCLUSIONES ---
+exclude:
+  - node_modules
+  - .obsidian
+  - cosma_workspace
+  - export
+  - cleanup_old_*
+  - cleanup_tmp_*
+
+# --- COMPORTAMIENTO ---
+history: false
+lang: en
+generate_id: never
+link_context: inline
+hide_id_from_record_header: true
+link_symbol: "‚Üí"
+
+# --- METADATOS VISIBLES EN FICHAS ---
+record_metas: [Company, Country, Vertical, Status, Creation]
+
+# --- TIPOS DE NODOS ---
+record_types:
+  undefined:
+    fill: "#4A90D9"
+    stroke: "#2E6DA4"
+  Hub:
+    fill: "#F39C12"
+    stroke: "#D35400"
+  Paytech:
+    fill: "#2ECC71"
+    stroke: "#27AE60"
+  "Digital Banking":
+    fill: "#3498DB"
+    stroke: "#2980B9"
+  Neobancos:
+    fill: "#3498DB"
+    stroke: "#2980B9"
+  Wealthtech:
+    fill: "#9B59B6"
+    stroke: "#8E44AD"
+  Insurtech:
+    fill: "#E67E22"
+    stroke: "#D35400"
+  "Cr√©dito Digital":
+    fill: "#E74C3C"
+    stroke: "#C0392B"
+  "Activos Digitales":
+    fill: "#F1C40F"
+    stroke: "#F39C12"
+  Regtech:
+    fill: "#95A5A6"
+    stroke: "#7F8C8D"
+  Proptech:
+    fill: "#1ABC9C"
+    stroke: "#16A085"
+
+# --- TIPOS DE ENLACES (v2.6: con label) ---
+link_types:
+  undefined:
+    stroke: simple
+    color: "#6c9cbd"
+    label: "relacionado con"
+
+# --- APARIENCIA DEL GRAFO ---
+graph_background_color: "#1e1e1e"
+graph_highlight_color: "#ff6a6a"
+graph_highlight_on_hover: true
+graph_text_size: 7
+graph_arrows: true
+
+# --- TAMA√ëO DE NODOS ---
+node_size_method: degree
+node_size: 8
+node_size_max: 20
+node_size_min: 2
+
+# --- F√çSICA DEL GRAFO ---
+attraction_force: 200
+attraction_distance_max: 250
+attraction_vertical: 0.1
+attraction_horizontal: 0.05
+( *cascade08()*cascade08)1*cascade0817*cascade0878*cascade088I *cascade08IJ*cascade08JK *cascade08KL*cascade08Lr *cascade08rË*cascade08Ë *cascade08Ú*cascade08ÚÛ *cascade08Ûˆ*cascade08ˆÇ *cascade08Çá*cascade08áë *cascade08ëñ*cascade08ñ¶ *cascade08¶´*cascade08´¥ *cascade08¥ˆ*cascade08ˆç *cascade08çé*cascade08éë *cascade08ëÀ *cascade08À’*cascade08’Ω *cascade08Ωí
+*cascade08í
+» *cascade08»ﬂ *cascade08ﬂ‡*cascade08‡Á *cascade08ÁË*cascade08ËÍ*cascade08ÍÅ *cascade08ÅÇ*cascade08Çâ *cascade08âä*cascade08äí *cascade08í≤*cascade08≤Ω *cascade08Ω*cascade08å *cascade08åö*cascade08öø *cascade08øﬁ*cascade08ﬁë *cascade08ëë*cascade08ëì *cascade08ìñ*cascade08ñó *cascade08óò*cascade08òõ *cascade08õú*cascade08úù *cascade08ùü*cascade08ü† *cascade08†¢*cascade08¢£ *cascade08£•*cascade08•® *cascade08®´*cascade08´≠ *cascade08≠Ø*cascade08Ø± *cascade08±µ*cascade08µ∏ *cascade08∏ª*cascade08ªº *cascade08ºæ*cascade08æ¿ *cascade08¿¡*cascade08¡ƒ *cascade08ƒ»*cascade08»  *cascade082Qfile:///c:/Users/Antonio/OneDrive/Escritorio/Ecosistema_Fintech_Global/config.yml

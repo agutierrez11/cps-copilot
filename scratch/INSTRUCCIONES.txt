@@ -1,0 +1,19 @@
+# INSTRUCCIONES PARA CONECTAR NOTEBOOKLM
+
+Dado que las ventanas automáticas están fallando, por favor sigue estos pasos simplificados para que yo pueda leer tus notas:
+
+1. Abre Chrome y ve a [https://notebooklm.google.com/](https://notebooklm.google.com/)
+2. Haz **clic derecho** en cualquier parte de la página y selecciona **Inspeccionar** (o presiona `F12`).
+3. En el panel que se abre, busca la pestaña **Application** (Aplicación). Si no la ves, haz clic en las flechitas `>>`.
+4. En el menú de la izquierda, expande **Cookies** y selecciona `https://notebooklm.google.com`.
+5. Verás una tabla. Necesito los valores de estas 3 cookies:
+   - `__Secure-1PSID`
+   - `__Secure-3PSID`
+   - `SID`
+6. Haz doble clic en el valor de cada una, cópialo y pégalo aquí abajo en este formato:
+
+__Secure-1PSID: (pega aquí el valor)
+__Secure-3PSID: (pega aquí el valor)
+SID: (pega aquí el valor)
+
+Con esto, yo podré configurar el acceso en segundos.

@@ -1,0 +1,23 @@
+# Daily Study PDF Generation Plan
+
+## Goal
+Generate a single, comprehensive PDF document every day that contains the full text of prayers, the current Daf Yomi (from the API provided link), and excerpts from Musar sources (Pirkei Avot, Pele Yoetz).
+
+## Proposed Changes
+- [MODIFY] [lanzador_estudio.py](file:///C:/Users/Antonio/.gemini/antigravity/scratch/torah_automation/lanzador_estudio.py):
+  - Add logic to fetch/scrape text for Pirkei Avot and Pele Yoetz (e.g., from Sefaria or local files).
+  - Integrate a PDF generation library (e.g., `fpdf2`).
+  - Merge the Daf Yomi PDF (if possible) or include its content/link clearly.
+- [NEW] `requirements.txt`: To include `fpdf2` or `reportlab`.
+- [NEW] `daily_sources.json`: A local database/JSON with the text of fixed prayers (Mode Ani, Shema, etc.) to include in the PDF.
+
+## Technical Details
+- **PDF Generation**: Use `fpdf2` for building the document. 
+- **Content Aggregation**:
+  - Prayers: Hardcoded/Local JSON.
+  - Daf Yomi: Fetch the PDF from Shas.org and ideally merge it or extract its text.
+  - Musar: Integration of Pirkei Avot (daily mishna) and Pele Yoetz.
+
+## Verification
+- Run the script and confirm a PDF is generated in the Desktop folder.
+- Verify the PDF contains actual text, not just links.

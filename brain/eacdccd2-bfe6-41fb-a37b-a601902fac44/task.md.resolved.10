@@ -1,0 +1,8 @@
+# Task: Dual Graph & Cloud Analysis
+
+- [ ] Localize and fix MD files missing `title:` frontmatter [/]
+- [ ] Provide user instructions for NotebookLM `npx` auth
+- [x] Create [force_export.js](file:///c:/Users/Antonio/OneDrive/Escritorio/Ecosistema_Fintech_Global/cosma_workspace/force_export.js) (updated to `modelize`)
+- [/] Execute `modelize` with restored [config.yml](file:///c:/Users/Antonio/OneDrive/Escritorio/Ecosistema_Fintech_Global/config.yml)
+- [ ] Initialize NotebookLM once authenticated
+- [ ] Verify both local and cloud visualizations

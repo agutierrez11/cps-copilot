@@ -1,0 +1,6 @@
+# Telegram Study Bot - Task
+
+- [x] Analizar el código original y detectar bugs
+- [/] Mejorar el código del bot con todas las correcciones
+- [ ] Recibir TOKEN y CHAT_ID del usuario
+- [ ] Lanzar el bot y verificar que envía mensajes correctamente

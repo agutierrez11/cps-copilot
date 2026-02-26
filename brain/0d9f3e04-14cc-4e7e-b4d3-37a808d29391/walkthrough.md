@@ -1,0 +1,37 @@
+# Walkthrough — Bot de Estudio Noajida
+
+## Cambios realizados en [bot.py](file:///C:/Users/Antonio/.gemini/antigravity/scratch/telegram-study-bot/bot.py)
+
+### 🔄 Contenido dinámico (Sefaria API)
+- **Cache unificado** `_cache` que obtiene Parashá + Daf Yomi en una sola llamada a `/api/calendars`
+- `obtener_parasha()` → nombre, URL traducida al español, descripción corta
+- `obtener_daf_yomi()` → nombre, URL traducida al español
+- Cache se refresca automáticamente cada día
+
+### 📋 4 Bloques de estudio
+
+| Bloque | Contenido |
+|---|---|
+| 🌅 Shajarit (06:12) | Modé Aní + Parashat HaShavúa dinámica + PDF |
+| 📖 Estudio (09:00) | Daf Yomi dinámico + Salmos + link Sefaria |
+| ☀️ Minjá (13:00) | Oración tarde + Sustento + PDF |
+| 🌙 Arvit (19:00) | Shemá Israel + Oración nocturna + PDF |
+
+### 🔧 Bug fixes
+
+**PDF**: `callback_data` ahora usa `pdf_` + primeros 20 chars de la clave (evita límite de 64 bytes). Handler busca por prefijo (`startswith`) con try/except y mensaje claro si falla.
+
+**IA**: Respuestas de Gemini se sanitizan con `html.escape()` + regex para `**bold**` → `<b>bold</b>`. Se envía con `parse_mode="HTML"`. Si falla, se reintenta sin formato. Si aún falla, muestra error.
+
+### 🤖 IA mejorada
+- System prompt con contexto Bnei Noaj y 7 Leyes de Noé
+- Respuestas truncadas a 3800 chars (Telegram max = 4096)
+- Pide texto plano a Gemini para evitar Markdown complejo
+
+### 🔗 Links de referencia
+- [Sefaria Textos](https://www.sefaria.org/texts) como botón inline
+- [Chabad Parashá](https://es.chabad.org/parshah/default_cdo/jewish/La-Parash-de-la-Semana.htm) como botón inline
+
+## Verificación
+- ✅ Sintaxis Python válida
+- ✅ Imports correctos

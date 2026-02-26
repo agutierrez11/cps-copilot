@@ -1,0 +1,29 @@
+# Implementation Plan: Local Metadata Repair and Cosma Export
+
+The goal is to fix the project's Markdown files to satisfy Cosma's requirement for YAML frontmatter with a [title](file:///c:/Users/Antonio/OneDrive/Escritorio/Ecosistema_Fintech_Global/cosma_workspace/node_modules/@graphlab-fr/cosma/dist/back.cjs#3-4) field, thereby unblocking local graph generation.
+
+## User Review Required
+
+> [!IMPORTANT]
+> This process will modify your Markdown files in the `Empresas` and `Asociaciones` folders by prepending a YAML frontmatter (if missing) to each file. This is necessary for Cosma to function.
+
+## Proposed Changes
+
+### [Cosma Workspace]
+
+#### [NEW] [fix_metadata.js](file:///c:/Users/Antonio/OneDrive/Escritorio/Ecosistema_Fintech_Global/cosma_workspace/fix_metadata.js)
+A script that will:
+1. Recursively scan [.md](file:///C:/Users/Antonio/.gemini/antigravity/brain/eacdccd2-bfe6-41fb-a37b-a601902fac44/task.md) files in specified directories.
+2. For each file, check for a YAML frontmatter.
+3. If missing, generate one using the file's H1 or filename as the [title](file:///c:/Users/Antonio/OneDrive/Escritorio/Ecosistema_Fintech_Global/cosma_workspace/node_modules/@graphlab-fr/cosma/dist/back.cjs#3-4).
+4. Prepend the frontmatter to the file.
+
+## Verification Plan
+
+### Automated Verification
+1. Run `node fix_metadata.js` inside `cosma_workspace`.
+2. Verify a sample of files now have `--- \n title: ... \n ---` at the top.
+3. Run `node force_export.js` to generate the final graph.
+
+### Manual Verification
+1. User verifies the interactive graph and chat interface in the [NotebookLM Web UI](https://notebooklm.google.com/).

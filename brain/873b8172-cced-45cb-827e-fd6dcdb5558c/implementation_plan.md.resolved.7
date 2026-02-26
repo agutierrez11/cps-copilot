@@ -1,0 +1,36 @@
+# Plan de Mejora: Automatización de Estudio vía APIs (Torá, Talmud y Musar)
+
+El objetivo es consolidar un reporte de estudio diario basado exclusivamente en datos obtenidos dinámicamente de las APIs de Hebcal, Sefaria, Shas.org y TorahCalc. Se eliminarán las fuentes estáticas para priorizar un flujo 100% automatizado y dinámico.
+
+## User Review Required
+
+> [!IMPORTANT]
+> El reporte dependerá totalmente de la disponibilidad de las APIs mencionadas. Se implementarán mecanismos de reintento y manejo de errores para garantizar la generación del PDF.
+
+## Proposed Cambios
+
+### 1. Lectura de la Parashá Diaria (APIs Hebcal & Sefaria)
+- **Hebcal**: Se usará para identificar la Parashá semanal y las referencias de las Aliyot diarias (1ª a 7ª porción).
+- **Sefaria**: Se usará para descargar el texto completo (Hebreo + Traducción) de la Aliyá que corresponda al día actual (ej: Domingo = 1ª Aliyá, Lunes = 2ª Aliyá, etc.).
+
+### 2. Talmud / Guemará (APIs Shas.org & TorahCalc)
+- **TorahCalc/Shas.org**: Obtener el Daf Yomi actual.
+- **Daf PDF API**: Continuar descargando y anexando la hoja original del Talmud (Tzuras Hadaf) al PDF.
+
+### 3. Musar Dinámico (API Sefaria)
+- **Sefaria**: Se consultará una sección diaria de un libro de Musar (ej: *Mesilat Yesharim* o *Chovot HaLevavot*).
+- **Lógica**: Se calculará la sección a leer basándose en el calendario judío o secuencialmente para asegurar progresión.
+
+### 4. Oraciones y Zmanim (API TorahCalc)
+- **Zmanim**: Horarios precisos para Cancún.
+- **Oraciones**: Se mantendrán las oraciones base enriquecidas, pero se integrarán dinámicamente las referencias de la Parashá.
+
+## Plan de Verificación
+
+### Pruebas Automatizadas
+- Scripts de prueba para cada endpoint de API (Hebcal, Sefaria, Shas).
+- Validación de la unión de textos y PDFs externos.
+
+### Verificación Manual
+- Generación de un reporte completo y validación de que incluya la Aliyá del día y el texto de Musar correcto.
+- Confirmación de recepción en Telegram.

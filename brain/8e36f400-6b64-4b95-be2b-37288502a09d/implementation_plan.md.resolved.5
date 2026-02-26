@@ -1,0 +1,27 @@
+# Plan de Implementación: Bot Potenciado (Botones + IA)
+
+Este plan detalla la transformación del bot en una herramienta avanzada mediante el uso de botones interactivos y la integración con la IA de Gemini.
+
+## Cambios Propuestos
+
+### 1. Interfaz de Botones (UI Premium)
+En lugar de solo texto, los mensajes de alerta y comandos incluirán botones debajo de la burbuja de chat:
+- **Botones de Bloque:** [🌅 Despertar] [🧠 Lógica] [☀️ Productividad] [🌙 Paz]
+- **Botones de Acción:** [📖 Leer en Chabad] [📜 Ver Salmos] [❓ Explicar con IA]
+
+### 2. Integración con Gemini AI (Cerebro)
+- El bot podrá responder a preguntas libres del usuario utilizando `google-generativeai`.
+- Se añadirá un comando `/preguntar` o simplemente se podrá escribir directamente al bot.
+- Se incluirá una función para resumir o explicar los textos de la Parashá o el Tania.
+
+### 3. Ajustes de Código
+- Uso de `InlineKeyboardMarkup` de `telebot`.
+- Librería `google-generativeai` (gratuita con límites para desarrolladores).
+
+## Plan de Acción
+1.  **Fase 1 (Botones):** Actualizar [bot.py](file:///C:/Users/Antonio/.gemini/antigravity/scratch/telegram-study-bot/bot.py) para usar botones táctiles en todas las alertas.
+2.  **Fase 2 (IA):** Solicitar al usuario una API Key gratuita de Gemini y configurar el handler de conversación.
+
+## Plan de Verificación
+1.  **Navegación:** Probar que los botones de navegación funcionan sin escribir comandos.
+2.  **Conversación:** (Tras Fase 2) Verificar que la IA responde correctamente sobre temas de estudio.

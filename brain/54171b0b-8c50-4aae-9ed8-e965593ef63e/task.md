@@ -1,0 +1,8 @@
+# Task: Fix Telegram Bot Timing Issue
+
+- [x] Investigate scheduling logic in `bot.py`
+- [x] Check configuration files for time settings
+- [x] Determine the cause of the early messages (Timezone/Offset)
+- [x] Propose and implement a fix
+- [x] Verify the fix
+- [x] Deploy changes to GitHub/Railway

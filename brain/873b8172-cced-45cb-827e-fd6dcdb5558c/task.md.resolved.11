@@ -1,0 +1,14 @@
+# Task: Implement Study Automation
+
+- [x] Create folder structure on Desktop
+- [x] Implement PDF Generation and Source Integration
+- [x] Create `ejecutar_estudio.bat` for easy launching
+- [x] Configure Telegram ID and Token
+- [x] Fix Batch File Encoding and UTF-8 issues
+- [x] Enrich PDF with initial prayer texts
+- [x] Integrate Torá, Talmud and Musar APIs
+- [/] Integrate All TorahCalc Study Cycles [/]
+    - [ ] Update API fetch to include all 13 learning themes
+    - [ ] Add dedicated "Learning Cycles" section to PDF
+    - [ ] Update Telegram summary with new cycles
+- [ ] Final System Verification

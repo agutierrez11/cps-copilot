@@ -1,0 +1,28 @@
+# Plan de Mejora: Sistema de Notificación Temática en Tiempo Real
+
+Este plan redefine el bot de Telegram para que actúe como un compañero de estudio sistemático, entregando contenido temático (Torá, Midrásh, Talmud) y oraciones en sus momentos exactos.
+
+## Proposed Cambios
+
+### 1. Reestructuración de Mensajes (Zmanim)
+- **Shajarit (Mañana/Netz)**:
+    - *Modeh Aní* (Agradecimiento).
+    - **Torá**: Porción de `messianictorah.org`.
+    - **Estudio Temático**: Pasajes de **Midrásh** y **Talmud** en español (vía Sefaria) vinculados a la Parashá del día.
+    - **Oración**: Texto de Shajarit del PDF.
+- **Minjá (Tarde/Minjá Gedolá)**: Oración de Minjá del PDF.
+- **Arvit (Noche/Tzeis)**: Oración de Arvit del PDF + *Shemá Israel*.
+
+### 2. Lógica de Conexión Temática (Español)
+- El bot obtendrá la referencia de la Aliyá del día.
+- Usará la API de Sefaria (`/api/links/`) para buscar conexiones con categorías `Midrash` y `Talmud`.
+- **Filtro de Idioma**: Solo se enviarán fragmentos que tengan versión en **español** para asegurar un estudio fluido.
+
+### 3. Automatización y Estética
+- Mensajes formateados con Markdown para destacar títulos, versículos y citas.
+- Sincronización diaria con los horarios de Cancún para que el usuario reciba la notificación justo a tiempo para orar.
+
+## Plan de Verificación
+- **Prueba de Extracción**: Validar que se encuentren links en español para la Parashá actual.
+- **Prueba de Envío**: Realizar un disparo manual de los tres bloques de mensajes.
+- **Programación**: Confirmar que el bucle de espera funcione correctamente en Windows.

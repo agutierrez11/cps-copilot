@@ -1,0 +1,28 @@
+# Torah Study Automation Walkthrough
+
+I have successfully implemented the structured study system as discussed in the Gemini conversation.
+
+## What was implemented:
+
+1.  **Desktop Folders**: A new folder `Estudio_Torah_Productivo` has been created on your Desktop with the following subfolders:
+    *   `01_Talmud_API`
+    *   `02_Halaja_PDFs`
+    *   `03_Oraciones_Noajidas`
+    *   `04_Etica_Perek_Shalom`
+2.  **Automation Script**: A Python script [lanzador_estudio.py](file:///C:/Users/Antonio/.gemini/antigravity/scratch/torah_automation/lanzador_estudio.py) that connects to TorahCalc and Shas.org APIs.
+3.  **One-Click Launch**: A file named `ejecutar_estudio.bat` on your Desktop. Double-clicking this will run the script and send the report.
+4.  **Telegram Integration**: The script is ready to send notifications to your Telegram bot.
+
+## How to use it:
+
+1.  **Configuration**: Open the file [C:\Users\Antonio\.gemini\antigravity\scratch\torah_automation\config.json](file:///C:/Users/Antonio/.gemini/antigravity/scratch/torah_automation/config.json) and replace `TU_TOKEN_AQUÍ` with your Telegram Bot Token and `TU_ID_DE_TELEGRAM_AQUÍ` with your Chat ID.
+2.  **Run**: Double-click the `ejecutar_estudio.bat` file on your Desktop.
+3.  **Result**: You will receive a Telegram message with:
+    *   The Daf Yomi of the day (with a link to the PDF).
+    *   Zmanim (prayer times) for Cancun.
+    *   References to specific pages in your PDFs (Shuljan Aruj, Sidur, etc.).
+
+## Verification:
+- [x] Folders created on Desktop.
+- [x] Python script written and dependencies installed.
+- [x] Batch file created on Desktop.

@@ -1,0 +1,11 @@
+# Task: Potenciar Bot (Botones + IA)
+
+- [x] Motor de tiempo y alertas en Telegram
+- [x] Inicio automático en Windows
+- [x] Formato narrativo con descripciones poéticas
+- [x] Estandarizar nombres de material y páginas: `[Material.pdf] (Pág. X)`
+- [x] Textos de rezos (Modé Aní/Shemá) integrados
+- [x] Enfoque 100% Parashá (Limpieza de contenido extra)
+- [x] **Potenciar Fase 1:** Botones Interactivos implementados
+- [/] **Potenciar Fase 2:** Integrar Gemini AI (Solicitando API Key)
+- [ ] Validar funcionamiento final con el usuario

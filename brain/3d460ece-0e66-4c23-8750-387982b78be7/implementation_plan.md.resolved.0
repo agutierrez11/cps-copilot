@@ -1,0 +1,35 @@
+# Implementation Plan - Fix Telegram Bot Message Delivery
+
+Fix the issue where the bot fails to initialize due to a variable name mismatch in the [.env](file:///C:/Users/Antonio/.gemini/antigravity/scratch/Mis%20Proyectos%20Antigravity/telegram-study-bot/.env) file and improve the robustness of callback query handling.
+
+## Proposed Changes
+
+### Configuration and Initialization
+
+#### [MODIFY] [bot.py](file:///C:/Users/Antonio/.gemini/antigravity/scratch/Mis%20Proyectos%20Antigravity/telegram-study-bot/bot.py)
+
+- Update the token loading logic to check for both `BOT_TOKEN` and `TOKEN` to ensure compatibility with the current [.env](file:///C:/Users/Antonio/.gemini/antigravity/scratch/Mis%20Proyectos%20Antigravity/telegram-study-bot/.env) file.
+- Add a try-except block around the `bot.answer_callback_query` call in the PDF sending section of the [callback_query](file:///C:/Users/Antonio/.gemini/antigravity/scratch/Mis%20Proyectos%20Antigravity/telegram-study-bot/bot.py#355-412) handler. This will prevent "query is too old" errors from causing the entire handler to fail and log an error.
+
+```python
+# Change in 19
+BOT_TOKEN = os.getenv("BOT_TOKEN") or os.getenv("TOKEN")
+
+# Change in 391
+try:
+    bot.answer_callback_query(call.id, "📄 Enviando PDF...")
+except Exception as e:
+    logging.warning(f"Error respondiendo callback PDF: {e}")
+```
+
+## Verification Plan
+
+### Automated Tests
+- Run [test_connection.py](file:///C:/Users/Antonio/.gemini/antigravity/scratch/Mis%20Proyectos%20Antigravity/telegram-study-bot/test_connection.py) to verify the bot can connect to the Telegram API with the updated configuration.
+  `python test_connection.py`
+- Run [send_test_routine.py](file:///C:/Users/Antonio/.gemini/antigravity/scratch/Mis%20Proyectos%20Antigravity/telegram-study-bot/send_test_routine.py) to verify that the bot can send a study routine message successfully.
+  `python send_test_routine.py`
+
+### Manual Verification
+- Interact with the bot in Telegram (if accessible) by clicking on the block buttons to ensure they still work and don't trigger errors in the logs.
+- Send a PDF to the bot and verify it's saved correctly.

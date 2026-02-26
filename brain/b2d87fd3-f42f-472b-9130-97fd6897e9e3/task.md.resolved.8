@@ -1,0 +1,21 @@
+# Deploy Bot a Railway
+
+## Fase 1: Preparar GitHub
+- [x] Crear repositorio en GitHub (el bot necesita estar en GitHub para que Railway lo tome)
+- [x] Añadir remote de GitHub al repo local
+- [x] Verificar que el .gitignore protege el .env
+- [x] Hacer push del código a GitHub
+
+## Fase 2: Configurar Railway
+- [x] Crear proyecto en Railway desde GitHub repo
+- [x] Configurar variables de entorno (TOKEN, CHAT_ID, GEMINI_KEY)
+- [x] Verificar que el Procfile está correcto (`worker: python bot.py`)
+- [x] Verificar que requirements.txt tiene todas las dependencias
+- [x] Corregir fallo de build (secret TOKEN not found)
+    - [x] Hacer inicio de bot defensivo
+    - [x] Crear nixpacks.toml para definir comandos
+    - [x] Renombrar TOKEN a BOT_TOKEN (evitar colisión de nombres)
+
+## Fase 3: Verificar
+- [x] Confirmar que el bot está online en Railway
+- [/] Enviar /ping al bot para verificar respuesta

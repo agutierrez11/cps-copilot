@@ -1,0 +1,4 @@
+- [x] Create [fix_metadata.js](file:///c:/Users/Antonio/OneDrive/Escritorio/Ecosistema_Fintech_Global/cosma_workspace/fix_metadata.js) (Data repair script)
+- [/] Execute [fix_metadata.js](file:///c:/Users/Antonio/OneDrive/Escritorio/Ecosistema_Fintech_Global/cosma_workspace/fix_metadata.js) (Repairing MD files)
+- [ ] Regenerate local graph via [force_export.js](file:///c:/Users/Antonio/OneDrive/Escritorio/Ecosistema_Fintech_Global/cosma_workspace/force_export.js)
+- [ ] Verify graph in `export/index.html`

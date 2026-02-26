@@ -1,0 +1,31 @@
+# Plan de Mejora: Estudio Temático Noájida Compacto (Español)
+
+El objetivo es crear un reporte diario compacto donde la **Torá**, el **Talmud** y el **Musar** estén temáticamente vinculados a la porción (Aliyá) del día, todo en español.
+
+## Proposed Cambios
+
+### 1. Estudio Temático Vinculado (Sefaria Links)
+- **Torá**: Aliyá del día obtenida de Hebcal/Sefaria.
+- **Conexiones**: Usar la API de Sefaria (`/api/links/`) para encontrar textos del **Talmud** y **Musar** que citen o comenten los versículos de la Aliyá actual.
+- **Filtro**: Se seleccionará un fragmento relevante de Talmud y otro de Musar que tengan relación directa.
+
+### 2. Todo en Español
+- Se forzará a la API de Sefaria a buscar versiones en español (`lang=es`).
+- Si no existe traducción al español para un link específico, se buscará un comentario alternativo o se usará una fuente de Musar base relacionada con el tema de la Parashá.
+
+### 3. Formato Compacto y Profesional
+- **Diseño**: El PDF se reducirá a las secciones esenciales: 
+    1. Horarios (Zmanim).
+    2. Oraciones Noájidas.
+    3. Torá: La Aliyá.
+    4. Conexión Semanal: Talmud y Musar Relacionado.
+- **Arreglo de Hebreo**: Implementación definitiva de fuentes Unicode para eliminar los signos de interrogación (`????`) y asegurar que el hebreo y español convivan perfectamente.
+
+### 4. Soporte Técnico
+- Integración de `ArialBD.ttf` y `Arial.ttf` para asegurar que las negritas y el texto normal funcionen sin errores de "FPDF.add_font".
+
+## Plan de Verificación
+
+- **Relación**: Confirmar que los textos de Talmud y Musar citen versículos de la Aliyá.
+- **Idioma**: Validar que el 100% del contenido generado esté en español.
+- **Visual**: Verificar que el hebreo se renderice correctamente en el PDF.

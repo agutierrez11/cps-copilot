@@ -1,0 +1,5 @@
+{
+  "artifactType": "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
+  "summary": "Implementation plan to secure the Telegram Study Bot for GitHub upload and server deployment. Includes removing hardcoded secrets, adding python-dotenv, and preparing Git.",
+  "updatedAt": "2026-02-23T02:36:06.515838300Z"
+}

@@ -1,0 +1,29 @@
+# Plan de Mejora: Estudio Temático Noájida Compacto (Español)
+
+Este plan redefine el reporte para que sea una experiencia de estudio coherente y profunda, vinculando la Torá diaria con el Talmud y el Musar, todo en español y con un diseño impecable.
+
+## User Review Required
+
+> [!IMPORTANT]
+> El sistema ahora priorizará conexiones temáticas. Si no se encuentra un texto de Talmud tradudido al español para la Aliyá específica, se seleccionará un comentario clásico de la Parashá en español.
+
+## Proposed Cambios
+
+### 1. Estudio Temático Vinculado
+- **Torá**: Aliyá del día (Hebcal/Sefaria).
+- **Talmud y Musar**: Uso de la API de Links de Sefaria para encontrar pasajes que comenten o se relacionen con los versículos de la Aliyá.
+- **Idioma**: Filtro estricto para obtener versiones en español (`lang=es`).
+
+### 2. Corrección de Diseño y Hebreo
+- **Fuentes**: Incorporación de `Arial.ttf` y `Arialbd.ttf` para soporte Unicode total (evitar `????`).
+- **Alineación**: Sistema de márgenes bloqueados en el generador PDF para evitar desconfiguraciones.
+- **Compacticidad**: Reporte enfocado solo en lo esencial (Zmanim, Oraciones, Estudio Temático).
+
+### 3. Recursos Destacados
+- Inclusión del enlace de **JabruTouch** en cada reporte.
+
+## Plan de Verificación
+
+- **Idiomas**: Confirmar que el 100% de los textos descargados estén en español.
+- **Relación**: Validar que la sección de Talmud y Musar mencione temas de la Parashá actual.
+- **Visual**: Generar el PDF y verificar que el hebreo y el español convivan sin errores de display.

@@ -1,0 +1,30 @@
+# Walkthrough - Fix Telegram Bot Message Delivery
+
+I have fixed the issue where the bot was failing to send messages due to a configuration mismatch and improved its resilience against callback query timeouts.
+
+## Changes Made
+
+### Configuration Support
+Modified `bot.py` to support both `BOT_TOKEN` and `TOKEN` environment variables. This ensures the bot can start correctly using the current `.env` file configuration.
+
+### Improved Resilience
+Added error handling to the PDF delivery block in the callback handler. This prevents the bot from logging errors or failing when a user interacts with an "expired" button (callback query timeout).
+
+## Verification Results
+
+### Automated Tests
+- **Send Test Routine:** Successfully ran `send_test_routine.py`. The bot correctly loaded the token and sent the study routine messages.
+- **Connection Test:** Verified the bot can communicate with the Telegram API.
+- **Automation Logic:** Simulated the `motor_tiempo` scheduler; it correctly identifies and triggers at the set times (06:12, 09:00, 13:00, 19:00).
+- **Process Verification:** Restarted the bot process to ensure the persistent application is running with the latest `TOKEN` and `Callback` fixes.
+
+## Double Validation Log
+Check the logs now to see the restart confirmation:
+```text
+2026-02-23 23:43:52 - INFO - 📖 Sefaria actualizado con todos los materiales.
+2026-02-23 23:48:00 - INFO - 🚀 Bot de Estudio Noajida iniciado... (REINICIADO)
+```
+
+## Next Steps
+- The bot is now ready to be deployed or restarted on your server (e.g., Railway).
+- Ensure that the `BOT_TOKEN` or `TOKEN` is correctly set in your deployment environment variables.

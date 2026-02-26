@@ -1,0 +1,27 @@
+# Career Strategy Plan: CPS for B2B Fintech
+
+Analyze the contents of the NotebookLM "CPS" (Complex Problem Solving) notebook to provide actionable career advice for a professional in B2B Fintech and Payments.
+
+## Proposed Strategy
+
+### 1. Information Retrieval
+- **Verify Connection**: Run `mcp_notebooklm_notebook_list` to confirm authentication is successful.
+- **Detailed Crawl**: Use `mcp_notebooklm_notebook_query` with broad questions to map the CPS content:
+    - "What are the main frameworks for Problem Framing in this notebook?"
+    - "What tools are suggested for multi-stakeholder decision making?"
+    - "How does this notebook define 'Complex Problem Solving' vs 'Simple Problem Solving'?"
+- **Targeted Retrieval**: Extract specific content from relevant source IDs identified in the query.
+
+### 2. Analysis & Mapping
+- **Context Synthesis**: Map the extracted CPS frameworks to the specific challenges of B2B Fintech (e.g., regulatory complexity, integration barriers, high-stakes negotiations).
+- **Framework Selection**: Pick the top 3-4 CPS concepts that offer the highest leverage for a sales/growth role in fintech.
+
+### 3. Career Recommendations
+- **Strategic Framing**: Formulate suggestions on how to use CPS to position yourself as a "Strategic Partner" rather than just a "Vendor".
+- **Actionable Steps**: Provide specific exercises or changes in daily sales workflow based on the notebook.
+
+## Verification Plan
+
+### Manual Verification
+- **User Review**: Present the findings to the user.
+- **Relevance Check**: Ask the user if the identified frameworks match what they consider core to their CPS notebook.

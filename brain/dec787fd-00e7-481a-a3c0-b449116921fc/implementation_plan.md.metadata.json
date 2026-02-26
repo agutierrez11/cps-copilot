@@ -1,0 +1,6 @@
+{
+  "artifactType": "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
+  "summary": "The \"Career Booster AI\" will be a standalone Python project. It will use the CVs in your `CVs_2026` folder to build a profile, then search for matching Fintech jobs and provide actionable reports to improve your success rate for each specific application.",
+  "updatedAt": "2026-02-20T07:23:26.969933400Z",
+  "version": "2"
+}

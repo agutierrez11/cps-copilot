@@ -1,0 +1,12 @@
+# Task: Implement Thematic Noahide Telegram Notifier
+
+- [x] Create folder structure on Desktop
+- [x] Configure Telegram ID and Token
+- [x] Noahide Prayer Book PDF extraction
+- [/] Real-time Notifier Implementation [/]
+    - [x] Scraping for messianictorah.org (Torah)
+    - [x] Basic Zmanim scheduling logic
+    - [ ] **Thematic Spanish Links (Midrash/Talmud)**
+    - [ ] Final message formatting (Markdown Rich)
+- [x] Windows Persistence (Startup .bat)
+- [ ] Final Verification & Stress Test

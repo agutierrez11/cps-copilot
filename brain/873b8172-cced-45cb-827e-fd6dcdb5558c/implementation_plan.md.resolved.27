@@ -1,0 +1,27 @@
+# Plan de Mejora: Bot Interactivo y Plan de Salmos Mensual
+
+Este plan transforma el bot de un simple notificador a un asistente interactivo que responde preguntas sobre las virtudes de los Salmos y sigue el plan de lectura mensual de 5 salmos por día.
+
+## Proposed Cambios
+
+### 1. Bot Interactivo (Polling)
+- Cambiar la arquitectura del bot para usar `telebot` con polling.
+- Implementar un hilo secundario para el [schedule](file:///C:/Users/Antonio/.gemini/antigravity/scratch/torah_automation/notificador_noajida.py#201-218), permitiendo que el bot escuche mensajes sin detener el envío programado.
+- **Funcionalidad de Virtudes**: Crear un archivo [virtudes_salmos.json](file:///C:/Users/Antonio/.gemini/antigravity/scratch/torah_automation/virtudes_salmos.json) con la información extraída de Chabad/tradición. Al recibir un número del 1 al 150, el bot responderá con la virtud correspondiente.
+
+### 2. Plan de Salmos Mensual (5 al día)
+- Actualizar [get_daily_psalms](file:///C:/Users/Antonio/.gemini/antigravity/scratch/torah_automation/notificador_noajida.py#92-107) para calcular los 5 salmos siguiendo la fórmula: `D`, `D+30`, `D+60`, `D+90`, `D+120` (siendo D el día del mes).
+- El bot enviará los textos de los 5 salmos en el servicio matutino.
+
+### 3. Plan de Musar Semanal (Ética)
+- El bot rotará el estudio de Musar para no abrumar el mensaje matutino.
+- **Domingo a Jueves**: Enlace a un tema de **Pelé Yoetz** (Temático o selección).
+- **Viernes y Shabat**: Enlace al capítulo correspondiente de **Pirkei Avot** (Ética de los Padres).
+- Los enlaces dirigirán a versiones en español de confianza (Chabad, Tehilim-Online o TorahBox).
+
+### 4. Citación Bibliográfica
+- Mantener la citación exacta de los libros físicos ('Libro de Oraciones' y 'Shulján Arúj') con sus números de página corregidos.
+
+## Plan de Verificación
+- **Interactividad**: Enviar un número al bot en Telegram y verificar que responda con la virtud correcta.
+- **Programación**: Forzar el envío del reporte matutino y validar que contenga los 5 salmos del día correspondientes.

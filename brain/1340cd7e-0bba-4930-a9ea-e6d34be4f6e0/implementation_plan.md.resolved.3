@@ -1,0 +1,31 @@
+# Plan de Reestructuración de Jerarquía para Cosma (Script Automatizado)
+
+Dado el gran volumen de empresas en `C:\Users\Antonio\OneDrive\Escritorio\Ecosistema_Fintech_Global`, el plan manual no es escalable. Utilizaremos un script en Python para actualizar la estructura.
+
+## Estructura Objetivo
+1. **País** (ej. `Paises/Mexico.md`)
+2. **Cámara** (ej. `Camaras/Asociacion_Fintech_MX.md`)
+3. **Industria/Vertical** (ej. `Industrias/Paytech.md`)
+4. **Empresa** (ej. `Empresas/Albo/Albo.md`)
+
+## Plan de Acción
+
+### Fase 1: Consolidación de Nodos Centrales (Hubs)
+- **Cámaras:** Usar los archivos existentes en la carpeta `Asociaciones/` como los Hubs principales (Asociación Fintech México, Colombia Fintech, ABFintechs Brasil, etc.).
+- **Jerarquía País > Cámara:** Asegurar que los archivos de Paises apunten a estas Asociaciones.
+
+### Fase 1.5: Expansión de la Base de Datos (+1000 Empresas)
+- El script leerá todos los archivos en `Asociaciones/` (ej. `Fintech México.md`).
+- Buscará la sección `## 🏢 Miembros (Empresas)` y extraerá cada nombre entre corchetes `[[Nombre Empresa]]`.
+- Comparará esta lista con la carpeta actual `Empresas/`.
+- Por cada empresa faltante, el script **creará automáticamente una nueva carpeta y su archivo Markdown**, inyectando el País correspondiente basado en la Asociación de la que fue extraída, logrando así escalar masivamente el grafo.
+
+### Fase 2: Procesamiento Masivo de Empresas y Obtención de Logos (Python Script)
+Se creará un script en Python que procesará la carpeta `Empresas/`:
+1. **Lectura YAML:** Detectará el país (`Country: [[...]]`), la vertical (`Vertical: ...`) y el nombre de la empresa (`Company: ...`).
+2. **Actualización de Enlaces:** Reemplazará los enlaces directos aislados por enlaces a la vista de la Industria (ej. `[[Industrias/Paytech]]`).
+3. **Obtención Automática de Logos (Clearbit API):**
+    - El script utilizará una técnica ingeniosa: la [**API gratuita de Clearbit de Logos**](https://clearbit.com/logo).
+    - Basado en el nombre de la empresa, el script intentará inferir su dominio web (ej. `albo` -> `albo.mx` o buscarlo en Google).
+    - Alternativamente, si no tenemos los dominios, el script buscará el dominio usando el buscador, y luego inyectará la URL directamente en el `thumbnail`. Ejemplo: `thumbnail: "https://logo.clearbit.com/albo.mx"`
+    - Si falla, pondrá un icono genérico según su vertical para no dejar el grafo vacío.

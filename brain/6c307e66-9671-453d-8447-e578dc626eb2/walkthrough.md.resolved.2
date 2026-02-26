@@ -1,0 +1,22 @@
+# Walkthrough - Search Fix & Logo Removal
+
+I have resolved the "black screen" crash, the "no results" issue, and removed the Lovable logo.
+
+## Changes
+
+### 1. Fixed "Black Screen" on Search
+- **Cause**: The search filter was trying to look for a `tags` property on the tools, but this property doesn't exist.
+- **Fix**: Removed the faulty code in [src/pages/Index.tsx](file:///c:/Users/Antonio/OneDrive/Escritorio/tonos-tool-treasurebox/src/pages/Index.tsx).
+
+### 2. Fixed "No Results" (Hidden Tools)
+- **Cause**: The category display logic was designed to show *either* subcategories *or* tools, but not both. If a category had both (like "Email Marketing"), the tools inside it were hidden even if they matched the search.
+- **Fix**: Updated [CategorySection.tsx](file:///c:/Users/Antonio/OneDrive/Escritorio/tonos-tool-treasurebox/CategorySection.tsx) to display both subcategories and tools if they exist.
+
+### 3. Removed Lovable Logo
+- **Cause**: The browser was caching the old [favicon.ico](file:///c:/Users/Antonio/OneDrive/Escritorio/tonos-tool-treasurebox/dist/favicon.ico) or defaulting to it.
+- **Fix**: Created a new [favicon.svg](file:///c:/Users/Antonio/OneDrive/Escritorio/tonos-tool-treasurebox/public/favicon.svg) (a simple "T" icon) and explicitly linked it in [index.html](file:///c:/Users/Antonio/OneDrive/Escritorio/tonos-tool-treasurebox/index.html). This forces the browser to update.
+
+## Verification
+- **Build**: The application builds successfully.
+- **Search**: Searching for "Prospeo" or other tools should now correctly display the tools, even if they are in subcategories.
+- **Favicon**: The browser tab should now show the new icon.

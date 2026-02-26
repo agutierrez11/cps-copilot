@@ -1,0 +1,27 @@
+# Plan de Reestructuración de Jerarquía para Cosma (Script Automatizado)
+
+Dado el gran volumen de empresas en `C:\Users\Antonio\OneDrive\Escritorio\Ecosistema_Fintech_Global`, el plan manual no es escalable. Utilizaremos un script en Python para actualizar la estructura.
+
+## Estructura Objetivo
+1. **País** (ej. `Paises/Mexico.md`)
+2. **Cámara** (ej. `Camaras/Asociacion_Fintech_MX.md`)
+3. **Industria/Vertical** (ej. `Industrias/Paytech.md`)
+4. **Empresa** (ej. `Empresas/Albo/Albo.md`)
+
+## Plan de Acción
+
+### Fase 1: Creación de Nodos Centrales (Hubs)
+- **Cámaras:** Crear archivos Markdown para las Cámaras principales (Asociación Fintech México, Colombia Fintech, ABFintechs Brasil, etc.).
+- **Jerarquía:** Hacer que los archivos de `Paises/` apunten a estas `Camaras/`.
+- **Verticales:** Hacer que los archivos de `Industrias/` apunten a las `Camaras/`.
+
+### Fase 2: Procesamiento Masivo de Empresas (Python Script)
+Se creará un script interactivo que procesará la carpeta `Empresas/`:
+1. **Lectura YAML:** Detectará el país (`Country: [[...]]`) y la vertical (`Vertical: ...`) actual de cada empresa.
+2. **Actualización de Enlaces:** Reemplazará los enlaces directos aislados por enlaces a la vista de la Industria (`[[Industrias/Paytech]]`).
+3. **Adición de Logos (`thumbnail`):** Se creará un diccionario o se solicitará la inserción de una propiedad `thumbnail` vacía en el YAML (`thumbnail: ""`) para que puedas ir colocando los links de las imágenes poco a poco o usando un logo de placeholder por defecto.
+
+## Verificación
+1. Ejecutar el script en un set pequeño de prueba.
+2. Visualizar en el `cosmoscope.html` actual para confirmar que el nodo de prueba cambia de tamaño/posición.
+3. Ejecutar en toda la base.

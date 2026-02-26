@@ -1,0 +1,5 @@
+- [x] Manual Cookie Injection (Success - Expired)
+- [x] Locate and Ingest CPS Notebook (Consolidated Notion + Transcripts)
+- [x] Generate Full Cosma Graph (Bypassing CLI with JS API)
+- [x] Initialize Socratic Coaching Session
+- [x] Final project walkthrough

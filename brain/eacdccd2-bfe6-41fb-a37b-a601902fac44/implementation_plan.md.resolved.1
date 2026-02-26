@@ -1,0 +1,25 @@
+# Generate Cosma Graph from Workspace
+
+Now that the configuration is in `cosma_workspace`, we will run Cosma from there. This allows us to keep the Obsidian vault root clean while still generating a visualization of its content.
+
+## Proposed Changes
+
+### [Cosma Workspace Preparation]
+
+I will ensure the workspace is ready for execution by installing the necessary dependencies locally within `cosma_workspace`.
+
+#### [MODIFY] [cosma.yml](file:///c:/Users/Antonio/OneDrive/Escritorio/Ecosistema_Fintech_Global/cosma_workspace/cosma.yml)
+(Already modified in previous step to `entry: "../"`)
+
+### [Graph Generation]
+
+I will execute the Cosma export command from within the workspace.
+
+## Verification Plan
+
+### Automated Verification
+1.  Run `npx cosma export` within `cosma_workspace`.
+2.  Check for the existence of `cosma_workspace/export/index.html`.
+
+### Manual Verification
+1.  The user can open `cosma_workspace/export/index.html` in their browser to see the graph.

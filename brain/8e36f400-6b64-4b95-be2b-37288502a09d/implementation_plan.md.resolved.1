@@ -1,0 +1,31 @@
+# Plan de Implementación: Corrección de Enlaces a Español
+
+Este plan detalla cómo asegurar que el bot de estudio proporcione contenido 100% en español, utilizando Chabad.org y JabruTouch como fuentes principales cuando Sefaria no disponga de traducciones.
+
+## Cambios Propuestos
+
+Se actualizará el diccionario `URLS` en [bot.py](file:///C:/Users/Antonio/.gemini/antigravity/scratch/telegram-study-bot/bot.py) para priorizar fuentes en español.
+
+### Mapeo de Fuentes Garantizadas en Español
+
+| Sección | Fuente Recomendada | Razón |
+| :--- | :--- | :--- |
+| **Torá (Parashá)** | Chabad.org | Traducción clásica y completa. |
+| **Haftará** | Chabad.org | Sefaria suele no tener la Haftará en español. |
+| **Talmud** | JabruTouch / Sefaria (Heb) | JabruTouch es la fuente preferida del usuario para español. |
+| **Tanya** | Chabad.org | Traducción oficial en español. |
+| **Tehilim** | Chabad.org | Traducción oficial en español. |
+| **Rambam (Mishné Torá)** | Chabad.org | Sefaria solo tiene 1 tratado en español; Chabad los tiene todos. |
+| **Hayom Yom** | Chabad.org | Exclusivo de Chabad en español. |
+
+### Estructura de Bloques con Enlaces Corregidos
+
+- **BLOQUE 1:** Usar Chabad para Torá, Haftará y Rezos (Modé Aní/Shemá).
+- **BLOQUE 2:** Usar JabruTouch para Talmud. Chabad para Tehilim, Tanya y Hayom Yom.
+- **BLOQUE 3:** Usar Sefaria para Pirkei Avot (está en español). Mantener Sefaria para Mishná Yomit con advertencia si es necesario.
+- **BLOQUE 4:** Usar Chabad para Rambam (3 capítulos y 1 capítulo) para garantizar español en todos los ciclos.
+
+## Plan de Verificación
+
+1. **Prueba de Enlaces:** Verificar manualmente cada nuevo link de Chabad para asegurar que cargue el contenido del día en español.
+2. **Reinicio del Bot:** Ejecutar el bot y enviar el plan completo para validación final del usuario.

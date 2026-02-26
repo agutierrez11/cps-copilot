@@ -1,0 +1,29 @@
+# Plan de Mejora: Reporte "Bases Sólidas" con Ciclos de Estudio Completos
+
+El objetivo es transformar el reporte en una guía de estudio judío total, integrando los 13 ciclos de aprendizaje diario proporcionados por la API de TorahCalc.
+
+## Proposed Cambios
+
+### 1. Integración Masiva de Ciclos (TorahCalc API)
+- **Nuevos Temas**: Se añadirán al reporte los siguientes ciclos:
+    - Mishná Yomí, Naj Yomí, Yerushalmi Yomí.
+    - Chofetz Chaim, Shemirat HaLashón.
+    - Rambam Diario, Sefer Hamitzvós.
+    - Salmos Diarios (Tehilim).
+    - Weekly Daf, Arukh HaShulján.
+    - Kitzur Shulján Arúj y Pirkei Avot.
+- **Acceso Dinámico**: El script obtendrá el nombre (en hebreo e inglés) y el enlace de cada uno.
+
+### 2. Rediseño de la Sección de Estudio
+- Se creará una sección dedicada: **"3. Ciclos de Aprendizaje Diario"**.
+- Se presentará en una tabla o lista estructurada para que sea fácil de seguir.
+- Se incluirán los enlaces directos a Sefaria para cada ciclo.
+
+### 3. Mejora del Mensaje de Telegram
+- El mensaje resumen incluirá los ciclos más importantes para una consulta rápida desde el móvil.
+
+## Plan de Verificación
+
+- **Datos**: Validar que la API de TorahCalc devuelva todos los campos solicitados.
+- **Diseño**: Asegurar que la lista de 13 ciclos no rompa el diseño del PDF y se mantenga profesional.
+- **Telegram**: Verificar que el resumen sea legible con tantos datos nuevos.

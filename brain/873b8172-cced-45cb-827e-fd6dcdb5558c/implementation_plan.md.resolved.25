@@ -1,0 +1,25 @@
+# Plan de Mejora: Expansión de Estudio (Daf Yomi y Análisis Profundo)
+
+Este plan amplía el sistema de estudio sistemático para incluir componentes avanzados como el Daf Yomi y el análisis de comentaristas clásicos, integrando además herramientas externas recomendadas por el usuario.
+
+## Proposed Cambios
+
+### 1. Nuevas Secciones de Estudio
+- **Daf Yomi (Gemará)**: 
+    - Obtener el folio diario del Talmud vía Sefaria.
+    - Priorizar versión en español; si no existe, proveer link directo.
+- **Análisis Profundo (Rashi)**:
+    - Extraer el comentario de Rashi para la porción diaria de la Parashá.
+    - Enfocarse en fragmentos que den claridad sobre las leyes noájidas o temas éticos.
+
+### 2. Integración con Bots Externos
+- Añadir botones o enlaces directos en el pie de los mensajes de Telegram para saltar a:
+    - **@TorahBot**: Para análisis profundo extendido.
+    - **@DafYomiBot**: Para la Guemará completa del folio.
+
+### 3. Refinamiento de Mensajes
+- Reorganizar el mensaje matutino para que sea una "Hoja de Ruta" de estudio que incluya estas nuevas fuentes sin saturar el texto (usando enlaces y resúmenes).
+
+## Plan de Verificación
+- **API Sefaria**: Validar la obtención del folio del Daf Yomi actual.
+- **Formato Telegram**: Asegurarse de que los nombres de los bots externos aparezcan como enlaces cliqueables (@TorahBot).

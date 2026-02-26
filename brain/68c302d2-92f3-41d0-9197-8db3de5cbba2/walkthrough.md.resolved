@@ -1,0 +1,19 @@
+# Arreglo de Bot de Estudio Noajida
+
+Se detectó que el bot no estaba enviando los mensajes programados debido a un error de configuración en el lanzador y a que el proceso no estaba activo.
+
+## Cambios Realizados
+
+- **Corrección de Ruta**: Se actualizó [lanzador_bot.bat](file:///C:/Users/Antonio/.gemini/antigravity/scratch/Mis%20Proyectos%20Antigravity/telegram-study-bot/lanzador_bot.bat) para apuntar a la carpeta correcta `telegram-study-bot` en lugar de `Rutina Torah`.
+- **Reinicio de Bot**: Se inició el proceso del bot mediante el lanzador corregido.
+- **Recuperación de Mensajes**: Se enviaron manualmente los bloques de estudio de las 06:12 (Shajarit) y 09:00 (Estudio Diario) para compensar el tiempo que el bot estuvo inactivo.
+
+## Verificación
+
+- [x] Mensaje de prueba enviado exitosamente.
+- [x] Bloque 1 (Shajarit) enviado manualmente.
+- [x] Bloque 2 (Estudio) enviado manualmente.
+- [x] Archivo [.bat](file:///C:/Users/Antonio/.gemini/antigravity/scratch/Mis%20Proyectos%20Antigravity/telegram-study-bot/lanzador_bot.bat) verificado con la ruta absoluta correcta.
+
+> [!IMPORTANT]
+> **Nota sobre la persistencia**: Actualmente el bot corre en tu computadora. Para que funcione, la computadora debe estar encendida y conectada a internet. Si apagas la computadora, el bot se apagará también.

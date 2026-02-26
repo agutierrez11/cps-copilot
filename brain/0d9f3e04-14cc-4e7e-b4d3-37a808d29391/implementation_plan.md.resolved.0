@@ -1,0 +1,70 @@
+# Telegram Study Bot — Mejoras para Estudio Noajida
+
+Bot de estudio diario en Telegram. El usuario es Noajida (no judío), estudia en español, enfocado en Torá, Talmud y oraciones matutinas. Se reportan bugs con el PDF y la IA.
+
+## Proposed Changes
+
+### Contenido: Rediseño de bloques de estudio
+
+#### [MODIFY] [bot.py](file:///C:/Users/Antonio/.gemini/antigravity/scratch/telegram-study-bot/bot.py)
+
+**Simplificar de 4 bloques a 3**, enfocados para Noajida:
+
+| Bloque | Hora | Contenido |
+|---|---|---|
+| 🌅 Shajarit | 06:12 | Modé Aní + oración matutina (PDF pág. referencia) |
+| 📖 Estudio | 09:00 | Parashat HaShavúa (dinámica) + Daf Yomi (dinámico) |
+| 🌙 Cierre | 19:00 | Shemá Israel + reflexión del día |
+
+**Remover**: Tania, Minjá, Arvit, Sustento, Salmos específicos (son para práctica judía observante).
+
+**Agregar Parashá dinámica**: Usar la misma API de Sefaria (`/api/calendars`) para obtener la Parashá de la semana con link traducido al español.
+
+---
+
+### Bug Fix: PDF no se entrega al presionar botón
+
+#### [MODIFY] [bot.py](file:///C:/Users/Antonio/.gemini/antigravity/scratch/telegram-study-bot/bot.py)
+
+**Causa probable**: El `callback_data` `send_file_libro_oraciones_bnei_noaj.pdf` tiene 41 caracteres (dentro del límite de 64), pero el handler falla silenciosamente si `bot.send_document()` tiene un `file_id` expirado o inválido.
+
+**Fixes**:
+1. Agregar logging explícito en el handler de `send_file_` para ver el `key` y si existe en DB
+2. Envolver `send_document` en try/except con mensaje de error claro al usuario
+3. Si falla el `file_id`, pedir al usuario que reenvíe el PDF
+
+---
+
+### Bug Fix: IA falla en Telegram
+
+#### [MODIFY] [bot.py](file:///C:/Users/Antonio/.gemini/antigravity/scratch/telegram-study-bot/bot.py)
+
+**Causa**: Gemini devuelve Markdown con `*`, `_`, `[`, etc. que Telegram interpreta como Markdown malformado y lanza error.
+
+**Fix**: 
+1. Cambiar `parse_mode="Markdown"` a `parse_mode="HTML"` en las respuestas de IA
+2. Sanitizar la respuesta de Gemini: escapar caracteres HTML (`<`, `>`, `&`) y convertir `**texto**` a `<b>texto</b>`
+3. Si aun así falla, enviar sin parse_mode (texto plano) como último fallback
+
+---
+
+### Mejora: Prompt de IA con contexto Noajida
+
+#### [MODIFY] [bot.py](file:///C:/Users/Antonio/.gemini/antigravity/scratch/telegram-study-bot/bot.py)
+
+Cambiar el prompt de Gemini de genérico a contextualizado:
+
+```diff
+- "Explica brevemente: {pregunta}"
++ "Eres un asistente de estudio para Bnei Noaj (Noajidas). Responde en español, 
++  de forma clara y breve. Enfócate en las 7 Leyes de Noé y enseñanzas de Torá 
++  accesibles para no judíos. Pregunta: {pregunta}"
+```
+
+## Verification Plan
+
+### Manual Verification
+1. Lanzar el bot con `python bot.py` y enviar `/plan` — verificar que se muestren 3 bloques
+2. Presionar botón de PDF — verificar que se entregue el archivo o muestre mensaje claro de error
+3. Presionar botón de IA — verificar que responda sin crashear
+4. Verificar que al presionar 📖 Estudio se muestre la Parashá y Daf Yomi del día actual

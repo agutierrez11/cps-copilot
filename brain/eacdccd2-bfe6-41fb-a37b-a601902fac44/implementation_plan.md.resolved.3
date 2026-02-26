@@ -1,0 +1,21 @@
+# Implementation Plan: Cloud-First Analysis (NotebookLM)
+
+To provide a faster and more robust graph visualization and data analysis, I am pivoting from local Cosma (which is blocked by data quality issues) to **NotebookLM**.
+
+## Proposed Changes
+
+### [Cloud Workspace]
+
+#### [NEW] NotebookLM Notebook
+- Create a new notebook titled "Ecosistema Fintech Global".
+- Sync project data (Markdown files from `Empresas`, `Asociaciones`, etc.).
+
+## Verification Plan
+
+### Automated Verification
+1. Call `mcp_notebooklm_notebook_list` to verify server authentication.
+2. Call `mcp_notebooklm_notebook_create` to initialize the workspace.
+3. Sync data via `mcp_notebooklm_notebook_add_text` (if needed for small files) or direct Drive import.
+
+### Manual Verification
+1. User verifies the interactive graph and chat interface in the [NotebookLM Web UI](https://notebooklm.google.com/).

@@ -1,0 +1,34 @@
+# Plan de Mejora: Sistema de Estudio Noájida 100% Automatizado y Multiformato
+
+El objetivo es consolidar un sistema de estudio que sea fácil de consumir en cualquier lugar, integrando el libro personal de oraciones del usuario con fuentes dinámicas de Torá, Talmud y Musar.
+
+## User Review Required
+
+> [!TIP]
+> **Entrega Híbrida**: Para mejorar la visualización en móvil, el sistema enviará un **Mensaje de Texto Enriquecido** directo a Telegram (con los horarios y puntos clave) y adjuntará el **PDF completo** para lectura profunda.
+
+## Proposed Cambios
+
+### 1. Oraciones Noájidas (Extracción del PDF)
+- **Fuente**: `Libro de Oraciones para Noajidas (1).pdf`.
+- **Acción**: El script utilizará los textos ya extraídos para las secciones de **Shajarit, Minjá y Arvit**.
+
+### 2. Torá y Talmud (Hebcal + Sefaria + Shas.org)
+- **Parashá**: Obtención automática del nombre y la **Aliyá diaria** (1ª a 7ª parte).
+- **Texto**: Descarga del texto original y traducción desde Sefaria.
+- **Daf Yomi**: Sincronización con Shas.org y anexo de la hoja original del Talmud.
+
+### 3. Musar Dinámico (Sefaria)
+- **Libro**: *Mesilat Yesharim*.
+- **Lógica**: Lectura progresiva diaria.
+
+### 4. Entrega Optimizada (Telegram)
+- **Mensaje de Texto**: Resumen con emojis de Zmanim y puntos clave del estudio.
+- **PDF Consolidado**: Documento profesional en el escritorio y como adjunto en Telegram.
+- **Markdown (Opcional)**: El script generará una copia en la carpeta del usuario para su archivo personal.
+
+## Plan de Verificación
+
+- **Generación**: Ejecutar el script y validar que se cree el `Reporte_Estudio_Hoy.pdf`.
+- **Telegram**: Verificar la recepción del mensaje de texto resumen + el archivo PDF.
+- **Contenido**: Validar que la Aliyá corresponda al día de la semana y que el Musar progrese.

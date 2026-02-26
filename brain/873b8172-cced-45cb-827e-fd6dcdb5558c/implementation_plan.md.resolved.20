@@ -1,0 +1,37 @@
+# Plan de Mejora: Sistema de Notificaciones Noájidas Programadas
+
+El objetivo es sustituir el reporte PDF por un sistema de mensajería en Telegram que envíe la porción de la Torá y las oraciones diarias (Shajarit, Minjá, Arvit) en sus horarios (Zmanim) correspondientes.
+
+## User Review Required
+
+> [!IMPORTANT]
+> Para que los mensajes lleguen a la hora exacta, el script debe estar ejecutándose en segundo plano o programado mediante el **Programador de Tareas de Windows**. Configuraré una tarea que revise cada día a las 4:00 AM los horarios y programe los mensajes del día.
+
+## Proposed Cambios
+
+### 1. Sistema de Notificación Programada (Telegram)
+- **Mañana (Alos/Netz)**: Envío de *Modeh Aní* + *Shajarit Noájida* + *Porción de la Parashá (Torá)*.
+- **Tarde (Minjá Gedolá)**: Envío de *Minjá Noájida*.
+- **Noche (Tzeis Hakojavim)**: Envío de *Arvit Noájida* + *Shemá Israel*.
+
+### 2. Extracción de Textos (Español)
+- **PDF Personalizado**: Extraer los textos exactos del "Libro de Oraciones para Noajidas (1).pdf".
+- **Sefaria API**: Obtener la Aliyá diaria de la Parashá 100% en español.
+- **Fuentes Adicionales**: Investigar en Sefaria textos de "Halajá Noájida" o "Perlas de Torá" en español para complementar los mensajes.
+
+### 3. Automatización en Windows
+- **Script Sincronizador**: Un script que se ejecute al inicio del sistema.
+- **Lógica**: Consultará los Zmanim (TorahCalc) y esperará al momento exacto para disparar cada mensaje a Telegram.
+
+### 4. Formato de Mensajes
+- Uso de negritas, emojis y formato Markdown en Telegram para una lectura cómoda en el móvil.
+- Ejemplo:
+    > ☀️ **SERVICIO MATUTINO NOÁJIDA**
+    > *Reflexión de la Parashá:* [Texto extraído...]
+    > *Oración:* [Texto del PDF...]
+
+## Plan de Verificación
+
+- **Mensajería**: Realizar un envío de prueba de todas las secciones.
+- **Horarios**: Validar que el script calcule correctamente las horas de Cancún para el día actual.
+- **Persistencia**: Confirmar que el script pueda funcionar de forma desatendida.

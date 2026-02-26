@@ -1,0 +1,5 @@
+{
+  "artifactType": "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
+  "summary": "Implementation plan to fix the Telegram bot timing issue by adding timezone support.",
+  "updatedAt": "2026-02-24T14:26:57.368073500Z"
+}

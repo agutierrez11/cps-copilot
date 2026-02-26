@@ -1,0 +1,6 @@
+# Task: Verifying Company Count
+
+- [/] Count total markdown files in the workspace
+- [ ] Investigate `Paises` and `Verticales` directories
+- [ ] Search for strings suggesting total company count
+- [ ] Provide final answer to user

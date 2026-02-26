@@ -1,0 +1,5 @@
+{
+  "artifactType": "ARTIFACT_TYPE_WALKTHROUGH",
+  "summary": "Walkthrough of the fixes applied to the Telegram study bot to resolve message delivery issues and improve resilience.",
+  "updatedAt": "2026-02-24T04:41:23.234698400Z"
+}

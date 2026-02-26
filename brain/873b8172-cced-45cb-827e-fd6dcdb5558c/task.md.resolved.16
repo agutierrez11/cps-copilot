@@ -1,0 +1,13 @@
+# Task: Implement Telegram Noahide Notifier
+
+- [x] Create folder structure on Desktop
+- [x] Configure Telegram ID and Token
+- [x] Noahide Prayer Book PDF extraction (extrayendo textos clave)
+- [/] Telegram Notifier System [/]
+    - [ ] Create `noajida_notify_bot.py` with scheduling logic
+    - [ ] Fetch daily Aliyah in Spanish (Sefaria)
+    - [ ] Integration of JabruTouch links in messages
+    - [ ] Implementation of automatic time-of-day triggers (Zmanim)
+- [ ] Windows Task Scheduler Setup
+    - [ ] Create a daily sync task
+- [ ] Final Verification (Test send of all sections)

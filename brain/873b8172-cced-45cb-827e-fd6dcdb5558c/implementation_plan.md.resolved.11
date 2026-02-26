@@ -1,0 +1,30 @@
+# Plan de Mejora: Sistema de Estudio Noájida 100% Automatizado
+
+He ajustado el sistema para que sea completamente fiel a tu identidad Noájida, eliminando la liturgia judía estándar y sustituyéndola por los textos de tu libro personal.
+
+## User Review Required
+
+> [!IMPORTANT]
+> He extraído los textos base del PDF de oraciones que me proporcionaste. Estos se incluirán automáticamente en tu reporte diario.
+
+## Proposed Cambios
+
+### 1. Oraciones Noájidas Personalizadas
+- **Fuente**: `Libro de Oraciones para Noajidas (1).pdf`
+- **Secciones**: Shajarit (Mañana), Minjá (Tarde) y Arvit (Noche). Todo alineado con las Siete Leyes de Noé.
+
+### 2. Torá y Talmud vía APIs (Dinamismo Total)
+- **Torá**: La porción (Aliyá) del día de la Parashá semanal (Hebcal + Sefaria).
+- **Talmud**: El Daf Yomi del día (Shas.org), anexando la hoja original del Talmud al final del reporte.
+
+### 3. Musar Progresivo (Sefaria)
+- Se descargará una sección nueva cada día de *Mesilat Yesharim* (o el libro elegido en Sefaria) para un estudio continuo.
+
+### 4. Estructura del Reporte Conexo
+- El PDF final consolidado en tu escritorio tendrá un diseño profesional, vertical y limpio, listo para ser enviado a tu Telegram.
+
+## Plan de Verificación
+
+- Validar que el reporte en Telegram contenga las oraciones extraídas del PDF.
+- Confirmar que la Aliyá de la Torá se actualice según el día de la semana.
+- Verificar que el enlace de Sefaria para Musar funcione correctamente.

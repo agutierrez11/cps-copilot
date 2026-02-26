@@ -1,0 +1,5 @@
+{
+  "artifactType": "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
+  "summary": "Implement search functionality by connecting `Header` search input to `CategorySection` filtering.\n        1. Add search state to `Index.tsx`.\n        2. Filter tools based on search query.\n        3. Pass search props to `Header` and `CategorySection`.\n        4. Update `CategorySection` with the logic from the root backup file.\n        5. Clean up duplicate files.\n",
+  "updatedAt": "2026-02-15T23:35:51.210258100Z"
+}

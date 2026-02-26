@@ -1,0 +1,5 @@
+{
+  "artifactType": "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
+  "summary": "Step-by-step plan for deploying the Telegram study bot to Railway using GitHub as intermediary. Covers GitHub repo creation, Railway project setup, environment variable configuration, and verification.",
+  "updatedAt": "2026-02-23T20:05:43.983905900Z"
+}

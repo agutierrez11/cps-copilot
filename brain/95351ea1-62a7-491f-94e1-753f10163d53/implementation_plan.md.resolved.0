@@ -1,0 +1,33 @@
+# Optimization and Integration Plan
+
+This plan covers the implementation of the `optimizer.py` module and the integration of the React frontend with the FastAPI backend.
+
+## Proposed Changes
+
+### Backend
+#### [NEW] [optimizer.py](file:///c:/Users/Antonio/.gemini/antigravity/scratch/CareerBoosterAI/backend/optimizer.py)
+- Create a class `ApplicationOptimizer` that takes a structured profile and a job description.
+- Use an LLM (simulated or real) to:
+    - Match skills.
+    - Rewrite bullet points for the specific job.
+    - Re-order CV sections based on relevance.
+
+#### [MODIFY] [main.py](file:///c:/Users/Antonio/.gemini/antigravity/scratch/CareerBoosterAI/backend/main.py)
+- Add an endpoint `/optimize` to trigger the optimization logic.
+- Ensure CORS is correctly configured for the frontend.
+
+### Frontend
+#### [MODIFY] [CVVault.jsx](file:///c:/Users/Antonio/.gemini/antigravity/scratch/CareerBoosterAI/frontend/src/pages/CVVault.jsx)
+- Fetch and display the list of CVs from the `/cvs` endpoint.
+
+#### [MODIFY] [JobRadar.jsx](file:///c:/Users/Antonio/.gemini/antigravity/scratch/CareerBoosterAI/frontend/src/pages/JobRadar.jsx)
+- Fetch and display jobs from the `/jobs` endpoint.
+- Add an "Optimize CV for this job" button.
+
+## Verification Plan
+
+### Manual Verification
+1. Start the FastAPI backend: `python backend/main.py`.
+2. Start the Vite frontend: `npm run dev` in the `frontend` directory.
+3. Verify that CVs and jobs are correctly fetched from the backend and displayed in the UI.
+4. Click "Optimize" on a job and ensure the optimization process is triggered and results are shown.

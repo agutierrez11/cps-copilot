@@ -1,0 +1,36 @@
+# Plan de Implementación: Refinamiento de Formato y Contenido
+
+Este plan detalla la actualización del bot para adoptar un formato de mensaje más descriptivo y "narrativo", imitando el portal de Chabad, y refinando las referencias a archivos PDF.
+
+## Cambios Propuestos
+
+### 1. Estructura de Mensajes (Nuevos Formatos)
+Se actualizará [obtener_mensaje](file:///C:/Users/Antonio/.gemini/antigravity/scratch/telegram-study-bot/bot.py#21-50) para incluir los textos exactos proporcionados:
+
+#### [Bloque 1] Torá/Torah
+- **Título:** Parshat Tetzave, Primera porción (Shemot 27:20-28:12)
+- **Link:** [Texto]
+- **Descripción:** El comentario de Rashi es una parte indispensable de los estudios diarios... (Texto completo del usuario)
+
+#### [Bloque 2] Salmos/Tehilim
+- **Título:** Salmos/Tehilim
+- **Subtítulo:** Capítulos 29-34
+- **Links:** [Texto] • [Audio]
+- **Descripción:** El Tehilím constituye un diálogo franco entre el hombre mortal y su Padre Celestial.
+
+#### [Bloque 2] Tania
+- **Título:** Tania
+- **Subtítulo:** Likutei Amarim, comienzo de Capítulo 31
+- **Link:** [Texto]
+- **Descripción:** El Tania es una exposición filosófico-cabalista que enseña al hombre a aproximarse a su Creador.
+
+### 2. Ajustes de Contenido
+- **Eliminar:** Se eliminará "Orjot Tzadikim" del Bloque 4.
+- **PDFs:** Se reemplazará "Pág. X [PDF]" por el nombre descriptivo del archivo:
+  - `[Shuljan_Aruj.pdf]`
+  - `[Oraciones_Bnei_Noaj.pdf]`
+  - `[Perek_Shalom.pdf]`
+
+## Plan de Verificación
+1. **Verificación de Texto:** Enviar un mensaje de prueba al usuario con las nuevas descripciones y el formato de links "Texto • Audio".
+2. **Reinicio del Bot:** Ejecutar el bot final y enviar el plan completo.

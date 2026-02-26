@@ -1,0 +1,24 @@
+# Plan de Implementación: Interactividad del Bot
+
+Este plan detalla cómo hacer que el bot sea interactivo y responda a comandos y mensajes del usuario, dejando de ser meramente estático.
+
+## Cambios Propuestos
+
+### 1. Comandos a Petición
+Se agregarán handlers para que el usuario pueda solicitar cualquier bloque de estudio en cualquier momento:
+- `/bloque1`: Envía el contenido del despertar.
+- `/bloque2`: Envía el bloque de lógica y alma.
+- `/bloque3`: Envía el bloque de productividad.
+- `/bloque4`: Envía el bloque de paz y ley.
+
+### 2. Comandos de Información
+- `/plan`: Muestra un resumen de lo que el bot hace y los horarios.
+- `/ayuda`: Lista los comandos disponibles.
+
+### 3. Respuestas Inteligentes (Básicas)
+- Se implementará un `message_handler(func=lambda m: True)` para responder de forma amable a mensajes de texto comunes (saludos, agradecimientos).
+
+## Plan de Verificación
+1. **Prueba de Comandos:** Ejecutar `/bloque1` y verificar que el mensaje sea el correcto.
+2. **Prueba de Mensajes:** Enviar "Hola" o "Gracias" y verificar la respuesta del bot.
+3. **Reinicio Final:** Asegurar que el motor de alertas siga funcionando en paralelo.

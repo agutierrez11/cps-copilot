@@ -1,0 +1,30 @@
+# Career Booster AI - Implementation Plan
+
+## Goal
+Create an automated tool to bridge the gap between professional CVs and strategic job searching, specifically tailored for the user's profile and Fintech/LATAM market.
+
+## Project Structure
+The project will be located at `C:\Users\Antonio\.gemini\antigravity\scratch\CareerBoosterAI`.
+
+### Core Modules
+1.  **`cv_analyzer.py`**:
+    -   **Purpose**: Extract text and metadata from PDF CVs.
+    -   **Library**: `pdfminer.six` or `pypdf`.
+    -   **Output**: A structured JSON "Master Profile" containing skills, experience, and keywords.
+
+2.  **`job_radar.py`**:
+    -   **Purpose**: Scrape and filter job listings.
+    -   **Sources**: Indeed, LinkedIn (if feasible), JobLeads.
+    -   **Filters**: Fintech, Mexico/Remote, Seniority level.
+
+3.  **`optimizer.py`**:
+    -   **Purpose**: Match CVs to jobs and optimize content.
+    -   **Features**:
+        -   Keyword matching score.
+        -   Automated bullet point rewriting (using LLM).
+        -   Re-ordering of CV sections based on job requirements.
+
+## Next Steps
+1.  Initialize `README.md` to document the project.
+2.  Verify access to the source CVs in `C:\Users\Antonio\OneDrive\Escritorio\CVs_2026`.
+3.  Create the skeleton for `cv_analyzer.py` and test PDF extraction.

@@ -1,0 +1,41 @@
+# Connect NotebookLM to Antigravity via MCP
+
+Connecting NotebookLM will allow Antigravity to interact with your Notebooks, sources, and notes directly.
+
+## User Review Required
+
+> [!IMPORTANT]
+> I have identified [C:\Users\Antonio\.gemini\antigravity\mcp_config.json](file:///C:/Users/Antonio/.gemini/antigravity/mcp_config.json) as the likely configuration file. I will populate it with the NotebookLM server settings.
+> During the **Authentication** step, a browser window will open. You will need to log in to your Google Account and authorize the application.
+
+## Proposed Changes
+
+### Configuration
+
+#### [MODIFY] [mcp_config.json](file:///C:/Users/Antonio/.gemini/antigravity/mcp_config.json)
+
+Add the `notebooklm` server definition to the `mcpServers` object.
+
+```json
+{
+  "mcpServers": {
+    "notebooklm": {
+      "command": "python",
+      "args": [
+        "-m",
+        "notebooklm_mcp_server"
+      ]
+    }
+  }
+}
+```
+
+## Verification Plan
+
+### Automated Verification
+1.  Run `python -m notebooklm_mcp_server.auth --help` to ensure the module is functioning.
+2.  After authentication, use the `list_notebooks` tool (via the MCP interface) to verify the connection.
+
+### Manual Verification
+1.  **Authentication**: I will run the auth command and provide the URL. You will authorize in the browser.
+2.  **Creation**: Create a test notebook or save the current project state to a new notebook using the MCP tools.

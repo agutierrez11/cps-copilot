@@ -1,0 +1,14 @@
+# Task: Implement Advanced Systematic Study
+
+- [x] Create folder structure on Desktop
+- [x] Configure Telegram ID and Token
+- [x] Noahide Prayer Book PDF extraction (Page mapping: 11, 27, 30)
+- [x] Shuljan Aruj PDF Integration (Thematic link to Parasha)
+- [/] Systematic Study Expansion [/]
+    - [ ] **Implement Daily Daf Yomi fetch (Sefaria)**
+    - [ ] **Implement Deep Analysis fetch (Rashi/Ramban)**
+    - [ ] **Add Bot Links (@TorahBot, @DafYomiBot)**
+    - [x] Include Daily Torah & Psalms
+    - [x] Include Midrash & Talmud (Text or Link)
+- [x] Windows Persistence (Startup .bat)
+- [ ] Final Verification of Advanced Content

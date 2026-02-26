@@ -1,0 +1,23 @@
+# Career Booster AI - Project Setup
+
+- [/] Project Setup
+    - [x] Create `CareerBoosterAI` project directory in workspace
+    - [x] Initialize [README.md](file:///c:/Users/Antonio/.gemini/antigravity/scratch/CareerBoosterAI/README.md) with project goals
+    - [x] Verify access to `CVs_2026` folder (13 files found)
+    - [/] Setup Web App (Frontend + Backend)
+        - [x] Install FastAPI & Uvicorn
+        - [x] Create [backend/main.py](file:///c:/Users/Antonio/.gemini/antigravity/scratch/CareerBoosterAI/backend/main.py)
+        - [x] Move [cv_analyzer.py](file:///c:/Users/Antonio/.gemini/antigravity/scratch/CareerBoosterAI/backend/cv_analyzer.py) to `backend/`
+        - [x] Create frontend (React + Vite)
+        - [/] Install Tailwind CSS
+- [/] Module 1: CV Intelligence
+    - [x] Create [cv_analyzer.py](file:///c:/Users/Antonio/.gemini/antigravity/scratch/CareerBoosterAI/backend/cv_analyzer.py) skeleton
+    - [x] Verify PDF text extraction
+    - [x] Connect CV Parser to Web API
+- [ ] Module 2: Job Radar & Mapping
+    - [ ] Create `job_radar.py` skeleton
+- [ ] Module 3: Web Interface (React + Tailwind)
+    - [ ] Create Dashboard Layout
+    - [ ] Build "CV Vault" View
+    - [ ] Build "Job Discovery" View
+    - [ ] Build "Target Job" Input & Analysis View

@@ -1,0 +1,7 @@
+# Task: Cloud-First Analysis (NotebookLM)
+
+- [/] User auth for NotebookLM (Manual Step)
+- [ ] Initialize NotebookLM with project data [ ]
+- [ ] Verify Cloud Graph and Querying [ ]
+- [x] Create [force_export.js](file:///c:/Users/Antonio/OneDrive/Escritorio/Ecosistema_Fintech_Global/cosma_workspace/force_export.js) (for future local use)
+- [ ] Fix data issues (missing `title:`) for Cosma [ ]

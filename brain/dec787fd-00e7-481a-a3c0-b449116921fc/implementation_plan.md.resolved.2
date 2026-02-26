@@ -1,0 +1,31 @@
+# Career Booster AI - Implementation Plan
+
+This tool is designed to be a "bridge" between professional CV building (Enhancv) and strategic job searching (JobLeads), but fully automated and personalized for your profile.
+
+## User Review Required
+
+> [!IMPORTANT]
+> The tool will run as a standalone suite of Python scripts in a new directory: `C:\Users\Antonio\OneDrive\Escritorio\CareerBoosterAI`. It will NOT interfere with your existing project.
+
+## Proposed Changes
+
+### [Component] Project Structure [NEW]
+- **`main.py`**: The central orchestrator.
+- **`cv_analyzer.py`**: Extracts data from your PDFs.
+- **`job_radar.py`**: Scrapes and filters job boards.
+- **`optimizer.py`**: Per-job analysis and reporting.
+
+### [Component] CV Parser
+- We will use `pdfminer` or `PyPDF2` to read your files.
+- I will create a "Master Profile" JSON from your most recent CV.
+
+### [Component] The "Best of Both" Logic
+- **From Enhancv**: We will implement the keyword density check and active voice suggestions.
+- **From JobLeads**: We will implement the high-level matching (Salary/Level/Fintech focus).
+
+## Verification Plan
+
+### Automated Steps
+- Run `cv_analyzer.py` and verify it correctly identifies your "Regional Sales Lead" experience.
+- Run `job_radar.py` to ensure it fetches at least 5 relevant Fintech roles in Mexico/Remote.
+- Generate a sample report for one vacancy.

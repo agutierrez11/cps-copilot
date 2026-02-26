@@ -1,0 +1,29 @@
+# Walkthrough - Search & UX Improvements
+
+I have resolved several critical issues with the search functionality and improved the user experience.
+
+## Changes
+
+### 1. Fixed "Black Screen" on Search
+- **Cause**: The search filter was trying to look for a `tags` property on the tools, but this property doesn't exist.
+- **Fix**: Removed the faulty code in [src/pages/Index.tsx](file:///c:/Users/Antonio/OneDrive/Escritorio/tonos-tool-treasurebox/src/pages/Index.tsx).
+
+### 2. Fixed "No Results" (Hidden Tools)
+- **Cause**: Tools were being hidden if their category also contained subcategories.
+- **Fix**: Updated [CategorySection.tsx](file:///c:/Users/Antonio/OneDrive/Escritorio/tonos-tool-treasurebox/CategorySection.tsx) to display both subcategories and tools if they exist.
+
+### 3. Improved Search Result Positioning
+- **Feedback**: Users had to scroll to the bottom of the page to see search results.
+- **Fix**: Refactored [src/pages/Index.tsx](file:///c:/Users/Antonio/OneDrive/Escritorio/tonos-tool-treasurebox/src/pages/Index.tsx) to display search results **immediately below the search bar**, temporarily hiding the other dashboard content (calculators, etc.) while searching. This provides a much cleaner, focused search experience.
+
+### 4. Removed Lovable Logo
+- **Cause**: Default favicon persistence.
+- **Fix**: Created and linked a new [favicon.svg](file:///c:/Users/Antonio/OneDrive/Escritorio/tonos-tool-treasurebox/public/favicon.svg) to force the browser to update.
+
+## Verification
+- **Build**: The application builds successfully.
+- **Search**: 
+    1. Type in the search bar.
+    2. Results appear instantly at the top of the page.
+    3. The rest of the page content (calculators, wizards) is hidden to focus on results.
+    4. Clearing the search restores the full dashboard.

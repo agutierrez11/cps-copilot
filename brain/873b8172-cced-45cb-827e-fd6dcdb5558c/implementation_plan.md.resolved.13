@@ -1,0 +1,31 @@
+# Plan de Mejora: Reporte "Bases Sólidas" Profesional y Completo
+
+He detectado que el reporte actual falla en el diseño visual y se siente breve. Este plan reconstruye la lógica de generación para ofrecer un documento de "nivel ejecutivo" y contenido profundo.
+
+## User Review Required
+
+> [!IMPORTANT]
+> Aumentaré el volumen de texto descargado de Sefaria. Esto puede hacer que el PDF tenga mas de 10 páginas. Confirmaré que el envío a Telegram soporte archivos de este tamaño (generalmente hasta 50MB, por lo que no habrá problema).
+
+## Proposed Cambios
+
+### 1. Reconstrucción de Diseño (Layout)
+- **Alineación Forzada**: Se usará `pdf.set_x(20)` y `multi_cell(0, ...)` en cada bloque para evitar que el texto "flote" a la derecha.
+- **Jerarquía Visual**: Uso de bordes sutiles, fondos grises para títulos de sección y fuentes en negrita para datos clave.
+- **Espaciado**: Mejora del interlineado para evitar bloques de texto densos y fatiga visual.
+
+### 2. Enriquecimiento Masivo de Contenido
+- **Torá (Sefaria)**: No solo una porción, sino el texto completo de la Aliyá del día con su traducción.
+- **Musar (Sefaria)**: Lectura de capítulos completos de *Mesilat Yesharim* para un estudio real de 15-20 minutos.
+- **Oraciones (PDF Local)**: Ampliar la extracción de páginas del "Libro de Oraciones para Noajidas" para asegurar que no falte ninguna bendición matutina.
+- **Zmanim**: Mapeo exhaustivo de horarios (Sunrise, Sunset, Shema, Tzeis, Alos, Chatzot).
+
+### 3. Estabilidad de Datos
+- **Mapeo de Keys**: Corregir el error que muestra "N/A" en los horarios de Shemá.
+- **Fallbacks**: Si Sefaria falla, se incluirá un texto alternativo de alta calidad ya pre-cargado.
+
+## Plan de Verificación
+
+- **Visual**: Generar el PDF y revisar la alineación en cada página.
+- **Volumen**: Verificar que el PDF final tenga al menos 5-8 páginas de contenido enriquecido.
+- **Telegram**: Validar el envío del archivo y del mensaje resumen.

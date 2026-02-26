@@ -1,0 +1,19 @@
+# Implementation Plan: Forced Cosma Export
+
+To bypass the `npx cosma export` CLI issues on Windows, I will use a direct Node.js script that imports the Cosma library and executes the export logic programmatically.
+
+## Proposed Changes
+
+### [Cosma Workspace]
+
+#### [NEW] [force_export.js](file:///c:/Users/Antonio/OneDrive/Escritorio/Ecosistema_Fintech_Global/cosma_workspace/force_export.js)
+A script that uses the `@graphlab-fr/cosma` library to:
+1. Load the configuration from [cosma.yml](file:///c:/Users/Antonio/OneDrive/Escritorio/Ecosistema_Fintech_Global/cosma.yml).
+2. Execute the model generation.
+3. Export the static web visualization to the `export` directory.
+
+## Verification Plan
+
+### Automated Verification
+1. Run `node force_export.js` inside `cosma_workspace`.
+2. Check if `export/index.html` is generated and contains data.

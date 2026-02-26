@@ -1,0 +1,11 @@
+# Task: Limpieza Final de Contenido - COMPLETADO
+
+- [x] Motor de tiempo y alertas en Telegram
+- [x] Inicio automático en Windows
+- [x] Formato narrativo con descripciones poéticas
+- [x] Estandarizar nombres de material y páginas: `[Material.pdf] (Pág. X)`
+- [x] Textos de rezos (Modé Aní/Shemá) integrados
+- [x] **Limpieza Final:** Eliminadas secciones de Rambam, Mishné Torá, Tanaj, Halajá y Haftará
+- [x] **Potenciar Fase 1:** Botones Interactivos implementados
+- [x] **Potenciar Fase 2:** Integrar Gemini AI (Arreglado y configurado)
+- [x] Validar funcionamiento final con el usuario

@@ -1,0 +1,25 @@
+# Plan de Mejora: Notificador Noájida con Referencia a Libros Físicos
+
+Este plan integra tus libros físicos y digitales en el flujo de Telegram, proporcionando textos directos y números de página exactos para facilitar tu estudio.
+
+## Proposed Cambios
+
+### 1. Extracción y Citación de PDFs
+- **Libro de Oraciones para Noajidas**:
+    - Extraer el texto de Shajarit, Minjá y Arvit.
+    - Incluir en el mensaje el **número de página** (basado en el PDF) para que puedas seguirlo en tu copia impresa.
+- **Shulján Arúj Oraj Jaim**:
+    - Implementar una búsqueda de palabras clave relacionadas con la Parashá semanal.
+    - Proporcionar las páginas del PDF donde se discuten temas relevantes (ej. leyes de construcción, santuarios, Shabat).
+
+### 2. Sefaria: Texto o Link
+- **Estudio Temático (Midrásh/Talmud)**:
+    - Si existe versión en **español**, enviar el texto directamente.
+    - Si solo existe en inglés/hebreo, enviar un **enlace directo** a Sefaria con la instrucción de buscarlo en internet.
+
+### 3. Estructura de Mensajes Programados
+- Mensajes más cortos y dirigidos, con referencias claras ("Lee en la página X de tu libro...").
+
+## Plan de Verificación
+- **Mapeo de Páginas**: Verificar que las páginas citadas correspondan al contenido del PDF.
+- **Relación Temática**: Validar que el Shulján Arúj entregue páginas con temas de la Parashá actual (Terumáh).

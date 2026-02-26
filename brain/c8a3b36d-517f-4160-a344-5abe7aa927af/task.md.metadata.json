@@ -1,0 +1,6 @@
+{
+  "artifactType": "ARTIFACT_TYPE_TASK",
+  "summary": "Task to send the complete daily study routine to Telegram.",
+  "updatedAt": "2026-02-23T03:29:45.680925900Z",
+  "version": "5"
+}

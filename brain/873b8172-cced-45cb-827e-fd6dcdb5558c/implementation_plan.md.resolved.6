@@ -1,0 +1,31 @@
+# Plan de Mejora: Integración de APIs de Torá (Hebcal) y Musar (Sefaria)
+
+El objetivo es transformar el reporte estático en una herramienta dinámica de estudio diario que incluya la Parashá semanal y lecturas de Musar automatizadas.
+
+## Proposed Cambios
+
+### 1. Parashá Semanal (Hebcal)
+- **Función**: `get_hebcal_data()` para obtener la Parashá de la semana actual.
+- **Contenido**: Nombre de la Parashá, resumen y desglose de las Aliyot (lecturas diarias).
+- **API**: `https://www.hebcal.com/hebcal?v=1&cfg=json&maj=on&min=on&mod=on&nx=on&year=now&month=now&ss=on&mf=on&c=off&geo=none`.
+
+### 2. Lectura Dinámica de Torá y Musar (Sefaria)
+- **Función**: `get_sefaria_text(ref)` para descargar el texto real de la lectura del día.
+- **Prioridad**: Buscar versiones en español/inglés para asegurar legibilidad.
+- **Libros**:
+    - **Chumash**: La porción de la Parashá correspondiente al día.
+    - **Musar**: Continuar con *Mesilat Yesharim* o *Chovot HaLevavot*.
+
+### 3. Rediseño del Reporte PDF
+- Nueva sección: **"4. Lectura de la Parashá Semanal"**.
+- Nueva sección: **"5. Musar Dinámico (Sefaria)"**.
+- Inclusión de enlaces QR o links directos a Sefaria para profundizar.
+
+### 4. Estabilidad y Respaldo
+- Si las APIs fallan, el sistema mantendrá los textos locales de oraciones y una "Reflexión de Respaldo".
+
+## Plan de Verificación
+
+- Validar que Hebcal devuelva la Parashá correcta de la semana.
+- Probar la descarga de texto desde Sefaria con diferentes referencias.
+- Generar el PDF final y verificar la organización visual en el escritorio y Telegram.

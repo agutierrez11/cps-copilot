@@ -1,0 +1,33 @@
+# Walkthrough: Sistema de Estudio Avanzado y Sistemático
+
+He perfeccionado el bot para que sea tu fuente principal de sabiduría diaria, eliminando la necesidad de depender de otros bots que no están entregando información.
+
+## Nuevas Funciones Avanzadas
+
+1.  **Daf Yomi (Talmud Diario)**:
+    *   El bot ahora consulta automáticamente el **Folio del Día** en Sefaria.
+    *   Si existe traducción al español, te entrega el texto directamente; si no, te proporciona la liga directa para su estudio.
+
+2.  **Análisis Profundo (Rashi)**:
+    *   He integrado el comentario clásico de **Rashi** sobre la porción de la Torá del día.
+    *   Esto te permite profundizar en el significado de los versículos desde la perspectiva de los sabios.
+
+3.  **Citas Bibliográficas Limpias**:
+    *   **Sin fragmentos confusos**: He eliminado los bloques de texto extraídos automáticamente de los PDFs que resultaban difíciles de leer.
+    *   **Referencia Directa**: Ahora el bot solo te indicará el nombre de la oración y el número de página exacto de tus libros físicos.
+    *   *Ejemplo:* `📜 Oración Shajarit: Página 9`.
+4.  **Integración con JabruTouch**:
+    *   He incluido un enlace directo a **JabruTouch** en la sección de Talmud/Daf Yomi para facilitar tu búsqueda y estudio en esa plataforma.
+5.  **Entrega Robusta**:
+    *   El bot ahora es capaz de dividir mensajes muy largos automáticamente, asegurando que nunca se pierda información por los límites de Telegram.
+
+4.  **Enlaces Directos**:
+    *   He incluido botones de acceso rápido a `@TorahBot` y `@DafYomiBot` al final de los mensajes matutinos por si deseas usar sus funciones adicionales.
+
+## Verificación Final
+*   **Torá (messianictorah.org)**: Conexión restaurada y funcional.
+*   **Daf Yomi & Rashi (Sefaria)**: Extracción en tiempo real confirmada.
+*   **Zmanim (Cancún)**: Programación automática activa.
+
+---
+*Tu academia personal de estudio noájida está ahora al 100% de su capacidad.*

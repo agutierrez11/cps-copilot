@@ -1,0 +1,29 @@
+# Plan: Fix Telegram Bot Timing Issue
+
+The bot currently sends scheduled messages based on the server's local time (UTC), which causes them to arrive 5 hours early for the user (UTC-5). This plan introduces robust timezone handling using the `pytz` library.
+
+## Proposed Changes
+
+### [telegram-study-bot]
+
+#### [MODIFY] [requirements.txt](file:///C:/Users/Antonio/.gemini/antigravity/scratch/Mis%20Proyectos%20Antigravity/telegram-study-bot/requirements.txt)
+- Add `pytz` to the dependencies.
+
+#### [MODIFY] [bot.py](file:///C:/Users/Antonio/.gemini/antigravity/scratch/Mis%20Proyectos%20Antigravity/telegram-study-bot/bot.py)
+- Import `pytz`.
+- Use `os.getenv("TIMEZONE", "America/Bogota")` to determine the target timezone.
+- Update [motor_tiempo](file:///C:/Users/Antonio/.gemini/antigravity/scratch/Mis%20Proyectos%20Antigravity/telegram-study-bot/bot.py#334-347) to use `datetime.now(pytz.timezone(target_tz))` instead of `datetime.now()`.
+- Update [guardar_archivo_id](file:///C:/Users/Antonio/.gemini/antigravity/scratch/Mis%20Proyectos%20Antigravity/telegram-study-bot/bot.py#64-83) and [_actualizar_cache_sefaria](file:///C:/Users/Antonio/.gemini/antigravity/scratch/Mis%20Proyectos%20Antigravity/telegram-study-bot/bot.py#160-204) to also use the correct timezone for consistency.
+
+## Verification Plan
+
+### Automated Tests
+- Create `verify_timezone.py` to:
+    1. Print the current UTC time.
+    2. Print the current time in the configured timezone (e.g., `America/Bogota`).
+    3. Verify that the offset matches expectations (5 hours difference).
+- Run the script: `python verify_timezone.py`
+
+### Manual Verification
+- The user should set the `TIMEZONE` environment variable in Railway to their preferred timezone (e.g., `America/Bogota`).
+- The user can verify the next scheduled message arrives at the correct local time.

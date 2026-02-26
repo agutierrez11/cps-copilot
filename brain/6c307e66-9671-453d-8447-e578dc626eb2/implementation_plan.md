@@ -1,0 +1,67 @@
+# Implementation Plan - Fix Search Functionality
+
+The application has a disconnected search feature. The `Header` component expects search props that are not provided by `Index.tsx`, and the `CategorySection` component logic for search exists in a backup file but not in the active component.
+
+## User Review Required
+
+> [!IMPORTANT]
+> I will be overwriting `src/components/CategorySection.tsx` with the version found in the root directory, which contains the search logic.
+
+## Proposed Changes
+
+### Pages
+
+#### [MODIFY] [Index.tsx](file:///c:/Users/Antonio/OneDrive/Escritorio/tonos-tool-treasurebox/src/pages/Index.tsx)
+- Add `searchQuery` state.
+- Create `filteredTools` derived state based on `searchQuery`.
+- Pass `searchQuery` and `setSearchQuery` to `<Header />`.
+- Pass `filteredTools` to `<CategorySection />`.
+- When search is active, render ALL categories (or filtered list) instead of just the selected one, or handle navigation differently.
+
+### Components
+
+#### [MODIFY] [CategorySection.tsx](file:///c:/Users/Antonio/OneDrive/Escritorio/tonos-tool-treasurebox/src/components/CategorySection.tsx)
+- Replace content with the root `CategorySection.tsx` logic.
+- Ensure imports are correct.
+
+#### [DELETE] [CategorySection.tsx](file:///c:/Users/Antonio/OneDrive/Escritorio/tonos-tool-treasurebox/CategorySection.tsx)
+- Remove the duplicate file from root.
+
+#### [MODIFY] [Header.tsx](file:///c:/Users/Antonio/OneDrive/Escritorio/tonos-tool-treasurebox/src/components/Header.tsx)
+- Ensure props match the implementation (already seems correct, just need to verify).
+
+## Verification Plan
+
+### Automated Tests
+- Run `npm run build` (or `vite build`) to verify TypeScript types are correct.
+
+### Manual Verification
+1.  Open the application.
+2.  Type in the search bar (e.g., "email").
+3.  Verify that categories containing "email" tools expand.
+4.  Verify that non-matching categories are hidden.
+5.  Clear search and verify normal navigation works.
+
+## New Features: Search Autocomplete & Visual Polish
+
+### Search Autocomplete
+#### [MODIFY] [Header.tsx](file:///c:/Users/Antonio/OneDrive/Escritorio/tonos-tool-treasurebox/src/components/Header.tsx)
+-   Add local state `suggestions`.
+-   Filter `tools` list based on input.
+-   Render an absolute dropdown list below the input field with matching tool names.
+-   Clicking a suggestion populates the search bar.
+
+### Missing Tool CTA
+#### [MODIFY] [Index.tsx](file:///c:/Users/Antonio/OneDrive/Escritorio/tonos-tool-treasurebox/src/pages/Index.tsx)
+-   Detect when `searchQuery` is active but `filteredTools` is empty.
+-   Render a "Tool Not Found" card with a link/button to suggest a new tool.
+
+### Visual Polish
+#### [MODIFY] [ToolCard.tsx](file:///c:/Users/Antonio/OneDrive/Escritorio/tonos-tool-treasurebox/src/components/ToolCard.tsx)
+-   Add glassmorphism logic.
+-   Enhance hover states (transform, shadow).
+-   Make it feel "premium".
+
+#### [MODIFY] [index.css](file:///c:/Users/Antonio/OneDrive/Escritorio/tonos-tool-treasurebox/src/index.css)
+-   Refine gradients.
+-   Ensure background isn't flat black/dark blue.

@@ -1,0 +1,12 @@
+# Tareas: Conversión de Links de Obsidian a Cosma
+
+- [x] Descargar script [obsidian2cosma.py](file:///c:/Users/Antonio/OneDrive/Escritorio/Ecosistema_Fintech_Global/cosma_workspace/obsidian2cosma.py)
+- [x] Parchear script para soporte UTF-8
+- [x] Parchear script para manejo de YAML malformado
+- [/] Ejecutar conversión de links
+    - [x] Primera ejecución (falló por encoding)
+    - [x] Segunda ejecución (falló por YAML)
+    - [/] Tercera ejecución (falló por PermissionError en rename_file)
+- [ ] Verificar archivos resultantes en `Empresas_cosma`
+- [ ] Actualizar [config.yml](file:///c:/Users/Antonio/OneDrive/Escritorio/Ecosistema_Fintech_Global/config.yml) para usar la nueva carpeta
+- [ ] Regenerar y verificar el cosmoscope

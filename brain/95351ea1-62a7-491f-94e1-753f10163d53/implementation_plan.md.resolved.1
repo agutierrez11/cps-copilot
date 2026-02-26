@@ -1,0 +1,28 @@
+# Real-Time Job Scouting and Connectivity Fix
+
+This plan addresses the empty Job Radar screen and implements actual job scouting for relevant roles.
+
+## Proposed Changes
+
+### Backend
+#### [MODIFY] [main.py](file:///c:/Users/Antonio/.gemini/antigravity/scratch/CareerBoosterAI/backend/main.py)
+- Fix CORS `allow_origins` to include `http://localhost:5173` (Vite's default port).
+
+#### [MODIFY] [job_radar.py](file:///c:/Users/Antonio/.gemini/antigravity/scratch/CareerBoosterAI/backend/job_radar.py)
+- Replace mock data with real-time fetching from the **Arbeitnow API** or **Remotive API**.
+- Implement filtering for keywords: "Fintech", "Remote", "Python", "Product", "LATAM".
+- Map external API fields to our internal [Job](file:///c:/Users/Antonio/.gemini/antigravity/scratch/CareerBoosterAI/frontend/src/pages/JobRadar.jsx#5-201) structure.
+
+### Frontend
+#### [MODIFY] [JobRadar.jsx](file:///c:/Users/Antonio/.gemini/antigravity/scratch/CareerBoosterAI/frontend/src/pages/JobRadar.jsx)
+- Ensure the UI gracefully handles different data lengths and real job descriptions.
+- Add error handling for cases where the backend is unreachable.
+
+## Verification Plan
+
+### Manual Verification
+1. Start the FastAPI backend: `python backend/main.py`.
+2. Start the Vite frontend: `npm run dev`.
+3. Open `http://localhost:5173/job-radar`.
+4. Verify that real vacancies from companies like Kavak, Bitso, or similar (depending on API results) appear in the list.
+5. Search for "Product" and ensure the list updates.

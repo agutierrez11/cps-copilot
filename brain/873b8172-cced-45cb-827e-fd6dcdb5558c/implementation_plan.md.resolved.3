@@ -1,0 +1,27 @@
+# Plan de Mejora: Reporte de Estudio Consolidado
+
+El usuario ha reportado que el PDF actual está incompleto y tiene problemas de diseño (texto desplazado o faltante). Este plan se enfoca en corregir la estructura del PDF y enriquecer el contenido con textos completos de las fuentes solicitadas.
+
+## Cambios Propuestos
+
+### 1. Contenido (daily_sources.json)
+- Buscar y añadir el texto completo en español de:
+    - **Modé Aní** (Agradecimiento al despertar).
+    - **Asher Iatzar** (Bendición por la salud física).
+    - **Shemá Israel** (Declaración de fe, primer párrafo).
+    - **Oraciones de Minjá y Arvit** (Versiones simplificadas para estudio/reflexión).
+- Incluir un fragmento significativo de **Pele Yoetz** y **Shaar Habitachon** en lugar de solo resúmenes.
+
+### 2. Diseño del PDF (lanzador_estudio.py)
+- Corregir el desplazamiento del texto asegurando que cada bloque comience en el margen izquierdo (`set_x(margin)`).
+- Ajustar el uso de `multi_cell` para garantizar que el texto fluya hacia abajo y no hacia los lados.
+- Re-activar el soporte de caracteres especiales (acentos) usando una codificación más robusta o fuentes que lo soporten.
+
+### 3. Verificación
+- Generar un PDF de prueba y verificar el diseño visual mediante una captura de pantalla.
+- Confirmar que el envío a Telegram incluya el archivo enriquecido.
+
+## Plan de Verificación
+
+- Ejecutar el script localmente y revisar `Reporte_Estudio_Hoy.pdf`.
+- Validar que el Talmud se siga anexando correctamente.

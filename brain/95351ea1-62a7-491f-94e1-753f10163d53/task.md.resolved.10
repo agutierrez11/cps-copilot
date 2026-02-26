@@ -1,0 +1,21 @@
+# Career Booster AI Tasks
+
+## Status Overview
+- [x] Initial project structure created (backend/frontend)
+- [x] [cv_analyzer.py](file:///c:/Users/Antonio/.gemini/antigravity/scratch/CareerBoosterAI/backend/cv_analyzer.py) implemented (CV parsing logic)
+- [x] [job_radar.py](file:///c:/Users/Antonio/.gemini/antigravity/scratch/CareerBoosterAI/backend/job_radar.py) implemented (Job scouting logic with mock data)
+- [x] Frontend development
+    - [x] Dashboard page (UI structure)
+    - [x] CV Vault page (UI structure)
+    - [x] Job Radar page (UI structure)
+    - [x] Integration with backend API
+    - [x] Fix Tailwind CSS v4 configuration
+    - [x] Real-time job scouting implementation
+    - [x] Backend connectivity (CORS) fix
+    - [x] Functional application links in Job Radar
+    - [x] Sorting jobs by match percentage
+    - [x] Detailed vacancy view in match panel
+    - [x] Recalibrate Radar for Sales & Fintech Consulting (B2B, Payments)
+    - [x] Geographic Refinement (Mexico, LATAM, Global Remote)
+- [x] [optimizer.py](file:///c:/Users/Antonio/.gemini/antigravity/scratch/CareerBoosterAI/backend/optimizer.py) implementation (Profile matching and application optimization)
+- [x] End-to-end testing and deployment instructions

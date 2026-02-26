@@ -1,0 +1,6 @@
+{
+  "artifactType": "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
+  "summary": "Plan para añadir soporte de archivos PDF. El bot podrá recibir PDFs del usuario, guardar sus file_ids, y ofrecer un botón \"Ver Libro (PDF)\" en los mensajes programados. Aunque no se puede saltar a una página automáticamente, tener el archivo a mano mejora mucho la experiencia.",
+  "updatedAt": "2026-02-22T14:51:04.422376200Z",
+  "version": "6"
+}

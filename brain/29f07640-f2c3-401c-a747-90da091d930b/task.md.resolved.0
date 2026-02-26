@@ -1,0 +1,14 @@
+# Task: Career Booster AI - Phase 1
+
+- [/] Project Setup
+    - [ ] Create `CareerBoosterAI` project directory [ ]
+    - [ ] Initialize `README.md` and environment [ ]
+- [ ] Module 1: CV Intelligence
+    - [ ] Extract content from PDFs in `CVs_2026` [ ]
+    - [ ] Generate Master Profile (Skills, Experience, Keywords) using AI [ ]
+- [ ] Module 2: Job Radar & Mapping
+    - [ ] Research/Integrate "Career Map" data [ ]
+    - [ ] Scrape relevant Fintech roles in LATAM/Mexico [ ]
+- [ ] Module 3: Matcher & Optimizer
+    - [ ] AI Match Score (CV vs Job) [ ]
+    - [ ] Auto-optimization Engine (Rewrite bullets, re-order sections) [ ]

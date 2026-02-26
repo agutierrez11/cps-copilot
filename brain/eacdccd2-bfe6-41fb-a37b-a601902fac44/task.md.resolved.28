@@ -1,0 +1,7 @@
+- [x] Manual Cookie Injection (Success)
+- [x] Verify Cloud Auth (Connection established)
+- [x] Initialize NotebookLM with project data (31 sources added)
+- [ ] Locate and Ingest CPS Notebook (Deferred per user request)
+- [/] Generate Full Cosma Graph (Running `npx cosma modelize`)
+- [ ] Initialize Socratic Coaching Session
+- [ ] Final project walkthrough

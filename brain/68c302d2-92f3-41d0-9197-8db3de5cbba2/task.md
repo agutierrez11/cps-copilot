@@ -1,0 +1,17 @@
+- [x] Researching current implementation [x]
+    - [x] Analyze scheduled message implementation in `bot.py`
+    - [x] Check configuration in `archivos_config.json`
+- [/] Investigate execution status [/]
+    - [x] Check if bot process is running (It wasn't found in tasklist)
+    - [x] Verify project location (Found in `Mis Proyectos Antigravity\telegram-study-bot`)
+    - [x] Identify launcher path error (`Rutina Torah` vs `telegram-study-bot`)
+- [x] Fix and verify
+    - [x] Update `lanzador_bot.bat` path
+    - [x] Restart bot and verify process
+    - [x] Send missed studies manually (06:12 and 09:00)
+    - [x] Add `bot.answer_callback_query` for responsiveness
+    - [x] Implement file-based logging (`bot_debug.log`)
+    - [x] Fix `UnicodeEncodeError` on startup
+    - [x] Perform system and internet performance check
+    - [/] Investigate `invalid callback ID` error [/]
+    - [ ] Verify button interaction with user

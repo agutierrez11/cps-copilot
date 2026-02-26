@@ -1,0 +1,506 @@
+# 📚 Cosma — Guía Completa de Referencia
+
+> Fuente: [User Manual oficial](https://cosma.arthurperret.fr/user-manual.html) | Leído: 2026-02-24
+
+---
+
+## 1. ¿Qué es Cosma?
+
+Cosma es una **herramienta de visualización para trabajadores del conocimiento**. Lee archivos de texto plano con enlaces `[[wiki links]]` y los renderiza como una **red interactiva de fichas** (un "cosmoscope").
+
+### Dos modos de configuración
+
+| Modo | Archivo | Cómo se usa |
+|------|---------|-------------|
+| **Local** | `config.yml` en el directorio actual | Ideal para automatización, reproducibilidad, trabajo distribuido |
+| **Global (proyecto)** | `foo.yml` en el directorio de datos del usuario | Ideal para uso prolongado en una sola máquina |
+
+---
+
+## 2. Los 5 Comandos de Cosma
+
+```bash
+cosma                        # Ayuda general
+cosma <command> --help       # Ayuda contextual por comando
+cosma --version / cosma -V   # Versión
+cosma --list-projects        # Listar proyectos globales
+cosma --create-user-data-dir # Crear directorio de datos del usuario
+```
+
+### Los cinco comandos principales
+
+| Comando largo | Corto | Función |
+|--------------|-------|---------|
+| `cosma config` | `cosma c` | Crear/gestionar configuración |
+| `cosma record` | `cosma r` | Crear ficha (modo formulario) |
+| `cosma autorecord` | `cosma a` | Crear ficha (modo una línea) |
+| `cosma batch` | `cosma b` | Crear fichas en lote desde JSON/CSV |
+| `cosma modelize` | `cosma m` | Generar el cosmoscope |
+
+---
+
+## 3. Configuración
+
+### Crear archivos de configuración
+
+```bash
+cosma config                        # Crea config.yml en el directorio actual
+cosma config --global <nombre>      # Crea <nombre>.yml en el dir. de datos del usuario
+cosma config --global               # Crea defaults.yml (configuración base para todos los proyectos)
+```
+
+> [!TIP]
+> Usa `defaults.yml` para definir valores comunes a todos tus proyectos (colores, tamaño de texto, bibliografía). Todos los nuevos `config.yml` heredarán esos valores.
+
+### Parámetros de configuración completos
+
+```yaml
+# --- FUENTE DE DATOS ---
+select_origin: directory      # 'directory' | 'csv' | 'online'
+files_origin: ''              # Ruta al directorio de archivos .md
+nodes_origin: ''              # Ruta al CSV de nodos (si select_origin: csv)
+links_origin: ''              # Ruta al CSV de enlaces (si select_origin: csv)
+nodes_online: ''              # URL al CSV de nodos (si select_origin: online)
+links_online: ''              # URL al CSV de enlaces (si select_origin: online)
+images_origin: ''             # Ruta a imágenes locales
+export_target: ''             # Ruta de exportación del cosmoscope
+
+# --- COMPORTAMIENTO ---
+history: true                 # Guardar copia de cada cosmoscope generado
+focus_max: 2                  # Profundidad máxima del modo Focus (ver §8.4)
+generate_id: always           # 'always' | 'never' | 'ask' — para cosma record
+link_context: tooltip         # 'tooltip' | 'inline' — cómo mostrar contexto de backlinks
+hide_id_from_record_header: false
+
+# --- TIPOS DE NODOS ---
+record_types:
+  undefined:
+    fill: '#858585'
+    stroke: '#858585'
+  # Agrega tus propios tipos:
+  # empresa:
+  #   fill: '#1a73e8'
+  #   stroke: '#1a73e8'
+
+# --- TIPOS DE ENLACES ---
+link_types:
+  undefined:
+    stroke: simple            # 'simple' | 'dash' | 'dotted' | 'double'
+    color: '#e1e1e1'
+
+# --- FILTROS DE REGISTROS ---
+record_filters: []
+# Ejemplo:
+# record_filters:
+#   - meta: tag
+#     value: borrador
+#   - meta: type
+#     value: interno
+
+# --- METADATOS PERSONALIZADOS ---
+record_metas: []
+# Ejemplo: record_metas: [sector, pais, fundacion]
+
+# --- APARIENCIA DEL GRAFO ---
+graph_background_color: '#ffffff'
+graph_highlight_color: '#ff6a6a'
+graph_highlight_on_hover: true
+graph_text_size: 10
+graph_arrows: true
+
+# --- TAMAÑO DE NODOS ---
+node_size_method: degree      # 'degree' (por conexiones) | 'unique' (uniforme)
+node_size: 10
+node_size_max: 20
+node_size_min: 2
+
+# --- FÍSICA DEL GRAFO ---
+attraction_force: 200
+attraction_distance_max: 250
+attraction_vertical: 0        # Fuerza vertical (0.1 acerca nodos aislados)
+attraction_horizontal: 0      # Fuerza horizontal
+
+# --- VISTAS GUARDADAS ---
+views: {}
+# Ejemplo:
+# views:
+#   "Vista Pagos": https://cosma.example.com/cosmo.html#20210427185546?filters=...
+
+# --- CITAS BIBLIOGRÁFICAS ---
+references_as_nodes: false
+references_type_label: references
+bibliography: ''              # Ruta al archivo .json CSL
+csl: ''                       # Ruta al archivo .csl de estilo de cita
+csl_locale: ''                # Ruta al archivo .xml de locale CSL
+
+# --- PERSONALIZACIÓN ---
+css_custom: ''                # Ruta a hoja de estilos CSS personalizada
+devtools: false
+lang: en                      # 'en' | 'fr'
+
+# --- METADATOS DEL COSMOSCOPE ---
+title: ''
+author: ''
+description: ''
+keywords: []
+link_symbol: ''               # Símbolo Unicode para reemplazar IDs en enlaces (ej: '→')
+
+# --- REGISTRO CRONOLÓGICO ---
+chronological_record_meta: ''
+```
+
+---
+
+## 4. Contenido: Archivos Markdown
+
+### 4.1 Estructura de un archivo .md
+
+```markdown
+---
+title: Nombre de la Empresa
+id: 20201209111625
+types:
+  - empresa
+tags:
+  - fintech
+  - pagos
+sector: Pagos Digitales
+pais: México
+---
+
+Contenido de la ficha en **Markdown**...
+```
+
+### 4.1.1 Metadatos predefinidos
+
+| Campo | Descripción | Notas |
+|-------|-------------|-------|
+| `title` | ✅ Obligatorio | Nombre de la ficha |
+| `id` | Identificador único (14 dígitos) | Si existe, los enlaces DEBEN usar el ID |
+| `types` / `type` | Lista de tipos de ficha | Deben estar definidos en `config.yml` |
+| `tags` / `keywords` | Palabras clave | Aparecen como filtros en el cosmoscope |
+| `thumbnail` | Imagen de portada de la ficha | |
+| `begin` / `end` | Fechas para línea de tiempo | |
+
+### 4.1.2 Metadatos personalizados
+
+Cualquier otro campo (ej: `sector`, `pais`, `fundacion`) es ignorado por defecto. Para que aparezca en el cosmoscope, declararlo en `config.yml`:
+
+```yaml
+record_metas: [sector, pais, fundacion]
+```
+
+### 4.2 Sintaxis de enlaces
+
+```markdown
+# Enlace por título (no hay ID en el archivo):
+[[Nombre de la Empresa]]
+
+# Enlace por ID:
+[[20201209111625]]
+
+# Enlace por ID con texto personalizado:
+[[20201209111625|Nombre de la Empresa]]
+
+# Enlace tipado (tipo definido en link_types):
+[[rival:20201209111625|Empresa Competidora]]
+[[generic:Concepto Origen]]
+```
+
+> [!IMPORTANT]
+> Si una ficha tiene `id`, los enlaces por título NO funcionan. Siempre usa el ID.
+
+### 4.3 Identificadores únicos
+
+- Formato: timestamp de 14 dígitos (YYYYMMDDHHMMSS)
+- Se generan automáticamente con `cosma record`
+- Configurable en `generate_id`: `always` | `never` | `ask`
+- Previenen el "link rot" sin depender de un programa para mantener los enlaces
+
+---
+
+## 5. Comandos de Creación de Registros
+
+### `cosma record` — Modo Formulario
+
+```bash
+cosma record                          # Pide título, tipos y keywords interactivamente
+cosma record --project <nombre>       # Usa proyecto global
+cosma record --reference              # Crea ficha con citation key como ID (Zotero)
+```
+
+### `cosma autorecord` — Modo Una Línea
+
+```bash
+cosma autorecord "Empresa ABC" empresa fintech,pagos
+cosma a "Empresa ABC" empresa fintech,pagos
+cosma a "Empresa ABC" "tipo A,tipo B" "kw1,kw2" --project fintech
+```
+
+- Tipos y keywords separados por comas (espacios después de la coma se ignoran)
+- Con `generate_id: ask`, agregar flag `-id` para generar ID automáticamente
+
+### `cosma batch` — Creación en Lote
+
+```bash
+cosma batch ./records.json
+cosma batch ./records.csv --project fintech
+```
+
+**Formato JSON:**
+```json
+[
+  { "title": "Empresa mínima" },
+  {
+    "title": "Empresa Completa SA",
+    "type": ["empresa", "unicornio"],
+    "metas": { "sector": "Pagos", "pais": "México" },
+    "tags": ["fintech", "b2b"],
+    "begin": "2010",
+    "end": "2024",
+    "content": "Descripción de la empresa...",
+    "thumbnail": "logo.jpg"
+  }
+]
+```
+
+**Formato CSV:**
+```
+title,content,type:primary,type:secondary,meta:sector,meta:pais,tag:categoria,time:begin,time:end,thumbnail
+Empresa mínima,,,,,,,,,
+Empresa Completa,Descripción,empresa,unicornio,Pagos,México,fintech,2010,2024,logo.png
+```
+
+> [!NOTE]
+> El batch usa pseudo-timestamps para los IDs (evita duplicados). Permite hasta 913,599 registros por día por directorio.
+
+---
+
+## 6. Fuente de Datos CSV (Alternativa a Markdown)
+
+Para usar Google Sheets u hojas de cálculo como fuente de datos:
+
+1. Una hoja para **nodos**, otra para **enlaces**
+2. Publicar como CSV (Archivo › Compartir › Publicar en la web)
+3. Pegar URLs en `nodes_online` y `links_online` del `config.yml`
+
+### Columnas para nodos CSV
+
+| Columna | Obligatorio | Descripción |
+|---------|-------------|-------------|
+| `title` | ✅ | Nombre del nodo |
+| `id` | | Identificador |
+| `type:<nombre>` | | Tipo (ej: `type:primary`) |
+| `tag:<nombre>` | | Keyword |
+| `meta:<nombre>` | | Metadato custom |
+| `time:begin` / `time:end` | | Fechas |
+| `content` | | Cuerpo del texto |
+| `thumbnail` | | Imagen |
+
+### Columnas para enlaces CSV
+
+| Columna | Obligatorio | Descripción |
+|---------|-------------|-------------|
+| `source` | ✅ | ID o título del nodo origen |
+| `target` | ✅ | ID o título del nodo destino |
+| `id` | | ID del enlace |
+| `label` | | Etiqueta del enlace |
+| `type` | | Tipo de enlace |
+
+---
+
+## 7. Generar el Cosmoscope (`modelize`)
+
+```bash
+cosma modelize                             # Genera cosmoscope desde config.yml local
+cosma m                                    # Forma corta
+cosma modelize --project <nombre>          # Usar proyecto global
+cosma modelize --custom-css                # Aplicar CSS personalizado
+cosma modelize --citeproc                  # Procesar citas bibliográficas
+cosma modelize --citeproc --custom-css     # Ambas opciones juntas
+cosma modelize --sample                    # Generar cosmoscope de ejemplo (sin config)
+```
+
+### Opciones avanzadas
+
+**CSS personalizado** — `css_custom` en config + `--custom-css` al generar:
+```css
+/* Cambia fuentes del cosmoscope */
+:root {
+  --sans: "IBM Plex Sans", sans-serif;
+  --serif: "IBM Plex Serif", serif;
+}
+```
+
+**Excluir registros** — con `record_filters` en config:
+```yaml
+record_filters:
+  - meta: tag
+    value: borrador
+  - meta: type
+    value: interno
+  - meta: pais
+    value: "no aplica"
+```
+
+**Historial** — Cosma guarda cada cosmoscope generado automáticamente. Para desactivar:
+```yaml
+history: false
+```
+
+**Errores** — Se generan en el subdirectorio `reports` del directorio de datos del usuario.
+
+---
+
+## 8. Citas y Bibliografías
+
+Cosma integra citas académicas (estilo Zotero/Pandoc):
+
+### Archivos necesarios
+
+1. **Datos bibliográficos** `.json` (formato CSL-JSON, exportable desde Zotero)
+2. **Estilo de cita** `.csl` (desde [Zotero CSL styles](https://www.zotero.org/styles))
+3. **Locale CSL** `.xml` (desde [GitHub CSL locales](https://github.com/citation-style-language/locales))
+
+### Configuración
+
+```yaml
+bibliography: /ruta/referencias.json
+csl: /ruta/estilo.csl
+csl_locale: /ruta/locale-es.xml
+```
+
+### Sintaxis de cita (Pandoc)
+
+```markdown
+Texto sobre escribir como tecnología intelectual [@goody1977, 46-52]...
+```
+
+Genera automáticamente:
+```
+Texto sobre escribir como tecnología intelectual (Goody 1977, 46-52)…
+
+Bibliografía
+------------
+GOODY, Jack, 1977. The Domestication of the Savage Mind. Cambridge University Press.
+```
+
+### Referencias como nodos del grafo (`references_as_nodes`)
+
+```yaml
+references_as_nodes: true
+references_type_label: "referencia"
+record_types:
+  referencia:
+    fill: '#6C6C6C'
+    stroke: '#6C6C6C'
+```
+
+Con esto, cada referencia citada se convierte en un nodo del grafo y aparece con backlinks contextualizados que muestran dónde fue citada.
+
+---
+
+## 9. Usar el Cosmoscope (UI)
+
+### Layout: 3 columnas
+
+| Columna | Contenido |
+|---------|-----------|
+| Izquierda (Menú) | Barra de búsqueda, filtros por tipo, filtros por keywords, índice, vistas |
+| Centro | **Grafo interactivo** |
+| Derecha | Contenido de la ficha seleccionada |
+
+### Atajos de teclado
+
+| Tecla | Acción |
+|-------|--------|
+| `C` | Centrar en el nodo seleccionado |
+| `R` | Reset del zoom |
+| `Space` | Reiniciar simulación de física (desenlaza nodos entrelazados) |
+| `F` | Activar/desactivar modo Focus |
+| `↑↓` | Controlar nivel de foco (con Focus activo) |
+| `Esc` | Deseleccionar nodo |
+| `Alt + R` | Resetear vista completa |
+
+### Grafo
+
+- **Hover** sobre nodo → resalta el nodo y sus conexiones
+- **Click** en nodo → abre la ficha + centra el grafo
+- **Doble click** en fondo → hace zoom
+- **Click y arrastrar** → mueve nodos (pero siguen sujetos a la física)
+- **Barra de color** arriba del menú → indica si la simulación está activa
+- Presionar `Space` varias veces desenlaza grafos muy entrelazados
+
+### Focus Mode (`F`)
+
+- Solo muestra las conexiones directas al nodo seleccionado
+- Slider controla la profundidad (1 = conexiones inmediatas, 2 = dos saltos, etc.)
+- Máximo configurable con `focus_max` en el config
+
+### Búsqueda
+
+- Búsqueda fuzzy por títulos
+- Respeta los filtros activos (una ficha oculta por filtro no aparece en sugerencias)
+
+### Filtros
+
+- **Por tipo**: clic en el tipo para ocultar/mostrar; `Alt + clic` oculta todo lo demás
+- **Por keywords**: clic en keyword para filtrar; múltiples keywords simultáneos
+
+### Índice
+
+- Lista alfabética de todas las fichas (ascendente/descendente)
+- Afectado por filtros y Focus mode
+
+### Vistas guardadas
+
+```yaml
+# En config.yml, guardar vistas nombradas:
+views:
+  "Ecosistema Pagos": "https://dominio.com/cosmo.html#20210427185546?..."
+```
+
+O copiar la URL actual desde el botón "Set URL to current view".
+
+---
+
+## 10. Compartir y Publicar
+
+El cosmoscope es **un archivo HTML autónomo**. Se puede:
+
+- Enviar por email, Telegram, Drive, etc.
+- Subir a cualquier servidor web
+- Compartir enlace directo a una ficha:
+
+```
+https://dominio.com/cosmo.html#20210427185546
+             el ID de la ficha ↑
+```
+
+---
+
+## 11. Trucos y Mejores Prácticas para el Ecosistema Fintech
+
+> [!TIP]
+> **Siempre usa IDs únicos**. Evita el "link rot" cuando renombras fichas.
+
+> [!TIP]
+> **Usa `link_symbol`** (ej: `→`) para que los IDs numéricos no aparezcan en el texto renderizado.
+
+> [!TIP]
+> **Usa `record_filters`** para excluir fichas en borrador o datos internos al generar el cosmoscope publicable.
+
+> [!TIP]
+> **Usa `attraction_vertical: 0.1`** si tienes nodos aislados que quedan lejos del centro del grafo.
+
+> [!TIP]
+> **`node_size_method: degree`** hace que los nodos con más conexiones sean más grandes — ideal para visualizar hubs del ecosistema.
+
+> [!TIP]
+> **CSV + Google Sheets** es ideal para trabajo colaborativo: permite que varios editores agreguen empresas/relaciones y Cosma genera el grafo desde la fuente online.
+
+> [!TIP]
+> **Vistas guardadas** (`views` en config) permiten crear accesos directos a subconjuntos del ecosistema por sector, país o tipo de empresa.
+
+> [!TIP]
+> Presionar `Space` varias veces en un grafo muy denso lo desenreda progresivamente.

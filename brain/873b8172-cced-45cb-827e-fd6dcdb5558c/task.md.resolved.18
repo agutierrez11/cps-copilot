@@ -1,0 +1,12 @@
+# Task: Implement Telegram Noahide Notifier
+
+- [x] Create folder structure on Desktop
+- [x] Configure Telegram ID and Token
+- [x] Noahide Prayer Book PDF extraction 
+- [x] Telegram Notifier System (Real-time)
+    - [x] Implement scraping for messianictorah.org (Daily Aliyah)
+    - [x] Create [notificador_noajida.py](file:///C:/Users/Antonio/.gemini/antigravity/scratch/torah_automation/notificador_noajida.py) with Zmanim scheduling
+    - [x] Integrate Noahide prayers from PDF as scheduled messages
+- [x] Windows Persistence Setup
+    - [x] Create startup script for the notifier (INICIAR_BOT_NOAJIDA.bat)
+- [x] Final Verification (Manual trigger test)

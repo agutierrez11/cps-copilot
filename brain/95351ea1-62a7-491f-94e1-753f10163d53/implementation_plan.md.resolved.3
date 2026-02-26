@@ -1,0 +1,27 @@
+### [NEW FEATURE] Universal URL Scraper
+- **Goal**: Allow users to paste a URL (like Jooble, LinkedIn, or a Career Page) and have the app extract and analyze the vacancies.
+- **Frontend**: Add a "Custom URL Search" input in [JobRadar.jsx](file:///c:/Users/Antonio/.gemini/antigravity/scratch/CareerBoosterAI/frontend/src/pages/JobRadar.jsx).
+- **Backend**: Implement a new endpoint `/jobs/remote-url` that uses `BeautifulSoup` and heuristics to search for job titles and links in any HTML page.
+
+## Proposed Changes
+
+### Backend
+#### [NEW] [url_fetcher.py](file:///c:/Users/Antonio/.gemini/antigravity/scratch/CareerBoosterAI/backend/url_fetcher.py)
+- Logic to fetch HTML using `requests` with dynamic headers.
+- Basic heuristic parsing to identify "job-like" elements (titles, links).
+
+#### [MODIFY] [main.py](file:///c:/Users/Antonio/.gemini/antigravity/scratch/CareerBoosterAI/backend/main.py)
+- New endpoint `GET /jobs/custom?url=...` that interfaces with `url_fetcher.py`.
+
+### Frontend
+#### [MODIFY] [JobRadar.jsx](file:///c:/Users/Antonio/.gemini/antigravity/scratch/CareerBoosterAI/frontend/src/pages/JobRadar.jsx)
+- UI for entering a custom URL.
+- Logic to call the new backend endpoint and display the results in the existing radar list.
+
+## Verification Plan
+
+### Manual Verification
+1. Open the Job Radar page.
+2. Paste a public job portal URL (e.g., a specific search on Indeed or a Career page).
+3. Verify that the app "scrapes" the page and lists the relevant vacancies found.
+4. Select one of those vacancies and run the "Analyze & Optimize" flow.
