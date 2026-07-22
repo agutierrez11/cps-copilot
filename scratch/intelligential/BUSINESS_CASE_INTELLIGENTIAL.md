@@ -41,6 +41,16 @@ El portafolio actual de Intelligential está compuesto por SOFOMes ENR de carter
 4. **Ecosistema Nivel Enterprise Pre-Integrado:**
    - Conexión nativa con aliados clave (Mifiel, Weetrust, Círculo de Crédito, Buró de Crédito, Nubarium, Prevenciondelavado.com, STP, Monato, Syntage, Nufi, Moffin). El cliente no invierte meses ni dinero en desarrollo de APIs.
 
+### ⚡ Matriz de Dolores del Mercado (¿Por qué SÍ compran vs. ¿Por qué NO compran?)
+
+| Dimensión | 🟢 ¿Por qué SÍ compran? (Win Drivers) | 🔴 ¿Por qué NO compran? (Frenos / Friction) | ⚔️ Cómo lo Descongelamos en Intelligential |
+| :--- | :--- | :--- | :--- |
+| **Tiempo de Salida** | Go-Live garantizado en **30 Días** vs. 6-12 meses de competidores. | Miedo a la parálisis operativa durante la migración de cartera. | Garantía SLA contractual con bonificación sobre Setup Fee si nos retrasamos. |
+| **Costos / Presupuesto** | Paquete Todo-en-Uno sin cobros sorpresa por usuario o módulo extra. | Contrato vigente y pendiente de vencer con proveedor actual (ej. DynamiCore). | Oferta **"Migración Sin Doble Costo"**: bonificación de renta mientras vence el contrato anterior. |
+| **Regulación CNBV/PLD** | Módulo PLD/FT nativo e inspeccionable desde el primer día. | Miedo a reprobar auditoría o perder historial regulatorio en el cambio. | Migración de datos estructurada e historial embebido listo para inspección. |
+| **Ecosistema & APIs** | Conexión lista con STP, Mifiel, Buró, Nubarium, Nufi sin código custom. | Experiencias negativas pasadas con parches de software que nunca funcionaron. | Demo en vivo en Sandbox mostrando llamadas API nativas funcionales. |
+| **Adopción del Equipo** | Interfaz moderna, limpia e intuitiva (Zero training lag). | Resistencia al cambio del personal de mesa de control acostumbrado a Excel. | Capacitación incluida en Semanas 1-4 y acompañamiento continuo post-salida. |
+
 ---
 
 ## 3. 💡 Propuesta de Valor Comercial y Pilares del Producto
