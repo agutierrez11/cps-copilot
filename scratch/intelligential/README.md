@@ -19,6 +19,7 @@ Bienvenido al espacio de trabajo enfocado en la estrategia comercial, arquitectu
 ## 📁 Archivos y Estructura del Proyecto
 
 - 📄 **[BUSINESS_CASE_INTELLIGENTIAL.md](file:///c:/Users/Antonio/.gemini/antigravity-ide/scratch/intelligential/BUSINESS_CASE_INTELLIGENTIAL.md)** — Propuesta ejecutiva, Win-Analysis del portafolio actual, Unit Economics, propuesta de valor (4 Pilares + Ecosistema de Aliados) y Plan 30-60-90 días.
+- 🧠 **[SALES_COPILOT_AND_OBSIDIAN_BRAIN.md](file:///c:/Users/Antonio/.gemini/antigravity-ide/scratch/intelligential/SALES_COPILOT_AND_OBSIDIAN_BRAIN.md)** — Estrategia de Sales Enablement: Bóveda de Obsidian (`Intelligential Brain`) y Copiloto de Ventas asistido por IA para ejecutivos comercial.
 - 📄 **[PLAYBOOK_DESCONGELAMIENTO_PIPELINE.md](file:///c:/Users/Antonio/.gemini/antigravity-ide/scratch/intelligential/PLAYBOOK_DESCONGELAMIENTO_PIPELINE.md)** — Estrategia de re-engagement, oferta de migración sin doble costo, garantía Go-Live 30 días y manejo de objeciones.
 - 📄 **[TEARDOWN_DYNAMICORE.md](file:///c:/Users/Antonio/.gemini/antigravity-ide/scratch/intelligential/TEARDOWN_DYNAMICORE.md)** — Matriz comparativa, TCO a 12 meses (ahorro del 42%) y Battlecard de ventas vs. DynamiCore.
 - 📊 **[data/sofomes_arrendadoras_mx.csv](file:///c:/Users/Antonio/.gemini/antigravity-ide/scratch/intelligential/data/sofomes_arrendadoras_mx.csv)** — Base de datos calificada de SOFOMes y Arrendadoras en México con contactos clave y estado en el funnel.
