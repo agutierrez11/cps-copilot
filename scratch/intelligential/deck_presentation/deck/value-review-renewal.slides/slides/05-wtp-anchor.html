@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Willingness-to-Pay Anchor</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Serif:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  body { margin:0; padding:0; overflow:hidden; background:#FFFFFF; font-family:'Inter',sans-serif; color:#1F2933; }
+  .mono { font-family:'IBM Plex Mono',monospace; }
+  .serif { font-family:'IBM Plex Serif',serif; }
+</style>
+</head>
+<body>
+<div class="slide-container" data-screen-label="05 WTP Anchor" style="position:relative; width:1920px; height:1080px; overflow:hidden; background:#FFFFFF;">
+
+  <div data-object="true" data-object-type="textbox" style="position:absolute; left:120px; top:96px; width:1000px;">
+    <div class="mono" style="font-size:14px; letter-spacing:0.22em; color:#0F766E; text-transform:uppercase;">05 / Willingness-to-pay anchor</div>
+  </div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute; left:1500px; top:96px; width:300px; text-align:right;">
+    <div class="mono" style="font-size:14px; letter-spacing:0.22em; color:#7B8794; text-transform:uppercase;">Price per unit of outcome</div>
+  </div>
+  <div data-object="true" data-object-type="shape" style="position:absolute; left:120px; top:140px; width:1680px; height:1px; background:#D5DBE2; z-index:1;"></div>
+
+  <!-- Title -->
+  <div data-object="true" data-object-type="textbox" style="position:absolute; left:120px; top:200px; width:1500px;">
+    <div class="serif" style="font-size:64px; line-height:1.05; color:#1F2933; font-weight:500; letter-spacing:-0.01em;">$1 of Lattice spend = $4.04 of measurable return.</div>
+    <div style="font-size:24px; color:#52606D; margin-top:22px; line-height:1.5;">The implied ceiling. Every offer on slide 07 is scored against this number &mdash; not against last year's list price.</div>
+  </div>
+
+  <!-- Big formula card -->
+  <div data-object="true" data-object-type="shape" style="position:absolute; left:120px; top:400px; width:1180px; height:480px; background:#1F2933; z-index:0;"></div>
+
+  <div data-object="true" data-object-type="textbox" style="position:absolute; left:160px; top:436px; width:1100px;">
+    <div class="mono" style="font-size:13px; letter-spacing:0.24em; color:#5EEAD4; text-transform:uppercase;">Economic Value Estimation &mdash; Nagle / Hogan / Zale<sup style="color:#7B8794;">[2]</sup></div>
+  </div>
+
+  <!-- EVE formula visual -->
+  <div data-object="true" data-object-type="textbox" style="position:absolute; left:160px; top:490px; width:1100px;">
+    <div style="display:flex; align-items:flex-end; gap:24px; padding-bottom:14px;">
+      <div>
+        <div class="mono" style="font-size:13px; letter-spacing:0.18em; color:#7B8794; text-transform:uppercase;">Reference value</div>
+        <div class="serif" style="font-size:54px; color:#F5F7FA; line-height:1.1; margin-top:8px; font-weight:500;">$310K</div>
+        <div style="font-size:14px; color:#B0BAC5; margin-top:6px; max-width:240px; line-height:1.45;">Legacy ATS &times; payroll connector, fully loaded.</div>
+      </div>
+      <div class="serif" style="font-size:60px; color:#5EEAD4; line-height:1.1;">+</div>
+      <div>
+        <div class="mono" style="font-size:13px; letter-spacing:0.18em; color:#7B8794; text-transform:uppercase;">Differentiation value</div>
+        <div class="serif" style="font-size:54px; color:#F5F7FA; line-height:1.1; margin-top:8px; font-weight:500;">$1.63M</div>
+        <div style="font-size:14px; color:#B0BAC5; margin-top:6px; max-width:240px; line-height:1.45;">Coordinator deferral + zero-day onboarding + audit clean run.</div>
+      </div>
+      <div class="serif" style="font-size:60px; color:#5EEAD4; line-height:1.1;">=</div>
+      <div>
+        <div class="mono" style="font-size:13px; letter-spacing:0.18em; color:#5EEAD4; text-transform:uppercase;">Total economic value</div>
+        <div class="serif" style="font-size:68px; color:#FFFFFF; line-height:1.1; margin-top:8px; font-weight:500;">$1.94M</div>
+        <div style="font-size:14px; color:#A7F3D0; margin-top:6px; max-width:240px; line-height:1.45;">The Northwind-side ceiling for FY26.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom strip with WTP band -->
+  <div data-object="true" data-object-type="shape" style="position:absolute; left:160px; top:746px; width:1100px; height:1px; background:#3A4753; z-index:1;"></div>
+
+  <div data-object="true" data-object-type="textbox" style="position:absolute; left:160px; top:770px; width:1100px;">
+    <div class="mono" style="font-size:13px; letter-spacing:0.22em; color:#5EEAD4; text-transform:uppercase; margin-bottom:14px;">Implied WTP band for 2026</div>
+    <div style="display:flex; align-items:baseline; gap:48px;">
+      <div>
+        <div class="mono" style="font-size:14px; color:#7B8794;">Floor (cost-justified)</div>
+        <div class="serif" style="font-size:36px; color:#F5F7FA; font-weight:500;">$485K</div>
+      </div>
+      <div>
+        <div class="mono" style="font-size:14px; color:#7B8794;">Mid (value-shared 70/30)</div>
+        <div class="serif" style="font-size:36px; color:#F5F7FA; font-weight:500;">$582K</div>
+      </div>
+      <div>
+        <div class="mono" style="font-size:14px; color:#7B8794;">Ceiling (TEV / 3.3x)</div>
+        <div class="serif" style="font-size:36px; color:#F5F7FA; font-weight:500;">$640K</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right: ratio callout -->
+  <div data-object="true" data-object-type="shape" style="position:absolute; left:1340px; top:400px; width:460px; height:480px; background:#F4F6F8; border:1px solid #D5DBE2; z-index:0;"></div>
+
+  <div data-object="true" data-object-type="textbox" style="position:absolute; left:1380px; top:436px; width:380px;">
+    <div class="mono" style="font-size:13px; letter-spacing:0.24em; color:#5B21B6; text-transform:uppercase;">The anchor we keep coming back to</div>
+  </div>
+
+  <div data-object="true" data-object-type="textbox" style="position:absolute; left:1380px; top:520px; width:400px;">
+    <div class="serif" style="font-size:168px; color:#0F766E; line-height:0.9; font-weight:500; letter-spacing:-0.04em;">4.04<span style="font-size:64px; color:#1F2933;">&times;</span></div>
+    <div style="font-size:18px; color:#52606D; margin-top:24px; line-height:1.5;">Realised return per dollar of platform spend, FY25 actuals.</div>
+    <div style="font-size:16px; color:#52606D; margin-top:18px; line-height:1.5;">Industry median for HR-tech ROI sits at <strong style="color:#1F2933;">1.7&times;&ndash;2.4&times;</strong>.</div>
+  </div>
+
+  <!-- Footer -->
+  <div data-object="true" data-object-type="textbox" style="position:absolute; left:120px; top:996px; width:1680px;">
+    <div class="mono" style="font-size:12px; color:#7B8794;">Methodology &mdash; Nagle TT, Hogan JE, Zale J. <em>The Strategy and Tactics of Pricing</em>, 6th ed. Routledge 2016 &mdash; Reference + Differentiation Value framework.<sup>[2]</sup> &nbsp;·&nbsp; Industry median: OpenView SaaS Benchmarks<sup>[6]</sup>.</div>
+  </div>
+
+</div>
+</body>
+</html>

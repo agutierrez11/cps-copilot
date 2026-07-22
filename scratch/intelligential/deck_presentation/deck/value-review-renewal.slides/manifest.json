@@ -1,0 +1,23 @@
+{
+  "schemaVersion": "1.0",
+  "format": "html",
+  "metadata": {
+    "title": "Value Review — 2026 Renewal",
+    "description": "An 11-slide renewal proposal that reframes price into realised value. Customer: Northwind Talent Cloud. Vendor: Lattice HR Platform.",
+    "author": "Lattice Customer Success"
+  },
+  "canvas": {"width": 1920, "height": 1080},
+  "playlist": [
+    "01-cover.html",
+    "02-what-we-set-out-to-do.html",
+    "03-realised-value-receipt.html",
+    "04-reframe.html",
+    "05-wtp-anchor.html",
+    "06-list-price-drivers.html",
+    "07-good-better-best.html",
+    "08-tco-dcf.html",
+    "09-mutual-action-plan.html",
+    "10-whats-coming.html",
+    "11-appendix.html"
+  ]
+}
