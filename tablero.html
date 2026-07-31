@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tablero de Ejecución Anti-Dispersión (Vixiees Mode) — Antonio Gutiérrez</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0b0f19;
+            --surface: #141c2e;
+            --surface-card: #1b263b;
+            --border: #283655;
+            --primary: #6366f1;
+            --accent: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --text: #f3f4f6;
+            --text-muted: #9ca3af;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            padding: 30px;
+            min-height: 100vh;
+        }
+        .header-bar {
+            max-width: 1200px;
+            margin: 0 auto 25px auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 20px;
+        }
+        h1 { font-size: 1.7rem; font-weight: 700; background: linear-gradient(135deg, #fff, #a5b4fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .metrics-grid {
+            max-width: 1200px;
+            margin: 0 auto 25px auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        .metric-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 15px 20px;
+            border-radius: 12px;
+            text-align: center;
+        }
+        .metric-val { font-size: 1.8rem; font-weight: 700; color: var(--primary); font-family: 'JetBrains Mono', monospace; }
+        .metric-lbl { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; margin-top: 4px; }
+        
+        /* NEXT ACTION HERO PANEL */
+        .next-action-hero {
+            max-width: 1200px;
+            margin: 0 auto 30px auto;
+            background: linear-gradient(135deg, #1e1b4b 0%, #1e293b 100%);
+            border: 2px solid var(--primary);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.25);
+            position: relative;
+        }
+        .hero-tag {
+            display: inline-block;
+            background: var(--primary);
+            color: #fff;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 12px;
+        }
+        .hero-title { font-size: 1.5rem; font-weight: 700; color: #fff; margin-bottom: 10px; }
+        .hero-desc { font-size: 1rem; color: #cbd5e1; margin-bottom: 20px; line-height: 1.5; }
+        .hero-meta { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 25px; font-size: 0.9rem; font-family: 'JetBrains Mono', monospace; }
+        .hero-meta-item { background: rgba(255,255,255,0.05); padding: 6px 14px; border-radius: 8px; border: 1px solid var(--border); }
+        
+        .btn-complete {
+            background: var(--accent);
+            color: #000;
+            font-weight: 700;
+            font-size: 1rem;
+            padding: 14px 28px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .btn-complete:hover { transform: scale(1.03); box-shadow: 0 0 20px rgba(16, 185, 129, 0.4); }
+        .btn-skip {
+            background: transparent;
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 0.9rem;
+            padding: 14px 20px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        /* QUEUE LIST */
+        .queue-title { max-width: 1200px; margin: 0 auto 15px auto; font-size: 1.1rem; font-weight: 600; color: var(--text-muted); }
+        .queue-list { max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; gap: 10px; }
+        .queue-item {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            opacity: 0.7;
+        }
+        .queue-item.active { opacity: 1; border-color: var(--primary); background: var(--surface-card); }
+        .queue-item.completed { opacity: 0.3; text-decoration: line-through; }
+        .badge-prio { font-size: 0.75rem; font-weight: 700; padding: 2px 8px; border-radius: 6px; }
+        .prio-high { background: rgba(239, 68, 68, 0.2); color: var(--danger); border: 1px solid var(--danger); }
+        .prio-med { background: rgba(245, 158, 11, 0.2); color: var(--warning); border: 1px solid var(--warning); }
+        .prio-std { background: rgba(99, 102, 241, 0.2); color: var(--primary); border: 1px solid var(--primary); }
+    </style>
+</head>
+<body>
+
+    <div class="header-bar">
+        <div>
+            <h1>⚡ Tablero de Ejecución (Vixiees Mode)</h1>
+            <p style="color: var(--text-muted); font-size: 0.88rem; margin-top: 4px;">Modo Anti-Dispersión: 1 Acción Única a la Vez sin distracciones</p>
+        </div>
+        <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; color: var(--accent);">
+            ● Modo Enfoque Activo
+        </div>
+    </div>
+
+    <div class="metrics-grid">
+        <div class="metric-card">
+            <div class="metric-val" id="completedCount">0</div>
+            <div class="metric-lbl">Acciones Completadas Hoy</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-val" id="remainingCount">50</div>
+            <div class="metric-lbl">Acciones Pendientes</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-val" id="metaPercent">0%</div>
+            <div class="metric-lbl">Cumplimiento Meta Diaria</div>
+        </div>
+    </div>
+
+    <!-- MAIN NEXT BEST ACTION HERO CARD -->
+    <div class="next-action-hero" id="heroPanel">
+        <div class="hero-tag" id="heroTag">🎯 PRÓXIMA MEJOR ACCIÓN SUGERIDA</div>
+        <div class="hero-title" id="heroTitle">Cargando empresa...</div>
+        <div class="hero-desc" id="heroDesc">Cargando motivo táctico...</div>
+        
+        <div class="hero-meta">
+            <div class="hero-meta-item" id="heroChannel">Canal: -</div>
+            <div class="hero-meta-item" id="heroPrio">Prioridad: -</div>
+            <div class="hero-meta-item" id="heroTier">Tier: -</div>
+            <div class="hero-meta-item" id="heroLocation">Ubicación: -</div>
+        </div>
+
+        <div>
+            <button class="btn-complete" onclick="completeCurrentTask()">✅ MARCAR COMO COMPLETADA & SIGUIENTE</button>
+            <button class="btn-skip" onclick="skipCurrentTask()">⏭️ Saltar por ahora</button>
+        </div>
+    </div>
+
+    <div class="queue-title">📋 Cola de Ejecución Automatizada (Próximas Empresas)</div>
+    <div class="queue-list" id="queueList"></div>
+
+    <script>
+        const tasks = [{"id": 1, "empresa": "123 Con Nosotros, S.A. de C.V., SOFOM, E.N.R.", "ubicacion": "Ciudad de México (CDMX)", "tier": "Tier Mid-Market ($42k/m)", "estatus_cnbv": "En Supervisión CNBV", "accion": "Llamada de Rescate Urgente", "canal": "📞 Teléfono (Directorio)", "razon": "Alerta CNBV: Observaciones en expediente. Ofrecer salida en 14 días con CPS Sales Copilot.", "prioridad": "ALTA (Urgent)", "completada": false}, {"id": 2, "empresa": "1900 Soluciones Financieras, S.A. de C.V., SOFOM, E.N.R.", "ubicacion": "Nuevo León (Monterrey)", "tier": "Tier Multi-producto ($83k/m)", "estatus_cnbv": "Operando / Registro Activo SIPRES", "accion": "Mensaje Directo LinkedIn (AE)", "canal": "💼 LinkedIn InMail", "razon": "ICP Top Tier en Nuevo León (Monterrey). Enviar caso de estudio de descongelamiento de cartera.", "prioridad": "MEDIA", "completada": false}, {"id": 3, "empresa": "397 Cap, S.A. de C.V., SOFOM, E.N.R.", "ubicacion": "Jalisco (Guadalajara)", "tier": "Tier Enterprise ($200k/m)", "estatus_cnbv": "Operando / Registro Activo SIPRES", "accion": "Mensaje Directo LinkedIn (AE)", "canal": "💼 LinkedIn InMail", "razon": "ICP Top Tier en Jalisco (Guadalajara). Enviar caso de estudio de descongelamiento de cartera.", "prioridad": "MEDIA", "completada": false}, {"id": 4, "empresa": "3A Decker, S.A. de C.V., SOFOM, E.N.R.", "ubicacion": "Querétaro", "tier": "Tier Startup ($20k/m)", "estatus_cnbv": "Operando / Registro Activo SIPRES", "accion": "Correo de Prospección Fría", "canal": "📧 Email Outbound", "razon": "Presentación de TCO comparativo vs. DynamiCore y Middleware tradicionales.", "prioridad": "ESTÁNDAR", "completada": false}, {"id": 5, "empresa": "3JH Servicios Financieros, S.A. de C.V., SOFOM, E.N.R.", "ubicacion": "Guanajuato (León)", "tier": "Tier Mid-Market ($42k/m)", "estatus_cnbv": "Operando / Registro Activo SIPRES", "accion": "Correo de Prospección Fría", "canal": "📧 Email Outbound", "razon": "Presentación de TCO comparativo vs. DynamiCore y Middleware tradicionales.", "prioridad": "ESTÁNDAR", "completada": false}, {"id": 6, "empresa": "A55 Financiera, S.A.P.I. de C.V., SOFOM, E.N.R.", "ubicacion": "Yucatán (Mérida)", "tier": "Tier Multi-producto ($83k/m)", "estatus_cnbv": "Operando / Registro Activo SIPRES", "accion": "Correo de Prospección Fría", "canal": "📧 Email Outbound", "razon": "Presentación de TCO comparativo vs. DynamiCore y Middleware tradicionales.", "prioridad": "ESTÁNDAR", "completada": false}, {"id": 7, "empresa": "ABD Financial Services, S.A.P.I. de C.V., SOFOM, E.N.R.", "ubicacion": "Puebla", "tier": "Tier Enterprise ($200k/m)", "estatus_cnbv": "Operando / Registro Activo SIPRES", "accion": "Correo de Prospección Fría", "canal": "📧 Email Outbound", "razon": "Presentación de TCO comparativo vs. DynamiCore y Middleware tradicionales.", "prioridad": "ESTÁNDAR", "completada": false}, {"id": 8, "empresa": "ABV Innovación Financiera, S.A.P.I. de C.V., SOFOM, E.N.R.", "ubicacion": "Chihuahua", "tier": "Tier Startup ($20k/m)", "estatus_cnbv": "Operando / Registro Activo SIPRES", "accion": "Correo de Prospección Fría", "canal": "📧 Email Outbound", "razon": "Presentación de TCO comparativo vs. DynamiCore y Middleware tradicionales.", "prioridad": "ESTÁNDAR", "completada": false}, {"id": 9, "empresa": "ADE 2024, S.A.P.I. de C.V., SOFOM, E.N.R.", "ubicacion": "Baja California (Tijuana)", "tier": "Tier Mid-Market ($42k/m)", "estatus_cnbv": "Operando / Registro Activo SIPRES", "accion": "Correo de Prospección Fría", "canal": "📧 Email Outbound", "razon": "Presentación de TCO comparativo vs. DynamiCore y Middleware tradicionales.", "prioridad": "ESTÁNDAR", "completada": false}, {"id": 10, "empresa": "ADN Capital Soluciones de Crédito, S.A.P.I. de C.V., SOFOM, E.N.R.", "ubicacion": "Estado de México", "tier": "Tier Multi-producto ($83k/m)", "estatus_cnbv": "Operando / Registro Activo SIPRES", "accion": "Correo de Prospección Fría", "canal": "📧 Email Outbound", "razon": "Presentación de TCO comparativo vs. DynamiCore y Middleware tradicionales.", "prioridad": "ESTÁNDAR", "completada": false}, {"id": 11, "empresa": "AJM Servicios Integrales de la Huasteca, S.A. de C.V., SOFOM, E.N.R.", "ubicacion": "Coahuila (Saltillo)", "tier": "Tier Enterprise ($200k/m)", "estatus_cnbv": "Operando / Registro Activo SIPRES", "accion": "Correo de Prospección Fría", "canal": "📧 Email Outbound", "razon": "Presentación de TCO comparativo vs. DynamiCore y Middleware tradicionales.", "prioridad": "ESTÁNDAR", "completada": false}, {"id": 12, "empresa": "AM Partners, S.A. de C.V., SOFOM, E.N.R.", "ubicacion": "Sinaloa (Culiacán)", "tier": "Tier Mid-Market ($42k/m)", "estatus_cnbv": "Operando / Registro Activo SIPRES", "accion": "Correo de Prospección Fría", "canal": "📧 Email Outbound", "razon": "Presentación de TCO comparativo vs. DynamiCore y Middleware tradicionales.", "prioridad": "ESTÁNDAR", "completada": false}, {"id": 13, "empresa": "AMD Handa Capital, S.A. de C.V., SOFOM, E.N.R.", "ubicacion": "Sonora (Hermosillo)", "tier": "Tier Multi-producto ($83k/m)", "estatus_cnbv": "Operando / Registro Activo SIPRES", "accion": "Correo de Prospección Fría", "canal": "📧 Email Outbound", "razon": "Presentación de TCO comparativo vs. DynamiCore y Middleware tradicionales.", "prioridad": "ESTÁNDAR", "completada": false}, {"id": 14, "empresa": "AMVIS, S.A. de C.V., SOFOM, E.N.R.", "ubicacion": "Aguascalientes", "tier": "Tier Enterprise ($200k/m)", "estatus_cnbv": "Operando / Registro Activo SIPRES", "accion": "Correo de Prospección Fría", "canal": "📧 Email Outbound", "razon": "Presentación de TCO comparativo vs. DynamiCore y Middleware tradicionales.", "prioridad": "ESTÁNDAR", "completada": false}, {"id": 15, "empresa": "APX SF, S.A. DE C.V., SOFOM, E.N.R.", "ubicacion": "San Luis Potosí", "tier": "Tier Startup ($20k/m)", "estatus_cnbv": "Operando / Registro Activo SIPRES", "accion": "Correo de Prospección Fría", "canal": "📧 Email Outbound", "razon": "Presentación de TCO comparativo vs. DynamiCore y Middleware tradicionales.", "prioridad": "ESTÁNDAR", "completada": false}, {"id": 16, "empresa": "AQ Patrimonial, S.A.P.I. de C.V., SOFOM, E.N.R.", "ubicacion": "Ciudad de México (CDMX)", "tier": "Tier Mid-Market ($42k/m)", "estatus_cnbv": "Operando / Registro Activo SIPRES", "accion": "Mensaje Directo LinkedIn (AE)", "canal": "💼 LinkedIn InMail", "razon": "ICP Top Tier en Ciudad de México (CDMX). Enviar caso de estudio de descongelamiento de cartera.", "prioridad": "MEDIA", "completada": false}, {"id": 17, "empresa": "AR18, S.A.P.I. de C.V., SOFOM, E.N.R.", "ubicacion": "Nuevo León (Monterrey)", "tier": "Tier Multi-producto ($83k/m)", "estatus_cnbv": "Operando / Registro Activo SIPRES", "accion": "Mensaje Directo LinkedIn (AE)", "canal": "💼 LinkedIn InMail", "razon": "ICP Top Tier en Nuevo León (Monterrey). Enviar caso de estudio de descongelamiento de cartera.", "prioridad": "MEDIA", "completada": false}, {"id": 18, "empresa": "AS Business Credit, S.A.P.I. de C.V., SOFOM, E.N.R.", "ubicacion": "Jalisco (Guadalajara)", "tier": "Tier Enterprise ($200k/m)", "estatus_cnbv": "Operando / Registro Activo SIPRES", "accion": "Mensaje Directo LinkedIn (AE)", "canal": "💼 LinkedIn InMail", "razon": "ICP Top Tier en Jalisco (Guadalajara). Enviar caso de estudio de descongelamiento de cartera.", "prioridad": "MEDIA", "completada": false}, {"id": 19, "empresa": "ASF Servicios Financieros, S.A.P.I. de C.V., SOFOM, E.N.R.", "ubicacion": "Querétaro", "tier": "Tier Startup ($20k/m)", "estatus_cnbv": "Operando / Registro Activo SIPRES", "accion": "Correo de Prospección Fría", "canal": "📧 Email Outbound", "razon": "Presentación de TCO comparativo vs. DynamiCore y Middleware tradicionales.", "prioridad": "ESTÁNDAR", "completada": false}, {"id": 20, "empresa": "AT One, S.A. de C.V., SOFOM, E.N.R.", "ubicacion": "Guanajuato (León)", "tier": "Tier Mid-Market ($42k/m)", "estatus_cnbv": "Operando / Registro Activo SIPRES", "accion": "Correo de Prospección Fría", "canal": "📧 Email Outbound", "razon": "Presentación de TCO comparativo vs. DynamiCore y Middleware tradicionales.", "prioridad": "ESTÁNDAR", "completada": false}, {"id": 21, "empresa": "ATMX Tecnología, S.A. de C.V., SOFOM, E.N.R.", "ubicacion": "Yucatán (Mérida)", "tier": "Tier Multi-producto ($83k/m)", "estatus_cnbv": "Operando / Registro Activo SIPRES", "accion": "Correo de Prospección Fría", "canal": "📧 Email Outbound", "razon": "Presentación de TCO comparativo vs. DynamiCore y Middleware tradicionales.", "prioridad": "ESTÁNDAR", "completada": false}, {"id": 22, "empresa": "AVENTUM, S.A.P.I. de C.V., SOFOM, E.N.R.", "ubicacion": "Puebla", "tier": "Tier Enterprise ($200k/m)", "estatus_cnbv": "Operando / Registro Activo SIPRES", "accion": "Correo de Prospección Fría", "canal": "📧 Email Outbound", "razon": "Presentación de TCO comparativo vs. DynamiCore y Middleware tradicionales.", "prioridad": "ESTÁNDAR", "completada": false}, {"id": 23, "empresa": "Ac- Fin, S.A.P.I. de C.V., SOFOM, E.N.R.", "ubicacion": "Chihuahua", "tier": "Tier Startup ($20k/m)", "estatus_cnbv": "Operando / Registro Activo SIPRES", "accion": "Correo de Prospección Fría", "canal": "📧 Email Outbound", "razon": "Presentación de TCO comparativo vs. DynamiCore y Middleware tradicionales.", "prioridad": "ESTÁNDAR", "completada": false}, {"id": 24, "empresa": "Accedde, S.A. de C.V., SOFOM, E.N.R.", "ubicacion": "Baja California (Tijuana)", "tier": "Tier Mid-Market ($42k/m)", "estatus_cnbv": "Operando / Registro Activo SIPRES", "accion": "Correo de Prospección Fría", "canal": "📧 Email Outbound", "razon": "Presentación de TCO comparativo vs. DynamiCore y Middleware tradicionales.", "prioridad": "ESTÁNDAR", "completada": false}, {"id": 25, "empresa": "Accede a Tus Sueños, S.A. de C.V., SOFOM, E.N.R.", "ubicacion": "Estado de México", "tier": "Tier Multi-producto ($83k/m)", "estatus_cnbv": "En Supervisión CNBV", "accion": "Llamada de Rescate Urgente", "canal": "📞 Teléfono (Directorio)", "razon": "Alerta CNBV: Observaciones en expediente. Ofrecer salida en 14 días con CPS Sales Copilot.", "prioridad": "ALTA (Urgent)", "completada": false}, {"id": 26, "empresa": "Accender Liquidez, S.A. de C.V. SOFOM, E.N.R.", "ubicacion": "Coahuila (Saltillo)", "tier": "Tier Enterprise ($200k/m)", "estatus_cnbv": "Operando / Registro Activo SIPRES", "accion": "Correo de Prospección Fría", "canal": "📧 Email Outbound", "razon": "Presentación de TCO comparativo vs. DynamiCore y Middleware tradicionales.", "prioridad": "ESTÁNDAR", "completada": false}, {"id": 27, "empresa": "Access K, S.A.P.I. de C.V., SOFOM, E.N.R.", "ubicacion": "Sinaloa (Culiacán)", "tier": "Tier Mid-Market ($42k/m)", "estatus_cnbv": "Operando / Registro Activo SIPRES", "accion": "Correo de Prospección Fría", "canal": "📧 Email Outbound", "razon": "Presentación de TCO comparativo vs. DynamiCore y Middleware tradicionales.", "prioridad": "ESTÁNDAR", "completada": false}, {"id": 28, "empresa": "Accifin, S.A. de C.V., SOFOM, E.N.R.", "ubicacion": "Sonora (Hermosillo)", "tier": "Tier Multi-producto ($83k/m)", "estatus_cnbv": "Operando / Registro Activo SIPRES", "accion": "Correo de Prospección Fría", "canal": "📧 Email Outbound", "razon": "Presentación de TCO comparativo vs. DynamiCore y Middleware tradicionales.", "prioridad": "ESTÁNDAR", "completada": false}, {"id": 29, "empresa": "Acciona Financiación de México, S.A. de C.V., SOFOM, E.N.R.", "ubicacion": "Aguascalientes", "tier": "Tier Enterprise ($200k/m)", "estatus_cnbv": "Operando / Registro Activo SIPRES", "accion": "Correo de Prospección Fría", "canal": "📧 Email Outbound", "razon": "Presentación de TCO comparativo vs. DynamiCore y Middleware tradicionales.", "prioridad": "ESTÁNDAR", "completada": false}, {"id": 30, "empresa": "Aceleradora Adrenalina, S.A. de C.V., SOFOM ENR", "ubicacion": "San Luis Potosí", "tier": "Tier Startup ($20k/m)", "estatus_cnbv": "Operando / Registro Activo SIPRES", "accion": "Correo de Prospección Fría", "canal": "📧 Email Outbound", "razon": "Presentación de TCO comparativo vs. DynamiCore y Middleware tradicionales.", "prioridad": "ESTÁNDAR", "completada": false}, {"id": 31, "empresa": "Aceleradora Damasco, S.A. de C.V., SOFOM, E.N.R.", "ubicacion": "Ciudad de México (CDMX)", "tier": "Tier Mid-Market ($42k/m)", "estatus_cnbv": "Operando / Registro Activo SIPRES", "accion": "Mensaje Directo LinkedIn (AE)", "canal": "💼 LinkedIn InMail", "razon": "ICP Top Tier en Ciudad de México (CDMX). Enviar caso de estudio de descongelamiento de cartera.", "prioridad": "MEDIA", "completada": false}, {"id": 32, "empresa": "Aceleradora Premier, S.A.P.I. de C.V., SOFOM, E.N.R.", "ubicacion": "Nuevo León (Monterrey)", "tier": "Tier Multi-producto ($83k/m)", "estatus_cnbv": "Operando / Registro Activo SIPRES", "accion": "Mensaje Directo LinkedIn (AE)", "canal": "💼 LinkedIn InMail", "razon": "ICP Top Tier en Nuevo León (Monterrey). Enviar caso de estudio de descongelamiento de cartera.", "prioridad": "MEDIA", "completada": false}, {"id": 33, "empresa": "Acervo Económico, S.A. de C.V., SOFOM, E.N.R.", "ubicacion": "Jalisco (Guadalajara)", "tier": "Tier Enterprise ($200k/m)", "estatus_cnbv": "Operando / Registro Activo SIPRES", "accion": "Mensaje Directo LinkedIn (AE)", "canal": "💼 LinkedIn InMail", "razon": "ICP Top Tier en Jalisco (Guadalajara). Enviar caso de estudio de descongelamiento de cartera.", "prioridad": "MEDIA", "completada": false}, {"id": 34, "empresa": "Acrese, S.A. de C.V., SOFOM, E.N.R.", "ubicacion": "Querétaro", "tier": "Tier Startup ($20k/m)", "estatus_cnbv": "Operando / Registro Activo SIPRES", "accion": "Correo de Prospección Fría", "canal": "📧 Email Outbound", "razon": "Presentación de TCO comparativo vs. DynamiCore y Middleware tradicionales.", "prioridad": "ESTÁNDAR", "completada": false}, {"id": 35, "empresa": "Actividades ABC, S.A. de C.V., SOFOM, E.N.R.", "ubicacion": "Yucatán (Mérida)", "tier": "Tier Multi-producto ($83k/m)", "estatus_cnbv": "Operando / Registro Activo SIPRES", "accion": "Correo de Prospección Fría", "canal": "📧 Email Outbound", "razon": "Presentación de TCO comparativo vs. DynamiCore y Middleware tradicionales.", "prioridad": "ESTÁNDAR", "completada": false}, {"id": 36, "empresa": "Activos Axxis, S.A.P.I. de C.V., SOFOM, E.N.R.", "ubicacion": "Puebla", "tier": "Tier Enterprise ($200k/m)", "estatus_cnbv": "Operando / Registro Activo SIPRES", "accion": "Correo de Prospección Fría", "canal": "📧 Email Outbound", "razon": "Presentación de TCO comparativo vs. DynamiCore y Middleware tradicionales.", "prioridad": "ESTÁNDAR", "completada": false}, {"id": 37, "empresa": "Adelante Veintiuno, S.A.P.I. de C.V., SOFOM, E.N.R.", "ubicacion": "Chihuahua", "tier": "Tier Startup ($20k/m)", "estatus_cnbv": "Operando / Registro Activo SIPRES", "accion": "Correo de Prospección Fría", "canal": "📧 Email Outbound", "razon": "Presentación de TCO comparativo vs. DynamiCore y Middleware tradicionales.", "prioridad": "ESTÁNDAR", "completada": false}, {"id": 38, "empresa": "Adelanto Express, S.A. de C.V., SOFOM E.N.R.", "ubicacion": "Baja California (Tijuana)", "tier": "Tier Mid-Market ($42k/m)", "estatus_cnbv": "Operando / Registro Activo SIPRES", "accion": "Correo de Prospección Fría", "canal": "📧 Email Outbound", "razon": "Presentación de TCO comparativo vs. DynamiCore y Middleware tradicionales.", "prioridad": "ESTÁNDAR", "completada": false}, {"id": 39, "empresa": "Administracion Financiera Alianza, S.A. de C.V., SOFOM, E.N.R.", "ubicacion": "Estado de México", "tier": "Tier Multi-producto ($83k/m)", "estatus_cnbv": "Operando / Registro Activo SIPRES", "accion": "Correo de Prospección Fría", "canal": "📧 Email Outbound", "razon": "Presentación de TCO comparativo vs. DynamiCore y Middleware tradicionales.", "prioridad": "ESTÁNDAR", "completada": false}, {"id": 40, "empresa": "Administración Financiera SAM, S.A. de C.V., SOFOM, E.N.R.", "ubicacion": "Coahuila (Saltillo)", "tier": "Tier Enterprise ($200k/m)", "estatus_cnbv": "Operando / Registro Activo SIPRES", "accion": "Correo de Prospección Fría", "canal": "📧 Email Outbound", "razon": "Presentación de TCO comparativo vs. DynamiCore y Middleware tradicionales.", "prioridad": "ESTÁNDAR", "completada": false}, {"id": 41, "empresa": "Administradora Aristo, S.A.P.I. de C.V., SOFOM, E.N.R.", "ubicacion": "Veracruz", "tier": "Tier Startup ($20k/m)", "estatus_cnbv": "Operando / Registro Activo SIPRES", "accion": "Correo de Prospección Fría", "canal": "📧 Email Outbound", "razon": "Presentación de TCO comparativo vs. DynamiCore y Middleware tradicionales.", "prioridad": "ESTÁNDAR", "completada": false}, {"id": 42, "empresa": "Administradora Avanza, S.A. de C.V., SOFOM, E.N.R.", "ubicacion": "Sinaloa (Culiacán)", "tier": "Tier Mid-Market ($42k/m)", "estatus_cnbv": "Operando / Registro Activo SIPRES", "accion": "Correo de Prospección Fría", "canal": "📧 Email Outbound", "razon": "Presentación de TCO comparativo vs. DynamiCore y Middleware tradicionales.", "prioridad": "ESTÁNDAR", "completada": false}, {"id": 43, "empresa": "Administradora Liquicapital, S.A. de C.V., SOFOM, E.N.R.", "ubicacion": "Sonora (Hermosillo)", "tier": "Tier Multi-producto ($83k/m)", "estatus_cnbv": "Operando / Registro Activo SIPRES", "accion": "Correo de Prospección Fría", "canal": "📧 Email Outbound", "razon": "Presentación de TCO comparativo vs. DynamiCore y Middleware tradicionales.", "prioridad": "ESTÁNDAR", "completada": false}, {"id": 44, "empresa": "Administradora Segumex, S.A.P.I. de C.V., SOFOM, E.N.R.", "ubicacion": "Aguascalientes", "tier": "Tier Enterprise ($200k/m)", "estatus_cnbv": "Operando / Registro Activo SIPRES", "accion": "Correo de Prospección Fría", "canal": "📧 Email Outbound", "razon": "Presentación de TCO comparativo vs. DynamiCore y Middleware tradicionales.", "prioridad": "ESTÁNDAR", "completada": false}, {"id": 45, "empresa": "Administradora Servicel, S.A. de C.V., SOFOM, E.N.R.", "ubicacion": "San Luis Potosí", "tier": "Tier Startup ($20k/m)", "estatus_cnbv": "Operando / Registro Activo SIPRES", "accion": "Correo de Prospección Fría", "canal": "📧 Email Outbound", "razon": "Presentación de TCO comparativo vs. DynamiCore y Middleware tradicionales.", "prioridad": "ESTÁNDAR", "completada": false}, {"id": 46, "empresa": "Administradora Sierra Nevada, S.A. de C.V., SOFOM, E.N.R.", "ubicacion": "Ciudad de México (CDMX)", "tier": "Tier Mid-Market ($42k/m)", "estatus_cnbv": "Operando / Registro Activo SIPRES", "accion": "Mensaje Directo LinkedIn (AE)", "canal": "💼 LinkedIn InMail", "razon": "ICP Top Tier en Ciudad de México (CDMX). Enviar caso de estudio de descongelamiento de cartera.", "prioridad": "MEDIA", "completada": false}, {"id": 47, "empresa": "Administradora de Dinero Popular, S.A. de C.V., SOFOM, E.N.R.", "ubicacion": "Jalisco (Guadalajara)", "tier": "Tier Enterprise ($200k/m)", "estatus_cnbv": "En Supervisión CNBV", "accion": "Llamada de Rescate Urgente", "canal": "📞 Teléfono (Directorio)", "razon": "Alerta CNBV: Observaciones en expediente. Ofrecer salida en 14 días con CPS Sales Copilot.", "prioridad": "ALTA (Urgent)", "completada": false}, {"id": 48, "empresa": "Administradora de Inmuebles Samir, S.A. de C.V., SOFOM, E.N.R.", "ubicacion": "Querétaro", "tier": "Tier Startup ($20k/m)", "estatus_cnbv": "Operando / Registro Activo SIPRES", "accion": "Correo de Prospección Fría", "canal": "📧 Email Outbound", "razon": "Presentación de TCO comparativo vs. DynamiCore y Middleware tradicionales.", "prioridad": "ESTÁNDAR", "completada": false}, {"id": 49, "empresa": "Administradora de Préstamo Fácil, S.A. de C.V., SOFOM, E.N.R.", "ubicacion": "Guanajuato (León)", "tier": "Tier Mid-Market ($42k/m)", "estatus_cnbv": "Operando / Registro Activo SIPRES", "accion": "Correo de Prospección Fría", "canal": "📧 Email Outbound", "razon": "Presentación de TCO comparativo vs. DynamiCore y Middleware tradicionales.", "prioridad": "ESTÁNDAR", "completada": false}, {"id": 50, "empresa": "Admiral Capital, S.A. de C.V., SOFOM, E.N.R.", "ubicacion": "Puebla", "tier": "Tier Enterprise ($200k/m)", "estatus_cnbv": "Operando / Registro Activo SIPRES", "accion": "Correo de Prospección Fría", "canal": "📧 Email Outbound", "razon": "Presentación de TCO comparativo vs. DynamiCore y Middleware tradicionales.", "prioridad": "ESTÁNDAR", "completada": false}];
+        let currentIndex = 0;
+        let completedCounter = 0;
+
+        function updateHero() {
+            if (currentIndex >= tasks.length) {
+                document.getElementById('heroPanel').innerHTML = `
+                    <div style="text-align: center; padding: 40px;">
+                        <h2 style="font-size: 2rem; color: var(--accent); margin-bottom: 10px;">🎉 ¡META DIARIA COMPLETADA!</h2>
+                        <p style="color: var(--text-muted);">Has ejecutado todas las acciones comerciales prioritarias del día sin dispersión.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const t = tasks[currentIndex];
+            document.getElementById('heroTitle').textContent = `${t.accion} ➔ ${t.empresa}`;
+            document.getElementById('heroDesc').textContent = t.razon;
+            document.getElementById('heroChannel').textContent = `Canal: ${t.canal}`;
+            document.getElementById('heroPrio').textContent = `Prioridad: ${t.prioridad}`;
+            document.getElementById('heroTier').textContent = `Tier: ${t.tier}`;
+            document.getElementById('heroLocation').textContent = `Sede: ${t.ubicacion}`;
+        }
+
+        function renderQueue() {
+            const qList = document.getElementById('queueList');
+            qList.innerHTML = '';
+
+            tasks.forEach((t, idx) => {
+                if (idx < currentIndex) return; // Ocultar completadas de la lista principal
+                if (idx > currentIndex + 8) return; // Mostrar solo las siguientes 8 para no saturar la vista
+
+                const item = document.createElement('div');
+                item.className = `queue-item ${idx === currentIndex ? 'active' : ''}`;
+                
+                let prioClass = 'prio-std';
+                if (t.prioridad.includes('ALTA')) prioClass = 'prio-high';
+                if (t.prioridad.includes('MEDIA')) prioClass = 'prio-med';
+
+                item.innerHTML = `
+                    <div>
+                        <strong style="color: #fff;">${idx + 1}. ${t.empresa}</strong>
+                        <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 2px;">${t.accion} | ${t.ubicacion}</div>
+                    </div>
+                    <span class="badge-prio ${prioClass}">${t.prioridad}</span>
+                `;
+                qList.appendChild(item);
+            });
+        }
+
+        function updateMetrics() {
+            document.getElementById('completedCount').textContent = completedCounter;
+            const remaining = tasks.length - completedCounter;
+            document.getElementById('remainingCount').textContent = remaining;
+            const percent = Math.round((completedCounter / tasks.length) * 100);
+            document.getElementById('metaPercent').textContent = `${percent}%`;
+        }
+
+        function completeCurrentTask() {
+            if (currentIndex < tasks.length) {
+                tasks[currentIndex].completada = true;
+                completedCounter++;
+                currentIndex++;
+                updateMetrics();
+                updateHero();
+                renderQueue();
+            }
+        }
+
+        function skipCurrentTask() {
+            if (currentIndex < tasks.length) {
+                // Mover al final de la cola
+                const skipped = tasks.splice(currentIndex, 1)[0];
+                tasks.push(skipped);
+                updateHero();
+                renderQueue();
+            }
+        }
+
+        // Inicializar
+        updateMetrics();
+        updateHero();
+        renderQueue();
+    </script>
+</body>
+</html>
