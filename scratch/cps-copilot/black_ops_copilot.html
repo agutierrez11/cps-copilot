@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CPS Sales Copilot — Black Ops Commercial</title>
+<style>
+:root {
+  --bg: #0a0e17;
+  --card: #111827;
+  --card-hover: #1a2332;
+  --border: #1f2937;
+  --text: #e2e8f0;
+  --text-dim: #94a3b8;
+  --accent: #3b82f6;
+  --accent-glow: rgba(59,130,246,0.15);
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --intel: #8b5cf6;
+  --intel-glow: rgba(139,92,246,0.2);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height:1.5;
+  min-height:100vh;
+}
+.container { max-width:1400px; margin:0 auto; padding:24px; }
+
+.header {
+  text-align:center; padding:40px 20px; border-bottom:1px solid var(--border); margin-bottom:32px;
+  position:relative; overflow:hidden;
+}
+.header::before {
+  content:''; position:absolute; top:0; left:50%; transform:translateX(-50%);
+  width:600px; height:3px; background:linear-gradient(90deg,transparent,var(--intel),var(--accent),transparent);
+}
+.header h1 {
+  font-size:2.2rem; font-weight:800;
+  background:linear-gradient(135deg,var(--intel),var(--accent));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+}
+.header p { color:var(--text-dim); font-size:1rem; max-width:750px; margin:12px auto 0; }
+.header .badge {
+  display:inline-block; background:var(--intel-glow); border:1px solid var(--intel);
+  color:var(--intel); padding:5px 16px; border-radius:20px; font-size:0.78rem; font-weight:600;
+  margin-top:14px; letter-spacing:0.5px; text-transform:uppercase;
+}
+
+.tabs { display:flex; gap:8px; justify-content:center; margin-bottom:28px; flex-wrap:wrap; }
+.tab-btn {
+  background:var(--card); border:1px solid var(--border); color:var(--text-dim);
+  padding:10px 22px; border-radius:10px; cursor:pointer; font-weight:600; font-size:0.85rem;
+  transition:all 0.2s;
+}
+.tab-btn:hover { background:var(--card-hover); color:var(--text); }
+.tab-btn.active { background:var(--intel); color:#fff; border-color:var(--intel); }
+
+.section { display:none; }
+.section.active { display:block; animation:fadeIn 0.35s ease; }
+@keyframes fadeIn { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+
+.framework-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:20px; margin-bottom:32px; }
+.fw-card {
+  background:var(--card); border:1px solid var(--border); border-radius:14px; padding:24px;
+  position:relative; overflow:hidden; transition:all 0.25s;
+}
+.fw-card:hover { border-color:var(--intel); transform:translateY(-2px); }
+.fw-card::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:3px;
+  background:linear-gradient(90deg,var(--intel),var(--accent));
+}
+.fw-card h3 { font-size:1.05rem; margin-bottom:10px; display:flex; align-items:center; gap:8px; }
+.fw-card p, .fw-card li { font-size:0.85rem; color:#cbd5e1; line-height:1.7; }
+.fw-card ul { padding-left:18px; margin-top:8px; }
+.fw-card li { margin-bottom:6px; }
+
+.risk-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(380px,1fr)); gap:18px; }
+.risk-card {
+  background:var(--card); border:1px solid var(--border); border-radius:14px; padding:20px;
+  position:relative; overflow:hidden; transition:all 0.25s;
+}
+.risk-card:hover { border-color:var(--danger); }
+.risk-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; }
+.risk-card.critical::before { background:var(--danger); }
+.risk-card.high::before { background:var(--warning); }
+.risk-card.medium::before { background:#3b82f6; }
+
+.risk-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px; }
+.risk-title { font-size:1.05rem; font-weight:700; }
+.risk-level { padding:3px 10px; border-radius:6px; font-size:0.7rem; font-weight:700; text-transform:uppercase; }
+.critical .risk-level { background:rgba(239,68,68,0.15); color:var(--danger); }
+.high .risk-level { background:rgba(245,158,11,0.15); color:var(--warning); }
+.medium .risk-level { background:rgba(59,130,246,0.15); color:#60a5fa; }
+
+.risk-meta { font-size:0.75rem; color:var(--text-dim); margin-bottom:10px; }
+.risk-meta strong { color:var(--text); }
+
+.risk-facts { list-style:none; font-size:0.82rem; margin-bottom:12px; }
+.risk-facts li { padding:4px 0; padding-left:18px; position:relative; color:#cbd5e1; }
+.risk-facts li::before { content:'▸'; position:absolute; left:0; color:var(--danger); font-weight:bold; }
+
+.risk-arg {
+  background:rgba(139,92,246,0.08); border-left:3px solid var(--intel); padding:10px 12px;
+  border-radius:0 8px 8px 0; font-size:0.8rem; color:#c4b5fd;
+}
+.risk-arg strong { color:var(--intel); display:block; margin-bottom:4px; font-size:0.75rem; text-transform:uppercase; }
+
+.source-tag { display:inline-block; font-size:0.68rem; color:#64748b; margin-top:8px; padding:2px 8px; background:var(--bg); border-radius:4px; }
+
+.playbook-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:20px; }
+.play-card { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:22px; }
+.play-card h3 { font-size:1rem; margin-bottom:12px; color:var(--intel); }
+.play-card .scenario { background:var(--bg); border-radius:8px; padding:12px; margin-bottom:12px; font-size:0.82rem; color:#cbd5e1; border-left:3px solid var(--warning); }
+.play-card .response { background:rgba(16,185,129,0.08); border-radius:8px; padding:12px; font-size:0.82rem; color:#6ee7b7; border-left:3px solid var(--success); }
+.play-card .response strong { color:var(--success); display:block; margin-bottom:4px; }
+.play-card .script { background:rgba(59,130,246,0.06); border-radius:8px; padding:12px; margin-top:10px; font-size:0.8rem; color:#93c5fd; font-style:italic; border-left:3px solid var(--accent); }
+.play-card .script strong { color:var(--accent); display:block; margin-bottom:4px; font-style:normal; }
+
+.alert-box {
+  background:linear-gradient(135deg,rgba(239,68,68,0.08),rgba(245,158,11,0.05));
+  border:1px solid rgba(239,68,68,0.2); border-radius:12px; padding:20px 24px;
+  margin-bottom:24px; display:flex; gap:16px; align-items:flex-start;
+}
+.alert-icon { font-size:2rem; line-height:1; }
+.alert-content h3 { color:var(--danger); font-size:1.1rem; margin-bottom:6px; }
+.alert-content p { color:#fca5a5; font-size:0.85rem; line-height:1.6; }
+.alert-content .stats { display:flex; gap:24px; margin-top:10px; flex-wrap:wrap; }
+.alert-content .stat { text-align:center; }
+.alert-content .stat-num { font-size:1.4rem; font-weight:800; color:var(--danger); }
+.alert-content .stat-label { font-size:0.7rem; color:#f87171; text-transform:uppercase; letter-spacing:0.5px; }
+
+.footer { text-align:center; padding:30px; color:var(--text-dim); font-size:0.75rem; border-top:1px solid var(--border); margin-top:40px; }
+
+@media(max-width:768px) {
+  .header h1 { font-size:1.5rem; }
+  .risk-grid { grid-template-columns:1fr; }
+  .alert-box { flex-direction:column; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="header">
+  <h1>🎯 Black Ops Commercial — CPS Sales Copilot</h1>
+  <p>Framework de inteligencia competitiva operativa para equipos de ventas. Data verificada de fuentes públicas. Sin denuncias: solo argumentos de riesgo basados en hechos.</p>
+  <div class="badge">Confidencial — Uso interno CPS Sales Copilot</div>
+</div>
+
+<!-- Banner Prominente de Vigencia & Disclaimer -->
+<div style="background: linear-gradient(135deg, rgba(245,158,11,0.12), rgba(239,68,68,0.08)); border: 1px solid rgba(245,158,11,0.4); border-radius: 12px; padding: 16px 20px; margin-bottom: 24px; color: #fef08a; font-size: 0.85rem; line-height: 1.6;">
+  <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px; font-weight:700; font-size:0.95rem; color:#f59e0b;">
+    <span>⚠️ SNAPSHOT ESTRATÉGICO — VIGENCIA & DISCLAIMER EJECUTIVO</span>
+  </div>
+  <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; color: #cbd5e1;">
+    <div>📅 <strong>Fecha de generación:</strong> 28 de julio de 2026</div>
+    <div>🎯 <strong>Corte de datos:</strong> Eventos verificados entre 2024 y julio 2025</div>
+    <div>📌 <strong>Naturaleza:</strong> Snapshot estratégico (No es feed en tiempo real)</div>
+    <div>🔄 <strong>Rutina de actualización:</strong> Trimestral (pricing/features); Mensual (multas CNBV); Semanal (Trustpilot/G2)</div>
+  </div>
+  <p style="margin-top:10px; font-size:0.78rem; color:#94a3b8; border-top:1px dashed rgba(245,158,11,0.3); padding-top:8px;">
+    <em>Disclaimer: La información proviene de fuentes públicas (DOF, CNBV, Hindenburg Research, G2, Trustpilot). Los precios y cotizaciones son benchmarks orientativos para posicionamiento interno y deben calibrarse caso por caso.</em>
+  </p>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="showTab('framework')">📐 El Framework</button>
+  <button class="tab-btn" onclick="showTab('radar')">🛰️ Radar de Señales LinkedIn (Gratis)</button>
+  <button class="tab-btn" onclick="showTab('risks')">⚠️ Riesgos Competitivos</button>
+  <button class="tab-btn" onclick="showTab('playbook')">🎙️ Playbook de Ventas</button>
+  <button class="tab-btn" onclick="showTab('cnbv')">🏛️ Alerta Regulatoria MX</button>
+  <button class="tab-btn" onclick="showTab('growth')">🚀 Plan de Choque Q3-Q4 (Metas)</button>
+</div>
+
+<div id="framework" class="section active">
+  <div class="framework-grid">
+    <div class="fw-card">
+      <h3>🕵️ ¿Qué es Black Ops Commercial?</h3>
+      <p>Una <strong>célula táctica de inteligencia y ejecución</strong> dentro de Commercial Ops que opera por debajo del radar del día a día del sales team.</p>
+      <ul>
+        <li><strong>No es competitive intelligence pasiva.</strong> Es inteligencia con mandato operativo: traduce datos en tácticas de venta concretas.</li>
+        <li><strong>No es denuncismo.</strong> Nunca dice "X está mal". Dice: <em>"¿Qué pasa si tu proveedor de KYC recibe una multa de $4M por violar la privacidad biométrica?"</em></li>
+        <li><strong>Es proactivo, no reactivo.</strong> Anticipa movimientos del mercado antes de que afecten al pipeline.</li>
+      </ul>
+    </div>
+    <div class="fw-card">
+      <h3>⚙️ Pilares Operativos</h3>
+      <ul>
+        <li><strong>1. Recon Competitivo:</strong> Monitoreo continuo de pricing, lanzamientos, cambios regulatorios y señales públicas de 24 competidores.</li>
+        <li><strong>2. Modelado de Riesgo:</strong> Escenarios de "qué pasa si" por cada proveedor que usa tu prospecto. No para asustar, para informar.</li>
+        <li><strong>3. Playbooks Dinámicos:</strong> Scripts, battlecards y argumentos que se actualizan en tiempo real según el stack tecnológico detectado del prospecto.</li>
+        <li><strong>4. Pricing Inteligente:</strong> Movimientos de precio quirúrgicos por segmento, basados en sensibilidad al precio y posición competitiva.</li>
+        <li><strong>5. Señales de Mercado:</strong> Alertas tempranas de regulación, outages, multas y cambios de go-to-market de la competencia.</li>
+      </ul>
+    </div>
+    <div class="fw-card">
+      <h3>🧠 Roles del Equipo Black Ops</h3>
+      <ul>
+        <li><strong>Recon Analyst:</strong> Monitorea G2, Capterra, Trustpilot, noticias regulatorias, reportes financieros y redes de ex-empleados.</li>
+        <li><strong>Risk Modeler:</strong> Construye matrices de riesgo por proveedor (regulatorio, financiero, operacional, reputacional).</li>
+        <li><strong>Sales Enablement Táctico:</strong> Traduce insights en scripts, one-pagers y battlecards para AEs y SDRs.</li>
+        <li><strong>Pricing Strategist:</strong> Diseña movimientos de precio dinámicos y bundles competitivos.</li>
+        <li><strong>Regulatory Scout:</strong> Rastrea cambios en CNBV, CONDUSEF, Banxico, UIF y normativa Open Finance.</li>
+      </ul>
+    </div>
+    <div class="fw-card">
+      <h3>🎯 Regla de Oro</h3>
+      <p style="font-size:1rem; color:var(--intel); font-weight:600; margin:10px 0;">"Nunca digas que el competidor es malo. Di: 'Esto es lo que le puede pasar a TU negocio si dependes de un proveedor con estas vulnerabilidades.'"</p>
+      <p>El argumento siempre es sobre <strong>el riesgo del cliente</strong>, no sobre el fracaso del competidor. Eso es ético, legal y efectivo.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== RADAR DE SEÑALES LINKEDIN & NOTICIAS MÉXICO ==================== -->
+<div id="radar" class="section">
+  <div class="alert-box" style="background:linear-gradient(135deg,rgba(59,130,246,0.1),rgba(139,92,246,0.08)); border-color:rgba(59,130,246,0.3);">
+    <div class="alert-icon">🇲🇽</div>
+    <div class="alert-content">
+      <h3 style="color:#60a5fa;">Motor de Noticias & Inteligencia Regulatoria (100% México-First)</h3>
+      <p style="color:#cbd5e1;">Monitorea en tiempo real únicamente noticias, regulaciones de la CNBV, multas y tendencias de Core Bancario que impactan a la banca y SOFOMes en México (Expansión, El Economista, Forbes MX, Iupana).</p>
+    </div>
+  </div>
+
+  <!-- Sección de Noticias México -->
+  <div class="playbook-grid" style="margin-bottom: 28px;">
+    <div class="play-card" style="border-color:#10b981;">
+      <h3 style="color:#10b981;">📰 Noticias: Core Bancario & Modernización MX</h3>
+      <div class="scenario">Rastra lo que publican Expansión, El Economista, Forbes MX e Iupana sobre la banca en México.</div>
+      <div class="response">
+        <a href="https://www.google.com/search?q=(site:expansion.mx+OR+site:eleconomista.com.mx+OR+site:forbes.com.mx+OR+site:iupana.com)+%22Core+Bancario%22+OR+%22Core+Financiero%22+%22M%C3%A9xico%22&tbs=qdr:m" target="_blank" style="display:inline-block; background:#059669; color:#fff; padding:8px 14px; border-radius:6px; font-weight:700; text-decoration:none; margin-top:6px;">🇲🇽 Ver Noticias del Último Mes</a>
+      </div>
+    </div>
+
+    <div class="play-card" style="border-color:#f59e0b;">
+      <h3 style="color:#f59e0b;">🏛️ Inspecciones & Multas CNBV (México)</h3>
+      <div class="scenario">Alertas de cambios en disposiciones SITI PLD, multas e inspecciones de la CNBV en México.</div>
+      <div class="response">
+        <a href="https://www.google.com/search?q=(site:expansion.mx+OR+site:eleconomista.com.mx+OR+site:forbes.com.mx)+%22CNBV%22+OR+%22SITI+PLD%22+%22multa%22+OR+%22inspecci%C3%B3n%22&tbs=qdr:m" target="_blank" style="display:inline-block; background:#d97706; color:#fff; padding:8px 14px; border-radius:6px; font-weight:700; text-decoration:none; margin-top:6px;">🏛️ Ver Notificaciones CNBV</a>
+      </div>
+    </div>
+
+    <div class="play-card" style="border-color:#8b5cf6;">
+      <h3 style="color:#c084fc;">🤖 IA & Regulaciones LFPDPPP en Banca MX</h3>
+      <div class="scenario">Noticias sobre adopción de IA, biometría y retos de protección de datos en instituciones mexicanas.</div>
+      <div class="response">
+        <a href="https://www.google.com/search?q=(site:expansion.mx+OR+site:eleconomista.com.mx+OR+site:forbes.com.mx)+%22Inteligencia+Artificial%22+OR+%22IA%22+%22banca+mexicana%22+OR+%22SOFOM%22&tbs=qdr:m" target="_blank" style="display:inline-block; background:#7c3aed; color:#fff; padding:8px 14px; border-radius:6px; font-weight:700; text-decoration:none; margin-top:6px;">🤖 Ver Artículos de IA en Banca MX</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="alert-box" style="background:linear-gradient(135deg,rgba(59,130,246,0.1),rgba(139,92,246,0.08)); border-color:rgba(59,130,246,0.3);">
+    <div class="alert-icon">🛰️</div>
+    <div class="alert-content">
+      <h3 style="color:#60a5fa;">Radar de Hunting por Señales en LinkedIn (100% Gratis)</h3>
+      <p style="color:#cbd5e1;">Google indexa las vacantes y publicaciones públicas de LinkedIn continuamente en México.</p>
+    </div>
+  </div>
+
+  <div class="playbook-grid">
+    <div class="play-card">
+      <h3>1. 🕵️ Vacantes: "Integración Mambu / Cores"</h3>
+      <div class="scenario">Sujetos buscando programadores para parchar Mambu o cores viejos. Señal de gasto en 2-3 vendors sueltos.</div>
+      <div class="response">
+        <strong>Acción Rápida:</strong>
+        <a href="https://www.google.com/search?q=site%3Alinkedin.com%2Fjobs+%22Integraci%C3%B3n+Mambu%22+OR+%22Core+Bancario%22+%22M%C3%A9xico%22" target="_blank" style="display:inline-block; background:var(--accent); color:#fff; padding:8px 14px; border-radius:6px; font-weight:700; text-decoration:none; margin-top:6px;">🚀 Abrir Resultados en Google</a>
+      </div>
+    </div>
+
+    <div class="play-card">
+      <h3>2. ⚖️ Vacantes: "Oficial de Cumplimiento / PLD"</h3>
+      <div class="scenario">SOFOMes contratando personal de cumplimiento por presión o auditorías de la CNBV.</div>
+      <div class="response">
+        <strong>Acción Rápida:</strong>
+        <a href="https://www.google.com/search?q=site%3Alinkedin.com%2Fjobs+%22Oficial+de+Cumplimiento%22+OR+%22PLD%22+%22SOFOM%22+%22M%C3%A9xico%22" target="_blank" style="display:inline-block; background:var(--intel); color:#fff; padding:8px 14px; border-radius:6px; font-weight:700; text-decoration:none; margin-top:6px;">🚀 Abrir Resultados en Google</a>
+      </div>
+    </div>
+
+    <div class="play-card">
+      <h3>3. 🔗 Vacantes: "APIs KYC / Buró / Moffin"</h3>
+      <div class="scenario">Empresas pegando conectores externos a mano con altas tasas de abandono.</div>
+      <div class="response">
+        <strong>Acción Rápida:</strong>
+        <a href="https://www.google.com/search?q=site%3Alinkedin.com%2Fjobs+%22KYC%22+OR+%22Bur%C3%B3+de+Cr%C3%A9dito%22+OR+%22Moffin%22+%22M%C3%A9xico%22" target="_blank" style="display:inline-block; background:var(--success); color:#fff; padding:8px 14px; border-radius:6px; font-weight:700; text-decoration:none; margin-top:6px;">🚀 Abrir Resultados en Google</a>
+      </div>
+    </div>
+
+    <div class="play-card">
+      <h3>4. 🏛️ Posts: Auditorías y Multas CNBV 2026</h3>
+      <div class="scenario">Directores de Compliance comentando o sufriendo por inspecciones de la CNBV.</div>
+      <div class="response">
+        <strong>Acción Rápida:</strong>
+        <a href="https://www.google.com/search?q=site%3Alinkedin.com%2Fposts+%22SITI+PLD%22+OR+%22Multa+CNBV%22+%22SOFOM%22+%22M%C3%A9xico%22" target="_blank" style="display:inline-block; background:var(--warning); color:#fff; padding:8px 14px; border-radius:6px; font-weight:700; text-decoration:none; margin-top:6px;">🚀 Abrir Resultados en Google</a>
+      </div>
+    </div>
+
+    <div class="play-card">
+      <h3>5. 📱 Perfiles: CTOs & Head of Product (Retail Fintech)</h3>
+      <div class="scenario">Directores de tecnología en Macropay, PayJoy, Aplazo, Kueski y Lenders Digitales.</div>
+      <div class="response">
+        <strong>Acción Rápida:</strong>
+        <a href="https://www.google.com/search?q=site%3Alinkedin.com%2Fin+%22CTO%22+OR+%22VP+of+Engineering%22+%22Macropay%22+OR+%22PayJoy%22+OR+%22Kueski%22+%22M%C3%A9xico%22" target="_blank" style="display:inline-block; background:#ec4899; color:#fff; padding:8px 14px; border-radius:6px; font-weight:700; text-decoration:none; margin-top:6px;">🚀 Abrir Resultados en Google</a>
+      </div>
+    </div>
+
+    <div class="play-card">
+      <h3>6. 👔 Perfiles: Nuevos Directores (Últimos 90 días)</h3>
+      <div class="scenario">Nuevos ejecutivos en SOFOMes que llegan a cambiar el software viejo.</div>
+      <div class="response">
+        <strong>Acción Rápida:</strong>
+        <a href="https://www.google.com/search?q=site%3Alinkedin.com%2Fin+%22Director+de+Operaciones%22+OR+%22CEO%22+%22SOFOM%22+%22M%C3%A9xico%22" target="_blank" style="display:inline-block; background:#6366f1; color:#fff; padding:8px 14px; border-radius:6px; font-weight:700; text-decoration:none; margin-top:6px;">🚀 Abrir Resultados en Google</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="risks" class="section">
+  <div class="risk-grid">
+
+    <div class="risk-card critical">
+      <div class="risk-header">
+        <div class="risk-title">Temenos</div>
+        <div class="risk-level">🔴 Riesgo Crítico</div>
+      </div>
+      <div class="risk-meta"><strong>Tipo:</strong> Core Banking Enterprise | <strong>Origen:</strong> Suiza | <strong>Precio:</strong> $150K–$10M+/año</div>
+      <ul class="risk-facts">
+        <li>Reporte Hindenburg (feb 2024): 25 ex-empleados entrevistados. Hallazgos de <strong>irregularidades contables masivas</strong>: backdating de contratos, revenue roundtripping, R&D capitalizado inexistente.</li>
+        <li>Examen "independiente" de Temenos (abril 2024): <strong>confirmó 7 instancias de backdating</strong>, 4 con revenue movido a trimestres anteriores. DSO de 124 días (doble que Fiserv).</li>
+        <li>BNK Banking (Australia): <strong>18 multas regulatorias</strong> por fallas en software Temenos. Consultor dijo: <em>"Una hoja de Excel funcionaría mejor."</em></li>
+        <li>Bank of Ireland: presupuesto de €500M <strong>se triplicó</strong>, generó fallas IT generalizadas y $139M en impairment. Ex-manager: <em>"No podía manejar nuestras necesidades."</em></li>
+        <li>Nordea (mayor deal de Temenos): 9 años de implementación, aún sin terminar. Chief Banking Officer renunció.</li>
+        <li>Volt Bank (Australia): por fallas de Temenos, <strong>no podía procesar 10 transacciones diarias</strong> sin timeouts.</li>
+      </ul>
+      <div class="risk-arg">
+        <strong>🎙️ Argumento de Venta CPS Sales Copilot</strong>
+        "Temenos es un gigante con clientes globales, pero su track record en implementaciones grandes es de costos que se triplican, timelines que se extienden años, y —lo más grave— fallas regulatorias que han generado multas a sus clientes. Con CPS Sales Copilot, tu implementación dura semanas, no años, y nuestra arquitectura cloud-native está diseñada específicamente para la regulación mexicana desde el día 1."
+      </div>
+      <div class="source-tag">📎 Fuentes: Hindenburg Research 2024, Temenos Independent Examination 2024, Fortune, BNN</div>
+    </div>
+
+    <div class="risk-card critical">
+      <div class="risk-header">
+        <div class="risk-title">Fiserv</div>
+        <div class="risk-level">🔴 Riesgo Crítico</div>
+      </div>
+      <div class="risk-meta"><strong>Tipo:</strong> Payments + Core | <strong>Origen:</strong> USA | <strong>Precio:</strong> ~$575K primer año</div>
+      <ul class="risk-facts">
+        <li><strong>Outage mayo 2025:</strong> Falla masiva que afectó Zelle y servicios bancarios de múltiples instituciones. Causa: fuera del control del cliente.</li>
+        <li><strong>Class action lawsuit (2025):</strong> Acusado de inflar revenue de Clover forzando migración de 200,000 merchants desde Payeezy. Acciones cayeron <strong>49%</strong>.</li>
+        <li><strong>Lawsuit por lax security (2026):</strong> FiCare Federal Credit Union. Hackers robaron cientos de miles. Fiserv no reembolsó. Queja: <em>"Faltan controles de seguridad básicos, biometría y MFA."</em></li>
+        <li><strong>Settlement False Claims Act (nov 2025):</strong> Resolvió demanda con el gobierno de EE.UU. por incumplimiento de regulaciones USPS.</li>
+        <li>CEO cambiado en 2025. Crecimiento orgánico desacelerado de 16% a 1% en Q3 2025.</li>
+      </ul>
+      <div class="risk-arg">
+        <strong>🎙️ Argumento de Venta CPS Sales Copilot</strong>
+        "Fiserv maneja billones de transacciones, pero en 2025 tuvo un outage que dejó a miles de clientes sin acceso a sus fondos por días. Además, enfrenta demandas por inflar revenue y fallas de seguridad que expusieron a credit unions. Si tu institución depende de un core que puede caerse por un tercero fuera de tu control, ¿quién asume el riesgo regulatorio? CPS Sales Copilot te da control total de tu infraestructura."
+      </div>
+      <div class="source-tag">📎 Fuentes: PaymentsDive, BNN, FinancialModelingPrep, Yahoo Finance</div>
+    </div>
+
+    <div class="risk-card high">
+      <div class="risk-header">
+        <div class="risk-title">Incode Technologies</div>
+        <div class="risk-level">🟡 Riesgo Alto</div>
+      </div>
+      <div class="risk-meta"><strong>Tipo:</strong> KYC / Biometría | <strong>Origen:</strong> USA | <strong>Precio:</strong> Enterprise (opaco)</div>
+      <ul class="risk-facts">
+        <li><strong>Settlement $4M (feb 2025):</strong> Demandado por violación de la Illinois Biometric Information Privacy Act (BIPA). Fallas en notificación y consentimiento de datos biométricos.</li>
+        <li>Residentes de Illinois que usaron apps con Incode entre 2018-2024 reciben compensación de $65-$240. Esto expone un <strong>riesgo de privacidad</strong> en su stack de biometría.</li>
+        <li>Adquirió MetaMap (2024) y AuthenticID (2025). La integración de estas adquisiciones puede generar <strong>inconsistencias técnicas</strong> a corto plazo.</li>
+        <li>Pricing 100% opaco. Requiere ciclo de ventas enterprise con mínimos mensuales y contratos de 1-3 años.</li>
+      </ul>
+      <div class="risk-arg">
+        <strong>🎙️ Argumento de Venta CPS Sales Copilot</strong>
+        "Incode es líder en biometría, pero acaba de pagar $4M por violar la privacidad biométrica de usuarios. En México, la LFPDPPP es igual de estricta. ¿Qué pasa si tu proveedor de KYC recibe una multa similar aquí? CPS Sales Copilot integra KYC con cumplimiento regulatorio mexicano nativo, no como capa externa."
+      </div>
+      <div class="source-tag">📎 Fuentes: IDTechWire, Incode Biometric Data Policy 2025</div>
+    </div>
+
+    <div class="risk-card high">
+      <div class="risk-header">
+        <div class="risk-title">Jumio</div>
+        <div class="risk-level">🟡 Riesgo Alto</div>
+      </div>
+      <div class="risk-meta"><strong>Tipo:</strong> KYC / AML | <strong>Origen:</strong> USA | <strong>Precio:</strong> $0.90-2.30/verif</div>
+      <ul class="risk-facts">
+        <li><strong>Trustpilot: 1.6/5 estrellas.</strong> ~45 reviews, mayoría negativas. Usuarios finales reportan <strong>rechazos falsos</strong> de documentos claros, selfies que fallan 20 veces, y <em>"technical errors"</em> continuos.</li>
+        <li><strong>Manual review bottleneck:</strong> Documentos edge-case caen en colas de revisión humana offshore, retrasando decisiones. Queja #1 en Trustpilot.</li>
+        <li>Pricing 100% opaco. AML add-on aumenta costo 30-40%. SMBs en G2 reportan que el quote-only pricing dificulta presupuestar.</li>
+        <li>Mayor tasa de falsos rechazos en dispositivos de consumo vs competidores como Veriff.</li>
+      </ul>
+      <div class="risk-arg">
+        <strong>🎙️ Argumento de Venta CPS Sales Copilot</strong>
+        "Jumio tiene buena cobertura global, pero su Trustpilot está en 1.6/5. Los usuarios finales de tus clientes (los que solicitan crédito) se frustran cuando el KYC los rechaza 20 veces. Eso no es un problema de Jumio, es un problema de conversión para TU negocio. CPS Sales Copilot diseña flujos de onboarding que maximizan aprobación sin sacrificar seguridad."
+      </div>
+      <div class="source-tag">📎 Fuentes: Trustpilot, BeVerified.org, G2</div>
+    </div>
+
+    <div class="risk-card medium">
+      <div class="risk-header">
+        <div class="risk-title">Mambu (Intelligent Core / Composable)</div>
+        <div class="risk-level">🔵 Riesgo Medio</div>
+      </div>
+      <div class="risk-meta"><strong>Tipo:</strong> Core Cloud-Native / Agéntico | <strong>Origen:</strong> Países Bajos | <strong>Precio:</strong> $10K–$30K USD/mes + Setup en USD</div>
+      <ul class="risk-facts">
+        <li><strong>Nuevo Discurso "Intelligent Core" (2026):** Mambu promueve su evolución hacia la banca agéntica vía Model Context Protocol (MCP) y capas de datos unificadas en tiempo real.</li>
+        <li><strong>Falta de localización nativa CNBV/PLD:** Aunque dicen ser agénticos, su Core no incluye la contabilidad regulatoria ni el módulo SITI PLD nativo para México de fábrica. El cliente debe pagar desarrollos propios.</li>
+        <li><strong>Riesgo Cambiario en Dólares:** Cobran suscripción e implementación en USD. La fluctuación del tipo de cambio afecta el presupuesto del CFO mexicano.</li>
+        <li><strong>Complejidad para la SOFOM Mediana:** Diseñado para neobancos (Nu, Stori) con 100+ ingenieros. Para una SOFOM de 20-50 empleados, la curva de implementación exige contratar consultores caros.</li>
+      </ul>
+      <div class="risk-arg">
+        <strong>🎙️ Argumento de Venta CPS Sales Copilot (Counter-Pitch al "Intelligent Core")</strong>
+        "Mambu habla de un 'Intelligent Core' y conectores MCP para IA, pero su infraestructura no incluye el cumplimiento regulatorio de la CNBV ni el módulo PLD nativo de México. Te venden la caja de herramientas vacía en dólares para que tú programes la casa. CPS Sales Copilot te da la inteligencia agéntica Y los 4 pilares nativos (Core + PLD + Onboarding) ya localizados y facturados en pesos mexicanos desde el Día 1."
+      </div>
+      <div class="source-tag">📎 Fuentes: Mambu Intelligent Core Whitepaper 2026, G2, Case Studies Latam</div>
+    </div>
+
+    <div class="risk-card medium">
+      <div class="risk-header">
+        <div class="risk-title">COBIS Topaz</div>
+        <div class="risk-level">🔵 Riesgo Medio</div>
+      </div>
+      <div class="risk-meta"><strong>Tipo:</strong> Core sobre Azure | <strong>Origen:</strong> LATAM | <strong>Precio:</strong> $100K-500K+ implementación</div>
+      <ul class="risk-facts">
+        <li>Implementación de <strong>6-12 meses</strong>. Para una SOFOM que necesita estar operando en semanas, eso es un año sin ingresos.</li>
+        <li>Arquitectura legacy-envuelta-en-cloud. No es nativamente composable ni API-first como Mambu o CPS Sales Copilot.</li>
+        <li>Sin onboarding digital ni KYC biométrico nativo. Requiere integraciones adicionales.</li>
+        <li>Overkill para SOFOMes pequeñas y medianas. El costo de implementación ($100K+) excluye a la mayoría del mercado mexicano.</li>
+      </ul>
+      <div class="risk-arg">
+        <strong>🎙️ Argumento de Venta CPS Sales Copilot</strong>
+        "COBIS es un incumbente sólido para cooperativas grandes, pero su implementación cuesta $100K+ y toma 6-12 meses. Mientras tanto, tu competencia ya está originando créditos. CPS Sales Copilot te pone en producción en 2-4 semanas con el mismo nivel de cumplimiento regulatorio."
+      </div>
+      <div class="source-tag">📎 Fuentes: COBIS sitio corporativo, análisis de implementación</div>
+    </div>
+
+    <div class="risk-card medium">
+      <div class="risk-header">
+        <div class="risk-title">Bankingly & Flexiu</div>
+        <div class="risk-level">🟡 Riesgo Medio / Wrapper</div>
+      </div>
+      <div class="risk-meta"><strong>Tipo:</strong> Capa de Banca Digital / Front-End | <strong>Origen:</strong> Uruguay / Perú | <strong>Modelo:</strong> SaaS sobre Core Existente</div>
+      <ul class="risk-facts">
+        <li><strong>Discurso de "Falsa Elección":** Promueven *'no cambiar el core'* y pegar una fachada digital moderna sobre sistemas viejos.</li>
+        <li><strong>El Problema del Core Vencido:** Si el Core legacy de la SOFOM no procesa en tiempo real o no hace PLD/SITI CNBV, ponerle una App bonita (Bankingly) no elimina las multas regulatorias ni la lentitud de cartera.</li>
+        <li><strong>Doble Costo de Infraestructura:** El cliente paga el mantenimiento del Core tradicional + la suscripción del wrapper digital + conectores API intermediarios.</li>
+      </ul>
+      <div class="risk-arg">
+        <strong>🎙️ Argumento de Venta CPS Sales Copilot (Counter-Pitch a los Wrappers)</strong>
+        "Bankingly te promete una App bonita en 3 semanas sin tocar tu Core viejo. Pero si tu Core no liquida en tiempo real, no hace PLD regulatorio ni tiene APIs nativas, ponerle una fachada digital es como pintar un coche sin motor. Terminas pagando 2 facturas y tu riesgo regulatorio CNBV sigue intacto. CPS Sales Copilot te da la fachada digital Y el Core moderno nativo en una sola plataforma por el mismo precio."
+      </div>
+      <div class="source-tag">📎 Fuentes: Flexiu Solutions, Bankingly SaaS Platform 2026, Microfinanzas Perú</div>
+    </div>
+
+  </div>
+</div>
+
+<div id="playbook" class="section">
+  <div class="playbook-grid">
+
+    <div class="play-card">
+      <h3>📞 Escenario 1: El prospecto usa Mambu + Nufi + Expediente Azul</h3>
+      <div class="scenario">
+        <strong>Contexto:</strong> Prospecto tiene stack fragmentado: Mambu (core), Nufi (validación), Expediente Azul (gestión documental). 3 contratos, 3 soportes, 3 puntos de falla.
+      </div>
+      <div class="response">
+        <strong>🎯 Movimiento CPS Sales Copilot:</strong>
+        "¿Cuántas horas al mes tu equipo pierde sincronizando datos entre tres plataformas? ¿Y quién asume el riesgo cuando una integración falla? Con CPS Sales Copilot, tu onboarding, core y scoring viven en un solo ecosistema. Un contrato, un soporte, cero integraciones que mantener."
+      </div>
+      <div class="script">
+        <strong>📝 Script sugerido:</strong>
+        "Entiendo que ya tienen Mambu. Es una gran plataforma — Nu y Stori la usan. Pero ellos tienen 200 ingenieros. Ustedes tienen [X]. ¿Cuánto les cuesta mantener tres integraciones vivas? Nosotros entregamos lo mismo en una sola plataforma, lista para CNBV, en 2-4 semanas."
+      </div>
+    </div>
+
+    <div class="play-card">
+      <h3>📞 Escenario 2: El prospecto está evaluando Temenos</h3>
+      <div class="scenario">
+        <strong>Contexto:</strong> Prospecto con presupuesto grande considera Temenos por "enterprise grade". No conoce el track record de implementaciones fallidas.
+      </div>
+      <div class="response">
+        <strong>🎯 Movimiento CPS Sales Copilot:</strong>
+        No ataques a Temenos. Usa el riesgo como educación: "Temenos es el estándar global, sin duda. Pero en Australia, un banco recibió 18 multas regulatorias por fallas en su software. Bank of Ireland triplicó su presupuesto de €500M. La pregunta no es si Temenos funciona, es si TU institución puede absorber un timeline de 1-3 años y un presupuesto que se triplica."
+      </div>
+      <div class="script">
+        <strong>📝 Script sugerido:</strong>
+        "Temenos es el Rolls Royce de los cores. Pero un Rolls Royce sin mecánico especializado es un adorno caro. Bank of Ireland invirtió €500M y aún no terminan. ¿Cuánto tiempo y capital pueden dedicar ustedes a una implementación de ese tamaño? Nosotros entregamos el 80% de la funcionalidad en el 5% del tiempo y el 10% del costo."
+      </div>
+    </div>
+
+    <div class="play-card">
+      <h3>📞 Escenario 3: El prospecto usa Incode para KYC</h3>
+      <div class="scenario">
+        <strong>Contexto:</strong> Prospecto satisfecho con Incode para biometría. No sabe del settlement BIPA ni del riesgo de LFPDPPP en México.
+      </div>
+      <div class="response">
+        <strong>🎯 Movimiento CPS Sales Copilot:</strong>
+        "Incode tiene la mejor biometría del mercado. Pero acaban de pagar $4M en Illinois por violar la privacidad biométrica. En México, la LFPDPPP es igual de estricta. ¿Qué pasa si tu proveedor de KYC recibe una multa similar aquí? CPS Sales Copilot integra KYC con cumplimiento LFPDPPP nativo."
+      </div>
+      <div class="script">
+        <strong>📝 Script sugerido:</strong>
+        "Incode es excelente. Pero si mañana la CNBV o el INAI auditan tu proceso de consentimiento biométrico, ¿puedes demostrar que cumples con la LFPDPPP mexicana? Nosotros lo hacemos por diseño, no por adaptación."
+      </div>
+    </div>
+
+    <div class="play-card">
+      <h3>📞 Escenario 4: El prospecto usa Jumio y tiene alta tasa de abandono</h3>
+      <div class="scenario">
+        <strong>Contexto:</strong> Prospecto reporta que muchos clientes abandonan el proceso de onboarding. No conecta el problema con el KYC.
+      </div>
+      <div class="response">
+        <strong>🎯 Movimiento CPS Sales Copilot:</strong>
+        "¿Has medido cuántos prospectos abandonan en el paso de verificación de identidad? Jumio tiene un Trustpilot de 1.6/5. Los usuarios reportan rechazos falsos hasta 20 veces seguidas. Eso no es un problema de Jumio, es un problema de conversión para tu negocio. CPS Sales Copilot diseña flujos de onboarding con 98%+ de tasa de finalización."
+      </div>
+      <div class="script">
+        <strong>📝 Script sugerido:</strong>
+        "Si el 15% de tus prospectos se van en el KYC, y cada prospecto vale $X en adquisición, estás perdiendo $Y al mes por fricción de onboarding. Nosotros reducimos esa fricción sin bajar la seguridad."
+      </div>
+    </div>
+
+    <div class="play-card">
+      <h3>📞 Escenario 5: El prospecto usa Fiserv y vivió el outage de mayo 2025</h3>
+      <div class="scenario">
+        <strong>Contexto:</strong> Prospecto fue afectado por el outage de Fiserv que dejó sin Zelle a miles de clientes. Está sensible a riesgo operacional.
+      </div>
+      <div class="response">
+        <strong>🎯 Movimiento CPS Sales Copilot:</strong>
+        "El outage de Fiserv en mayo no fue culpa de los bancos que lo usaban. Fue un fallo de infraestructura de terceros fuera de su control. Pero los clientes no saben eso: solo saben que no pudieron pagar. Con CPS Sales Copilot, tu infraestructura es tuya. Cloud-native, multi-cloud, con redundancia y SLA garantizado."
+      </div>
+      <div class="script">
+        <strong>📝 Script sugerido:</strong>
+        "Cuando Fiserv falló en mayo, ¿cuántos de tus clientes llamaron enfurecidos? ¿Y quién les explicó que no era tu culpa? Con nosotros, controlas tu propia infraestructura. Si algo falla, lo ves, lo controlas, lo resuelves. No dependes de un tercero en Wisconsin."
+      </div>
+    </div>
+
+    <div class="play-card">
+      <h3>📞 Escenario 6: El prospecto usa SIAC / Softcrédito / PISA (core tradicional)</h3>
+      <div class="scenario">
+        <strong>Contexto:</strong> Prospecto en core tradicional mexicano. Funciona pero es lento, no tiene AI, y el onboarding es manual.
+      </div>
+      <div class="response">
+        <strong>🎯 Movimiento CPS Sales Copilot:</strong>
+        "SIAC/Softcrédito/PISA son plataformas sólidas que han servido al mercado mexicano por décadas. Pero fueron diseñadas para una era sin Open Finance, sin scoring con IA, y sin onboarding digital. La CNBV ya multó a SOFOMes por no tener sistemas automatizados de monitoreo. ¿Tu core actual puede detectar operaciones inusuales en tiempo real?"
+      </div>
+      <div class="script">
+        <strong>📝 Script sugerido:</strong>
+        "ALD Fleet recibió multas por más de $2M porque no tenía sistemas automatizados de monitoreo de personas bloqueadas y operaciones inusuales. Tu core actual genera alertas PLD en tiempo real? O depende de reportes mensuales que revisa alguien a mano?"
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div id="cnbv" class="section">
+  <div class="alert-box">
+    <div class="alert-icon">🏛️</div>
+    <div class="alert-content">
+      <h3>Alerta Regulatoria México — CNBV 2024-2025</h3>
+      <p>La CNBV ha intensificado drásticamente la supervisión. Las multas por PLD/FT y deficiencias operativas alcanzaron niveles históricos. Esto no es solo un riesgo para los bancos: es una oportunidad de venta para CPS Sales Copilot.</p>
+      <div class="stats">
+        <div class="stat"><div class="stat-num">$216M</div><div class="stat-label">Multas CNBV 2024</div></div>
+        <div class="stat"><div class="stat-num">+162%</div><div class="stat-label">vs 2023</div></div>
+        <div class="stat"><div class="stat-num">$30M</div><div class="stat-label">Multas Ene-Feb 2025</div></div>
+        <div class="stat"><div class="stat-num">800+</div><div class="stat-label">Sanciones en 2024</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="framework-grid">
+    <div class="fw-card">
+      <h3>📊 Casos Destacados de Multas</h3>
+      <ul>
+        <li><strong>Logra Financiamientos:</strong> $868,800 MXN — información incompleta para identificación de clientes (LGOAAC).</li>
+        <li><strong>Libertad Servicios Financieros (SOFIPO):</strong> $434,400 MXN — no ajustó calificación de cartera ni reservas.</li>
+        <li><strong>Metrofinanciera (SOFOM):</strong> $96,220 MXN — incumplimiento en revelación de estados financieros.</li>
+        <li><strong>Arrendadora Ve por Más:</strong> $288,660 MXN — incumplimiento en integración de expedientes y administración de riesgos.</li>
+        <li><strong>ALD Fleet (SOFOM):</strong> $2M+ MXN — 3 sanciones por no tener sistemas automatizados de monitoreo de personas bloqueadas y operaciones inusuales.</li>
+        <li><strong>Invex:</strong> $400,000+ MXN — carecía de sistema automatizado que detectara movimientos inusuales.</li>
+        <li><strong>Centro Cambiario Olympia:</strong> $1M+ MXN — no identificó a clientes en operaciones >$1,000 USD.</li>
+      </ul>
+    </div>
+    <div class="fw-card">
+      <h3>⚠️ El Factor Terrorismo</h3>
+      <p>El gobierno de EE.UU. designó a 6 cárteles mexicanos como <strong>organizaciones terroristas</strong>. La CNBV anunció que <strong>intensificará la supervisión</strong> de todas las entidades financieras.</p>
+      <ul>
+        <li>La supervisión ya no es reactiva. Es <strong>proactiva y profunda</strong>.</li>
+        <li>El riesgo ya no es solo financiero: es <strong>operacional</strong>. La CNBV puede revocar licencias.</li>
+        <li>Financiera Auxi ya perdió su licencia por fallas de capitalización. El precedente está establecido.</li>
+        <li>Las SOFOMes y SOFIPOs son los <strong>sectores más multados</strong> del sistema financiero mexicano.</li>
+      </ul>
+    </div>
+    <div class="fw-card">
+      <h3>🎯 Argumento de Venta CPS Sales Copilot</h3>
+      <p style="font-size:0.9rem; color:var(--intel); font-weight:600; margin-bottom:10px;">"La CNBV no multa por tener malos controles. Multa por no poder DEMOSTRAR que tienes buenos controles."</p>
+      <ul>
+        <li><strong>PLD/FT integrado nativamente:</strong> Alertas en tiempo real, no reportes mensuales a mano.</li>
+        <li><strong>Expedientes digitales auditables:</strong> Cada decisión de crédito trazable, cada KYC documentado, cada scoring explicable.</li>
+        <li><strong>Reportes regulatorios automáticos:</strong> CNBV, CONDUSEF, UIF, Banxico — generados por el sistema, no por Excel.</li>
+        <li><strong>Auditoría lista:</strong> Si la CNBV llega mañana, puedes exportar todo en minutos, no en semanas.</li>
+      </ul>
+    </div>
+    <div class="fw-card">
+      <h3>📈 Costo del Downtime en Finanzas</h3>
+      <ul>
+        <li><strong>$152M USD/año</strong> — costo promedio de downtime para servicios financieros (Splunk/Oxford Economics).</li>
+        <li><strong>$300K/hora</strong> — costo por hora de outage en enterprise financiero.</li>
+        <li><strong>+60%</strong> — aumento de downtime de APIs entre Q1 2024 y Q1 2025.</li>
+        <li><strong>89%</strong> de clientes cambian de proveedor después de fallas repetidas del sistema.</li>
+        <li>Capital One: <strong>3 días sin servicio</strong> por falla de FIS Global en enero 2025. Miles de clientes sin acceso a depósitos.</li>
+      </ul>
+      <p style="margin-top:10px; font-size:0.85rem; color:#fca5a5;"><strong>El mensaje:</strong> Un core que falla no es solo un problema técnico. Es un problema regulatorio, reputacional y de retención de clientes.</p>
+    </div>
+  </div>
+</div>
+
+<div id="growth" class="section">
+  <div class="alert-box" style="background:linear-gradient(135deg,rgba(59,130,246,0.1),rgba(139,92,246,0.08)); border-color:rgba(59,130,246,0.3);">
+    <div class="alert-icon">🎯</div>
+    <div class="alert-content">
+      <h3 style="color:#60a5fa;">Plan de Choque Q3-Q4 — Meta: +20 Clientes Nuevos & +$200K MXN MRR</h3>
+      <p style="color:#93c5fd;">Estrategia de aceleración comercial para destrabar el pipeline atorado optimizando el trabajo del equipo de 3 personas (CEO + 2 AEs).</p>
+      <div class="stats">
+        <div class="stat"><div class="stat-num" style="color:#60a5fa;">+20</div><div class="stat-label" style="color:#93c5fd;">Clientes Nuevos</div></div>
+        <div class="stat"><div class="stat-num" style="color:#10b981;">+$200K</div><div class="stat-label" style="color:#6ee7b7;">MXN MRR Nuevo</div></div>
+        <div class="stat"><div class="stat-num" style="color:#f59e0b;">$10K</div><div class="stat-label" style="color:#fcd34d;">Ticket Medio / mes</div></div>
+        <div class="stat"><div class="stat-num" style="color:#a78bfa;">15 Días</div><div class="stat-label" style="color:#c4b5fd;">Ciclo Cierre Módulo</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="framework-grid">
+    <div class="fw-card">
+      <h3>🚀 1. Del "Trato Atorado" al "Cierre de Emergencia"</h3>
+      <p><strong>El Error Actual:</strong> Intentar vender el Core bancario completo de $50k+ MXN de golpe, lo que genera comités de decisión eternos y miedo al cambio tecnológico.</p>
+      <p style="margin-top:8px;"><strong>La Solución (Paquete Fast-Track CNBV):</strong> Vender primero un módulo de dolor inmediato (ej. Módulo PLD/CNBV o Originación ágil) a $10,000 MXN/mes con entrada exprés en 15 días.</p>
+      <ul>
+        <li>Entrada rápida sin tocar la contabilidad del cliente.</li>
+        <li>Upsell natural al Core completo una vez montados en la plataforma.</li>
+      </ul>
+    </div>
+    <div class="fw-card">
+      <h3>🎯 2. Prospección Quirúrgica (Nicho SOFOMes Nuevas)</h3>
+      <p><strong>El Objetivo:</strong> Dejar de perseguir financieras medianas que tardan 6-9 meses en tomar decisiones.</p>
+      <ul>
+        <li><strong>Inbound con Contenido Directivo:</strong> El CEO como "Educador Regulatorio" en LinkedIn publicando el <em>"Checklist Técnico para Constituir tu SOFOM sin morir en el intento"</em>.</li>
+        <li><strong>Alianzas ASOFOM:</strong> Talleres regulatorios gratuitos para extraer los 20 leads calificados de fundadores con necesidad inmediata.</li>
+      </ul>
+    </div>
+    <div class="fw-card">
+      <h3>⚡ 3. Demo Automatizada en 48 Horas</h3>
+      <p><strong>Optimizando el Equipo de 3 Personas:</strong> Sin tiempo para demos personalizadas complejas.</p>
+      <ul>
+        <li><strong>Sandbox con Datos Reales:</strong> En la 1ª call, el prospecto sube un Excel con 10 créditos de prueba.</li>
+        <li><strong>Demostración en Vivo:</strong> Se muestra el cálculo de intereses, alertas PLD y cobranza automatizada en 5 minutos.</li>
+        <li><strong>Efecto Cierre:</strong> El cliente ve el valor real al instante, reduciendo el ciclo de meses a días.</li>
+      </ul>
+    </div>
+    <div class="fw-card">
+      <h3>🎙️ Pitch de Cierre de Entrevista (The Closer)</h3>
+      <p style="font-size:0.85rem; color:#a78bfa; font-style:italic; line-height:1.6;">
+        "Señores, para alcanzar 20 cuentas nuevas y $200k MXN de MRR de aquí a diciembre con 3 personas vendiendo, no podemos seguir pescando ballenas con cañas de río. Si el pipeline está atorado, es porque vendemos el core completo a gente con miedo al cambio. Mi propuesta es una estrategia de caballo de Troya: soluciones modulares de $10,000 pesos orientadas al dolor regulatorio inmediato. Dejemos de vender software; vendamos tranquilidad regulatoria de rápida adopción para cerrar en semanas y no en semestres."
+      </p>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <p>📅 Julio 2026 | 🔍 Data verificada: Hindenburg Research, CNBV, Trustpilot, G2, Capterra, Vendr, Fortune, PaymentsDive, BNN, Splunk/Oxford Economics</p>
+  <p style="margin-top:6px; color:#475569;">⚠️ Uso interno CPS Sales Copilot. No para distribución pública. Los argumentos deben usarse con ética y veracidad.</p>
+</div>
+
+</div>
+
+<script>
+function showTab(id) {
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+</body>
+</html>

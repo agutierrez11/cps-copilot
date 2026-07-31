@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CPS Sales Copilot — Estrategias Fuera de la Caja</title>
+<style>
+:root {
+  --bg: #0a0e17;
+  --card: #111827;
+  --border: #1f2937;
+  --text: #e2e8f0;
+  --text-dim: #94a3b8;
+  --accent: #3b82f6;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --intel: #8b5cf6;
+  --pink: #ec4899;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height:1.6;
+  min-height:100vh;
+}
+.container { max-width:900px; margin:0 auto; padding:32px 24px; }
+
+.header { padding-bottom:20px; border-bottom:2px solid var(--intel); margin-bottom:24px; }
+.header h1 { font-size:1.5rem; font-weight:800; color:var(--text); }
+.header p { color:var(--text-dim); font-size:0.85rem; margin-top:6px; }
+.header .badge { display:inline-block; background:rgba(139,92,246,0.15); border:1px solid var(--intel); color:var(--intel); padding:3px 10px; border-radius:4px; font-size:0.7rem; font-weight:700; margin-top:10px; text-transform:uppercase; }
+
+.section { margin-bottom:28px; }
+.section-title { font-size:1.05rem; font-weight:700; margin-bottom:4px; }
+.section-subtitle { color:var(--text-dim); font-size:0.82rem; margin-bottom:12px; }
+
+.card { background:var(--card); border:1px solid var(--border); border-radius:8px; padding:16px 18px; margin-bottom:10px; position:relative; overflow:hidden; }
+.card::before { content:''; position:absolute; top:0; left:0; width:3px; height:100%; background:linear-gradient(180deg,var(--intel),var(--pink)); }
+.card h3 { font-size:0.9rem; font-weight:700; margin-bottom:6px; color:var(--text); }
+.card p, .card li { font-size:0.84rem; color:#cbd5e1; line-height:1.7; }
+.card ul { padding-left:18px; margin-top:6px; }
+.card li { margin-bottom:4px; }
+
+.tactic-tag { display:inline-block; padding:2px 8px; border-radius:3px; font-size:0.65rem; font-weight:700; margin-right:4px; margin-bottom:4px; }
+.tag-lead { background:rgba(59,130,246,0.15); color:#60a5fa; }
+.tag-deal { background:rgba(236,72,153,0.15); color:#f472b6; }
+.tag-ghost { background:rgba(245,158,11,0.15); color:#fbbf24; }
+.tag-seg { background:rgba(16,185,129,0.15); color:#34d399; }
+
+.exec-box { background:var(--bg); border:1px solid var(--border); border-radius:6px; padding:12px 14px; margin:8px 0; }
+.exec-box strong { color:var(--intel); font-size:0.78rem; text-transform:uppercase; display:block; margin-bottom:4px; }
+.exec-box p { font-size:0.82rem; color:#cbd5e1; margin:0; }
+.exec-box ol { padding-left:18px; margin:6px 0 0 0; }
+.exec-box ol li { font-size:0.82rem; color:#cbd5e1; margin-bottom:3px; }
+
+.cost-box { display:flex; gap:12px; flex-wrap:wrap; margin-top:8px; }
+.cost-item { background:rgba(16,185,129,0.08); padding:4px 10px; border-radius:4px; font-size:0.72rem; color:#6ee7b7; }
+.cost-item.danger { background:rgba(239,68,68,0.08); color:#fca5a5; }
+
+.table-wrap { overflow-x:auto; border:1px solid var(--border); border-radius:6px; margin:10px 0; }
+table { width:100%; border-collapse:collapse; font-size:0.78rem; }
+th { background:#0f172a; color:var(--text-dim); font-weight:600; text-transform:uppercase; font-size:0.7rem; letter-spacing:0.4px; padding:7px 9px; text-align:left; border-bottom:1px solid var(--border); }
+td { padding:7px 9px; border-bottom:1px solid var(--border); color:#cbd5e1; vertical-align:top; }
+tr:hover td { background:rgba(255,255,255,0.02); }
+
+.quote { background:rgba(139,92,246,0.06); border-left:3px solid var(--intel); padding:12px 16px; border-radius:0 8px 8px 0; font-size:0.85rem; color:#c4b5fd; margin:10px 0; font-style:italic; }
+.quote strong { color:var(--intel); font-style:normal; }
+
+.grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+
+.footer { text-align:center; padding:18px; color:var(--text-dim); font-size:0.72rem; border-top:1px solid var(--border); margin-top:24px; }
+
+@media(max-width:640px) {
+  .grid-2 { grid-template-columns:1fr; }
+  .header h1 { font-size:1.2rem; }
+}
+</style>
+<base target="_blank">
+</head>
+<body>
+<div class="container">
+
+<div class="header">
+  <h1>Estrategias Fuera de la Caja</h1>
+  <p>Prospección, desbloqueo de tratos y anti-ghosting. Ejecutables esta semana.</p>
+  <div class="badge">2 AEs + CEO — Recursos actuales — 4 segmentos</div>
+</div>
+
+<!-- ==================== BLOQUE 1: PROSPECCIÓN ==================== -->
+<div class="section">
+  <div class="section-title">🎣 Estrategias de Prospección (Fuera de la Caja)</div>
+  <div class="section-subtitle">No más emails genéricos. No más LinkedIn vacío. Ideas que nadie más está haciendo en fintech MX.</div>
+
+  <div class="card">
+    <h3><span class="tactic-tag tag-lead">LEAD GEN</span> Táctica 1: "La Lista Negra de la Semana" en LinkedIn</h3>
+    <p>Cada viernes, publica en LinkedIn la lista de SOFOMes que la CNBV multó esa semana. Solo datos públicos. Sin vender. Sin mencionar CPS Sales Copilot en el post. Solo el nombre de la SOFOM, el monto, y la razón.</p>
+    <div class="exec-box">
+      <strong>🛠️ Cómo ejecutar (30 min/viernes)</strong>
+      <ol>
+        <li>Entra a cnbv.gob.mx → Resoluciones → busca "sanción" + "SOFOM" + fecha de la semana.</li>
+        <li>Copia 3-5 casos. Formato: "Esta semana la CNBV multó a [SOFOM] con $[monto] por [razón]."</li>
+        <li>Publica en LinkedIn con hashtag #CNBV #SOFOM #FintechMX. Firma: "[Tu nombre], CPS Sales Copilot".</li>
+        <li>En los comentarios, cuando alguien pregunte "¿y cómo se evita?", responde con un DM ofreciendo el diagnóstico gratuito.</li>
+      </ol>
+    </div>
+    <div class="cost-box">
+      <div class="cost-item">Costo: $0</div>
+      <div class="cost-item">Tiempo: 30 min/semana</div>
+      <div class="cost-item">KPI: 500+ views/post, 3-5 DMs/semana</div>
+    </div>
+    <div class="quote">
+      <strong>Por qué funciona:</strong> Nadie más está agregando esta información. Los directores de SOFOMes la ven y piensan "¿y mi empresa?". Es miedo legítimo, no FOMO inventado.
+    </div>
+  </div>
+
+  <div class="card">
+    <h3><span class="tactic-tag tag-lead">LEAD GEN</span> Táctica 2: Grupo de WhatsApp "Alertas Regulatorias SOFOM"</h3>
+    <p>Crea un grupo de WhatsApp con 10-15 directores de SOFOMes. Comparte SOLO alertas reales de CNBV/CONDUSEF. Sin vender. Después de 3 semanas de valor puro, cuando alguien pregunte "¿y ustedes qué usan?", entra el CEO.</p>
+    <div class="exec-box">
+      <strong>🛠️ Cómo ejecutar (esta semana)</strong>
+      <ol>
+        <li>Crea el grupo: "Directores SOFOM — Alertas Regulatorias MX".</li>
+        <li>Invita a 5 contactos que ya tengas (clientes, prospects, ex-colegas). Pídeles que inviten a 1 director cada uno.</li>
+        <li>Regla de oro: 1 mensaje por día, máximo. Solo alertas regulatorias reales. NUNCA un pitch.</li>
+        <li>Semana 3: Cuando alguien pregunte "¿qué sistema usan ustedes para PLD?", el CEO responde: "Nosotros usamos CPS Sales Copilot, pero ese no es el punto del grupo. Si quieres que te platique, mándame DM."</li>
+      </ol>
+    </div>
+    <div class="cost-box">
+      <div class="cost-item">Costo: $0</div>
+      <div class="cost-item">Tiempo: 10 min/día</div>
+      <div class="cost-item">KPI: 15 miembros en semana 2, 1 lead caliente en semana 3-4</div>
+    </div>
+    <div class="quote">
+      <strong>Por qué funciona:</strong> En México, WhatsApp es donde se hace negocio. Un grupo de pares genera más confianza que 100 emails. Es community-led growth para B2B.
+    </div>
+  </div>
+
+  <div class="card">
+    <h3><span class="tactic-tag tag-lead">LEAD GEN</span> Táctica 3: Webinar con Ex-Regulador de CNBV</h3>
+    <p>Consigue a alguien que trabajó en CNBV, CONDUSEF o UIF. Ofrece un webinar gratuito: "Lo que la CNBV busca cuando audita una SOFOM". No es pitch. Es educación. Al final, un slide: "Si quieres estar listo, hablamos."</p>
+    <div class="exec-box">
+      <strong>🛠️ Cómo ejecutar (2 semanas)</strong>
+      <ol>
+        <li>Busca en LinkedIn "ex CNBV" o "ex CONDUSEF". Manda 10 mensajes de conexión. Ofrece $2K-5K MXN por 1 hora de webinar.</li>
+        <li>Crea un evento en LinkedIn/Zoom. Título: "Auditoría CNBV 2026: Lo que ninguna SOFOM puede ignorar".</li>
+        <li>Promociona el evento en el grupo de WhatsApp, en tu LinkedIn, y con 1 email a tu lista de prospects.</li>
+        <li>El webinar dura 45 min. Los últimos 5 min son tuyos: "Gracias al experto. Si quieren que les haga un diagnóstico gratuito de riesgo, mándenme un mensaje con 'DIAGNÓSTICO'."</li>
+      </ol>
+    </div>
+    <div class="cost-box">
+      <div class="cost-item">Costo: $2K-5K MXN (honorario ex-regulador)</div>
+      <div class="cost-item">Tiempo: 4 horas de preparación</div>
+      <div class="cost-item">KPI: 30-50 asistentes, 10-15 solicitudes de diagnóstico</div>
+    </div>
+    <div class="quote">
+      <strong>Por qué funciona:</strong> Un ex-regulador tiene credibilidad que tú no tienes. Los asistentes llegan calentísimos porque ya sienten el riesgo. El CAC de estos leads es casi cero.
+    </div>
+  </div>
+
+  <div class="card">
+    <h3><span class="tactic-tag tag-lead">LEAD GEN</span> Táctica 4: Partnership con Firmas de Contadores/Auditoras</h3>
+    <p>Las firmas que auditan SOFOMes (Deloitte, KPMG, o firmas locales como BDO, RSM, o incluso contadores independientes) son gatekeepers. Cuando auditan y ven que la SOFOM no tiene PLD automatizado, pueden recomendar CPS Sales Copilot. Les das comisión.</p>
+    <div class="exec-box">
+      <strong>🛠️ Cómo ejecutar (esta semana)</strong>
+      <ol>
+        <li>Busca en LinkedIn "auditor SOFOM" o "contador SOFOM". Filtra por CDMX, GDL, MTY.</li>
+        <li>Manda 20 mensajes: "Audito SOFOMes y veo que muchas no tienen PLD automatizado. Tengo una solución que les puede interesar. ¿Te gustaría que te platique? Te doy comisión por referido."</li>
+        <li>Crea un "Partner Kit": 1 one-pager + 1 video de 2 min + comisión del 10% del primer año.</li>
+        <li>Seguimiento semanal. No los bombardees. 1 mensaje por semana con una alerta regulatoria.</li>
+      </ol>
+    </div>
+    <div class="cost-box">
+      <div class="cost-item">Costo: $0 (solo comisión por cierre)</div>
+      <div class="cost-item">Tiempo: 2 horas/semana</div>
+      <div class="cost-item">KPI: 5 partners activos en mes 1, 1 deal/partner en mes 2-3</div>
+    </div>
+    <div class="quote">
+      <strong>Por qué funciona:</strong> El contador/auditor ya tiene la confianza de la SOFOM. Su recomendación pesa más que tu cold email. Y solo pagas si cierra.
+    </div>
+  </div>
+
+  <div class="card">
+    <h3><span class="tactic-tag tag-lead">LEAD GEN</span> Táctica 5: Retargeting con Nombre de la SOFOM</h3>
+    <p>Usa la lista pública de SOFOMes para crear audiencias personalizadas en LinkedIn Ads. Muestra un anuncio que dice: "¿[Nombre de la SOFOM] ya tiene PLD automatizado?" El shock de ver su nombre en un anuncio genera clicks.</p>
+    <div class="exec-box">
+      <strong>🛠️ Cómo ejecutar (esta semana)</strong>
+      <ol>
+        <li>Descarga la lista CNBV. Filtra 50 SOFOMes objetivo.</li>
+        <li>En LinkedIn Campaign Manager, crea una audiencia "Matched Audience" subiendo la lista de nombres de empresa.</li>
+        <li>Crea 1 anuncio con imagen simple (fondo azul, texto blanco): "¿[Nombre dinámico] tiene PLD automatizado? 3 SOFOMes de tu tamaño fueron multadas este mes. Diagnóstico gratuito."</li>
+        <li>Budget: $100-200 MXN/día. Duración: 30 días.</li>
+      </ol>
+    </div>
+    <div class="cost-box">
+      <div class="cost-item">Costo: $3K-6K MXN/mes</div>
+      <div class="cost-item">Tiempo: 2 horas de setup</div>
+      <div class="cost-item">KPI: 50-100 clicks, 5-10 leads, 1-2 deals</div>
+    </div>
+    <div class="quote">
+      <strong>Por qué funciona:</strong> Ver su propio nombre en un anuncio es imposible de ignorar. Es personalización a escala. Ningún competidor local lo está haciendo.
+    </div>
+  </div>
+
+  <div class="card">
+    <h3><span class="tactic-tag tag-lead">LEAD GEN</span> Táctica 6: "El Expediente Fantasma" (Micro-sitio)</h3>
+    <p>Crea una landing page donde una SOFOM sube (anónimamente) un expediente de cliente y recibe un análisis gratuito de qué le falta para cumplir CNBV. Es como un "SEO audit" pero para expedientes financieros.</p>
+    <div class="exec-box">
+      <strong>🛠️ Cómo ejecutar (1 semana)</strong>
+      <ol>
+        <li>Crea una landing en Carrd.co o Notion (gratis o $19/año). Título: "¿Tu expediente cumple con CNBV? Análisis gratuito en 24h."</li>
+        <li>El formulario pide: nombre, email, nombre de la SOFOM, y 3 preguntas sobre su expediente actual (¿digital? ¿firma? ¿trazable?).</li>
+        <li>Tú (o el CEO) revisas manualmente las respuestas y generas un PDF de 1 página con un "CNBV Readiness Score" de 0-100.</li>
+        <li>Lo mandas por email con un CTA: "Tu score es 45/100. Agendemos 15 min para ver cómo llegar a 90."</li>
+      </ol>
+    </div>
+    <div class="cost-box">
+      <div class="cost-item">Costo: $0-19 USD/año</div>
+      <div class="cost-item">Tiempo: 20 min/diagnóstico</div>
+      <div class="cost-item">KPI: 10 diagnósticos/semana, 3-5 calls, 1 deal</div>
+    </div>
+    <div class="quote">
+      <strong>Por qué funciona:</strong> El prospecto recibe valor antes de hablar contigo. Ya te debe algo (reciprocidad). Y el score bajo genera urgencia natural.
+    </div>
+  </div>
+</div>
+
+<!-- ==================== BLOQUE 2: DESATORAR TRATOS ==================== -->
+<div class="section">
+  <div class="section-title">🔓 Estrategias para Desatorar Tratos y Romper Ghosting</div>
+  <div class="section-subtitle">Cuando el prospecto desaparece, el "check-in" no funciona. Esto sí.</div>
+
+  <div class="card">
+    <h3><span class="tactic-tag tag-ghost">ANTI-GHOST</span> Táctica 7: El Video de 60 Segundos con Su Nombre</h3>
+    <p>Cuando te ghostean después de la demo, no mandes otro email. Graba un video de 60 segundos con Loom (gratis) donde dices su nombre, mencionas su empresa, y planteas UNA pregunta que no pueden ignorar.</p>
+    <div class="exec-box">
+      <strong>🛠️ Cómo ejecutar (5 min/video)</strong>
+      <ol>
+        <li>Abre Loom (gratis). Activa cámara. Fondo: tu oficina o una pared limpia.</li>
+        <li>Script: "Hola [Nombre], soy [Tu nombre] de CPS Sales Copilot. Sé que estás ocupado, por eso solo 60 segundos. Vi que la CNBV multó a [SOFOM similar] por $[monto] esta semana. Es del mismo tamaño que [Su SOFOM]. Mi pregunta: ¿tu sistema actual generaría la evidencia que la CNBV pidió? Solo necesito 5 minutos para mostrarte cómo se hace. Este viernes a las 11am, ¿te funciona?"</li>
+        <li>Manda el link por WhatsApp (no email). El preview del video con tu cara es imposible de ignorar.</li>
+        <li>Si no responde en 48h, mándalo por email con subject: "Video personalizado para [Nombre] — 60 segundos".</li>
+      </ol>
+    </div>
+    <div class="cost-box">
+      <div class="cost-item">Costo: $0</div>
+      <div class="cost-item">Tiempo: 5 min/video</div>
+      <div class="cost-item">KPI: 40% tasa de respuesta vs 5% de email genérico</div>
+    </div>
+    <div class="quote">
+      <strong>Por qué funciona:</strong> Nadie ignora un video donde dices su nombre. Es imposible de automatizar (lo cual es bueno, porque demuestra que te importa). Y la pregunta específica sobre una multa real genera urgencia.
+    </div>
+  </div>
+
+  <div class="card">
+    <h3><span class="tactic-tag tag-ghost">ANTI-GHOST</span> Táctica 8: "La Multa del Mes" como Trigger de Reactivación</h3>
+    <p>Cada vez que CNBV publica nuevas multas, revisa si alguna SOFOM multada es similar a tu prospecto ghosteado. Mándales un email/WhatsApp con el caso real.</p>
+    <div class="exec-box">
+      <strong>🛠️ Cómo ejecutar (15 min/semana)</strong>
+      <ol>
+        <li>Revisa resoluciones CNBV cada lunes.</li>
+        <li>Busca en tu CRM de deals ghosteados: ¿alguno es del mismo tamaño/segmento/ubicación que la SOFOM multada?</li>
+        <li>Manda este mensaje por WhatsApp: "[Nombre], buenos días. La CNBV acaba de multar a [SOFOM X] con $[monto] por [razón]. Es prácticamente del mismo tamaño que [Su SOFOM]. ¿Quieres que te haga un diagnóstico rápido para ver si están expuestos a lo mismo? Toma 10 minutos."</li>
+        <li>No es venta. Es alerta de vecindario. Funciona porque es información útil, no spam.</li>
+      </ol>
+    </div>
+    <div class="cost-box">
+      <div class="cost-item">Costo: $0</div>
+      <div class="cost-item">Tiempo: 15 min/semana</div>
+      <div class="cost-item">KPI: 30% de ghosteados responden, 10% reactivan a call</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3><span class="tactic-tag tag-ghost">ANTI-GHOST</span> Táctica 9: El Paquete Físico (Correo Real)</h3>
+    <p>Envía un paquete físico a los 5 prospects más importantes que te ghostearon. Contenido: USB con diagnóstico personalizado + chocolate + nota manuscrita. En B2B mexicano, nadie recibe correo físico. Rompe el patrón.</p>
+    <div class="exec-box">
+      <strong>🛠️ Cómo ejecutar (esta semana)</strong>
+      <ol>
+        <li>Selecciona los 5 deals ghosteados con mayor ticket potencial ($42K+/mes).</li>
+        <li>Compra 5 USBs ($50 MXN c/u). En cada uno, guarda un PDF personalizado: "Diagnóstico CNBV — [Nombre de su SOFOM]". El PDF tiene 2 páginas: su score de riesgo + 3 recomendaciones.</li>
+        <li>Compra 5 chocolates medianos ($80 MXN c/u) y 5 sobres.</li>
+        <li>Nota manuscrita (sí, a mano): "[Nombre], sé que el timing no es el ideal. Te dejo esto para que lo revises cuando puedas. Si en 6 meses cambia tu situación, aquí estoy. Éxito. [Tu nombre]"</li>
+        <li>Manda por DHL o Correos de México. El tracking te dice cuándo llegó. 2 días después, mándale un WhatsApp: "¿Llegó el paquete?"</li>
+      </ol>
+    </div>
+    <div class="cost-box">
+      <div class="cost-item">Costo: $150-200 MXN por paquete ($1K total)</div>
+      <div class="cost-item">Tiempo: 2 horas de preparación</div>
+      <div class="cost-item">KPI: 60% responden al WhatsApp, 20% reactivan el deal</div>
+    </div>
+    <div class="quote">
+      <strong>Por qué funciona:</strong> En un mundo de 100 emails diarios, un paquete físico es un evento. El chocolate humaniza. El USB con su nombre personalizado demuestra que invertiste tiempo. Y la nota sin presión de venta genera reciprocidad.
+    </div>
+  </div>
+
+  <div class="card">
+    <h3><span class="tactic-tag tag-ghost">ANTI-GHOST</span> Táctica 10: La Introducción del Cliente Feliz</h3>
+    <p>Cuando un prospecto te ghostea, pídele a un cliente existente (feliz) que les mande un mensaje de WhatsApp. Un peer recommendation pesa más que 10 follow-ups tuyos.</p>
+    <div class="exec-box">
+      <strong>🛠️ Cómo ejecutar (esta semana)</strong>
+      <ol>
+        <li>Identifica 3 clientes existentes que estén felices. Pregúntales: "¿Conoces a alguien en una SOFOM que esté evaluando core?"</li>
+        <li>Si no conocen a nadie, diles: "Te voy a pasar el contacto de [Prospecto]. No es para que vendas. Solo para que les digas que estás usando CPS Sales Copilot y te ha servido. Eso es todo."</li>
+        <li>El cliente manda: "Hola [Nombre], soy [Cliente] de [SOFOM]. Vi que estás buscando sistema para [core/PLD/onboarding]. Nosotros estamos usando CPS Sales Copilot y nos ha ahorrado un montón de tiempo en reportes. No sé si te sirva, pero si quieres te paso el contacto."</li>
+        <li>Eso genera una intro caliente. Tu tasa de cierre sube 3x.</li>
+      </ol>
+    </div>
+    <div class="cost-box">
+      <div class="cost-item">Costo: $0</div>
+      <div class="cost-item">Tiempo: 30 min (pedir la intro)</div>
+      <div class="cost-item">KPI: 50% de intros generan call, 30% cierran</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3><span class="tactic-tag tag-ghost">ANTI-GHOST</span> Táctica 11: El "Breakup Email" con Valor</h3>
+    <p>No el típico "¿Seguimos en contacto?". Un email que dice "te doy de baja" PERO incluye un informe personalizado de riesgo para su empresa. Es inesperado y útil.</p>
+    <div class="exec-box">
+      <strong>🛠️ Cómo ejecutar (10 min/email)</strong>
+      <ol>
+        <li>Crea un PDF de 1 página con: nombre de su SOFOM, tamaño estimado, segmento, y 3 riesgos regulatorios específicos para ellos.</li>
+        <li>Email: "[Nombre], entiendo que ahora no es el momento. Te doy de baja de mi lista. Pero antes, te dejo este diagnóstico de riesgo que hice para [Su SOFOM]. Es información pública, pero organizada. Si en 6 meses cambia tu situación, aquí estoy. Éxito."</li>
+        <li>Adjunta el PDF. No hay CTA. No hay link de calendario. Solo el PDF.</li>
+        <li>El 15-20% responde con "gracias, esto es útil" o "¿podemos hablar?".</li>
+      </ol>
+    </div>
+    <div class="cost-box">
+      <div class="cost-item">Costo: $0</div>
+      <div class="cost-item">Tiempo: 10 min/diagnóstico</div>
+      <div class="cost-item">KPI: 15-20% responden, 5% reactivan a call</div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== BLOQUE 3: POR SEGMENTO ==================== -->
+<div class="section">
+  <div class="section-title">🏭 Estrategias por Segmento (SOFOM / SOFIPO / Lender Digital / Arrendadora)</div>
+  <div class="section-subtitle">Cada segmento tiene un dolor diferente. Cada uno necesita un gancho diferente.</div>
+
+  <div class="card">
+    <h3><span class="tactic-tag tag-seg">SOFOM ENR/ER</span> El Gancho: "La Multa que le Cayó a tu Vecino"</h3>
+    <p>Las SOFOMes son las más multadas por CNBV. Su dolor es regulatorio e inmediato. No necesitan convencimiento de que el PLD importa: necesitan saber que TU sistema los protege.</p>
+    <div class="exec-box">
+      <strong>🛠️ Táctica específica</strong>
+      <ol>
+        <li>Busca en Google: "CNBV multa SOFOM [mes actual] 2026". Encuentra 2-3 casos recientes.</li>
+        <li>Crea un email/WhatsApp: "[Nombre], la CNBV multó a [SOFOM X] con $[monto] por no tener monitoreo de operaciones inusuales. [Su SOFOM] tiene el mismo tamaño y segmento. ¿Quieres que te haga un diagnóstico gratuito de riesgo?"</li>
+        <li>Ofrece Core Básico ($25K/mes) como solución inmediata. No hables de onboarding ni scoring. Habla de PLD y reportes CNBV.</li>
+      </ol>
+    </div>
+    <div class="cost-box">
+      <div class="cost-item">Ticket típico: $25-42K/mes</div>
+      <div class="cost-item">Ciclo: 2-6 semanas</div>
+      <div class="cost-item">Objeción #1: "Estamos bien con SIAC" → Responde: "¿Genera alertas PLD en tiempo real o reportes mensuales a mano?"</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3><span class="tactic-tag tag-seg">SOFIPO</span> El Gancho: "Captación de Ahorro sin Dolores de Cabeza"</h3>
+    <p>Las SOFIPOs captan ahorro del público. La CNBV las supervisa más strictly. Su dolor: controles de liquidez, reservas, y reportes de cartera. Necesitan demostrar solidez a sus ahorradores.</p>
+    <div class="exec-box">
+      <strong>🛠️ Táctica específica</strong>
+      <ol>
+        <li>Crea un contenido: "Las 5 SOFIPOs que crecieron más rápido en 2025 y qué sistema usan". Incluye a tu cliente más feliz.</li>
+        <li>Email: "[Nombre], vi que [Su SOFIPO] ha crecido [X]% en los últimos 2 años. Felicidades. Una pregunta: ¿tu sistema de core escala con ese crecimiento? O ¿ya estás viendo que Excel/SIAC no da para más?"</li>
+        <li>Ofrece Plataforma Completa ($42K/mes) con énfasis en: liquidez automatizada, reservas, calificación de cartera, y reportes CNBV sin esfuerzo.</li>
+      </ol>
+    </div>
+    <div class="cost-box">
+      <div class="cost-item">Ticket típico: $20-42K/mes</div>
+      <div class="cost-item">Ciclo: 4-8 semanas</div>
+      <div class="cost-item">Objeción #1: "No tenemos presupuesto" → Responde: "Empieza con onboarding ($8K) y en 90 días pasamos a Core cuando veas el ROI."</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3><span class="tactic-tag tag-seg">LENDER DIGITAL / FINTECH</span> El Gancho: "Speed to Market"</h3>
+    <p>Los lenders digitales no tienen tiempo. Necesitan estar operando en semanas, no meses. Su dolor: onboarding lento, rechazos falsos, scoring pobre. Necesitan aprobar más créditos, más rápido, con menos riesgo.</p>
+    <div class="exec-box">
+      <strong>🛠️ Táctica específica</strong>
+      <ol>
+        <li>Busca en LinkedIn startups fintech mexicanas recientes (2024-2026). Filtra por "lending", "crédito", "préstamos".</li>
+        <li>Email: "[Nombre], vi que [Su fintech] acaba de levantar [X] o lanzar [producto]. Felicidades. Pregunta rápida: ¿cuánto tarda tu onboarding de solicitud a aprobación? Si es más de 5 minutos, estás perdiendo clientes."</li>
+        <li>Ofrece Onboarding Standalone ($8K/mes) como piloto de 30 días. Promete: "En 2 semanas tu onboarding digital está vivo. En 30 días ves la tasa de conversión."</li>
+      </ol>
+    </div>
+    <div class="cost-box">
+      <div class="cost-item">Ticket típico: $8-42K/mes (escala rápido)</div>
+      <div class="cost-item">Ciclo: 1-3 semanas</div>
+      <div class="cost-item">Objeción #1: "Usamos Jumio/MetaMap" → Responde: "¿Cuál es tu tasa de abandono en el KYC? Si es >10%, estás perdiendo dinero."</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3><span class="tactic-tag tag-seg">ARRENDADORA</span> El Gancho: "El Contrato que se Firmó en 30 Segundos"</h3>
+    <p>Las arrendadoras viven de contratos. Su dolor: contratos físicos, firmas presenciales, expedientes en carpetas. La reforma a la Ley de Arrendamiento Financiero exige más transparencia. Necesitan digitalizar todo el ciclo: solicitud → evaluación → contrato → firma → entrega.</p>
+    <div class="exec-box">
+      <strong>🛠️ Táctica específica</strong>
+      <ol>
+        <li>Busca en Google: "arrendadoras México 2026" o usa la lista de arrendadoras registradas en CNBV.</li>
+        <li>Email: "[Nombre], ¿cuánto tarda tu equipo en preparar, firmar y archivar un contrato de arrendamiento? Si es más de 1 día, estás perdiendo velocidad frente a la competencia."</li>
+        <li>Ofrece un demo específico: "Te muestro cómo un contrato de arrendamiento se genera, firma digitalmente, y se archiva en 30 segundos. Sin papel. Sin filas."</li>
+        <li>El gancho no es el precio. Es la velocidad. Una arrendadora que firma en 30 segundos vs. 3 días tiene ventaja competitiva masiva.</li>
+      </ol>
+    </div>
+    <div class="cost-box">
+      <div class="cost-item">Ticket típico: $25-83K/mes</div>
+      <div class="cost-item">Ciclo: 3-6 semanas</div>
+      <div class="cost-item">Objeción #1: "Nuestros clientes prefieren firmar en físico" → Responde: "¿Y los que no pueden venir a la oficina? ¿Cuántos deals pierden por fricción de firma?"</div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== BLOQUE MANUS: ESTRATEGIAS OUT-OF-THE-BOX SAAS/FINTECH ==================== -->
+<div class="section">
+  <div class="section-title">🚀 Estrategias Comercial Out-of-the-Box (Patrones SaaS/Fintech Manus)</div>
+  <div class="section-subtitle">Inspiradas en modelos globales de alto crecimiento (Vanta, Xero, Expensify, T-Mobile) adaptados al mercado de SOFOMes en México.</div>
+
+  <div class="card">
+    <h3><span class="tactic-tag tag-lead">TROJAN HORSE</span> Táctica M1: Cumplimiento como Gancho de Cierre (Vanta/Drata Model)</h3>
+    <p>En lugar de vender un "Core Bancario" (decisión de meses), vendes un <strong>"Escudo Anti-Multas CNBV"</strong> (decisión de días). El cumplimiento PLD/FT es el dolor de cabeza #1 del Oficial de Cumplimiento.</p>
+    <div class="exec-box">
+      <strong>🛠️ Ejecución Táctica</strong>
+      <ol>
+        <li><strong>Producto Gancho:</strong> Diagnóstico de Salud Regulatoria gratuito en 15 min que genera el mapa de brechas (Gaps) ante disposiciones CNBV 2026.</li>
+        <li><strong>El Cierre:</strong> <em>"Tu sistema actual tiene 3 Gaps que representan $2M MXN en multas. Parchamos estos Gaps mañana con el Módulo PLD Nativo por $15k MXN/mes sin cambiar tu core hoy."</em></li>
+        <li><strong>Expansión:</strong> Al controlar el cumplimiento, la migración completa del Core es una consecuencia natural por la fuente única de verdad.</li>
+      </ol>
+    </div>
+    <div class="cost-box">
+      <div class="cost-item">Costo: $0</div>
+      <div class="cost-item">Target: Oficial de Cumplimiento / CFO</div>
+      <div class="cost-item">KPI: % Diagnósticos convertidos a Módulo PLD (Meta: 30%)</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3><span class="tactic-tag tag-lead">CANAL INFLUENCIA</span> Táctica M2: Alianza con Auditores Externos PLD (Xero/Quickbooks Model)</h3>
+    <p>Las SOFOMes están obligadas a tener <strong>Auditores Externos de PLD</strong> (Baker Tilly, Mazars, despachos boutique de ex-CNBV). Ellos sufren cuando sus clientes tienen sistemas basura porque no pueden extraer datos para los dictámenes.</p>
+    <div class="exec-box">
+      <strong>🛠️ Ejecución Táctica</strong>
+      <ol>
+        <li><strong>Programa de Partners:</strong> "Círculo de Consultores CPS Sales Copilot". Se les da <strong>Eficiencia</strong>, no comisión en efectivo por ética.</li>
+        <li><strong>El Valor:</strong> Portal de Auditor gratuito donde descargan los reportes de sus clientes en 1 clic.</li>
+        <li><strong>Pitch:</strong> <em>"Si tus clientes usan CPS Sales Copilot, tu dictamen anual toma 4 horas en lugar de 4 semanas. Recomiéndanos y te certificamos como Partner Tecnológico."</em></li>
+      </ol>
+    </div>
+    <div class="cost-box">
+      <div class="cost-item">Costo: $0 (Eficiencia mutua)</div>
+      <div class="cost-item">Target: Top 10 Despachos de Auditoría PLD</div>
+      <div class="cost-item">KPI: 2 Leads referidos por partner/mes</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3><span class="tactic-tag tag-deal">SHADOW IT</span> Táctica M3: Portal de Originación Digital (Expensify Model)</h3>
+    <p>El cambio de Core es una decisión "Top-Down" lenta. La <strong>Originación (Onboarding)</strong> es una decisión "Bottom-Up" rápida. Los vendedores de la financiera están desesperados por la lentitud del papel.</p>
+    <div class="exec-box">
+      <strong>🛠️ Ejecución Táctica</strong>
+      <ol>
+        <li><strong>Infiltración:</strong> Vender únicamente el <strong>Portal de Solicitud Digital</strong> que se conecta vía API (o carga Excel) al core viejo del cliente.</li>
+        <li><strong>El Gancho:</strong> <em>"Sigue con tu core viejo, pero dales a tus vendedores una App web para originar créditos en 5 minutos."</em></li>
+        <li><strong>Expansión:</strong> Reducir el ciclo de 3 días a 2 horas vuelve a los vendedores promotores internos de migrar el Core completo a CPS Sales Copilot.</li>
+      </ol>
+    </div>
+    <div class="cost-box">
+      <div class="cost-item">Costo: $0</div>
+      <div class="cost-item">Target: Director Comercial / VP Ventas SOFOM</div>
+      <div class="cost-item">KPI: Reducción >70% en tiempo de ciclo de originación</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3><span class="tactic-tag tag-ghost">BUY-OUT</span> Táctica M4: El "Bono de Liberación" de Contratos Rival (T-Mobile Model)</h3>
+    <p>El mayor freno en México es: <em>"Ya pagué la anualidad de mi sistema actual"</em> o <em>"Tengo contrato forzoso con Efisys/Dynamicore"</em>.</p>
+    <div class="exec-box">
+      <strong>🛠️ Ejecución Táctica</strong>
+      <ol>
+        <li><strong>Acción:</strong> CPS Sales Copilot "compra" la penalización del contrato del competidor.</li>
+        <li><strong>Estructura:</strong> Si al cliente le quedan 4 meses de contrato con Efisys ($200k MXN), CPS Sales Copilot le bonifica esos 4 meses de renta + descuento en Setup Fee.</li>
+        <li><strong>Justificación Financiera:</strong> El LTV a 5-10 años paga con creces sacrificar 4 meses de renta inicial.</li>
+      </ol>
+    </div>
+    <div class="cost-box">
+      <div class="cost-item">Costo: Bonificación en renta inicial</div>
+      <div class="cost-item">Target: Tratos estancados con competencia</div>
+      <div class="cost-item">KPI: Tasa de conversión en propuestas de Sustitución</div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== CIERRE ==================== -->
+<div class="section">
+  <div class="section-title">🎙️ Resumen Ejecutivo para el CEO</div>
+  <div class="card">
+    <p style="font-size:0.92rem; color:var(--text); line-height:1.75;">
+      "El cuello de botella no es el producto. Es que nadie sabe que existimos, y cuando sí lo saben, nos ghostean. Aquí están las tácticas fuera de la caja de mayor impacto:<br><br>
+      <strong>Para leads & ganchos:</strong> Trojan Horse de Cumplimiento PLD (Vanta), Alianza con Auditores Externos (Xero), Portal de Originación Shadow IT (Expensify), Lista Negra CNBV en LinkedIn, Grupo WhatsApp de directores y Webinar con Ex-Regulador.<br><br>
+      <strong>Para desatorar contratos:</strong> Bono de Liberación Buy-Out de contratos rivales (T-Mobile), Video de 60s con su nombre, reactivación con multas reales y Paquete Físico USB.<br><br>
+      <strong>Costo total:</strong> Menos de $15K MXN al mes. <strong>ROI:</strong> 1 deal de $25K/mes se paga solo. <strong>Riesgo:</strong> Cero. Todo es reversible en 30 días."<br><br>
+      Dame 30 días. Si no genero 5 leads calificados nuevos y reactivo 2 deals ghosteados, cancelamos todo y no vuelvo a proponer tácticas nuevas.
+    </p>
+  </div>
+</div>
+
+<div class="footer">
+  <p>📅 29 Julio 2026 | 🇲🇽 México | ⚠️ Ejecutar esta semana. No la siguiente.</p>
+</div>
+
+</div>
+</body>
+</html>
