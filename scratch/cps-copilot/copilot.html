@@ -520,29 +520,77 @@
   </main>
 
   <script>
-    // 1. Audio Spectrum Canvas Animation
+    // 1. Real-time WebAudio API Spectrum Visualizer
     const canvas = document.getElementById('vocalSpectrumCanvas');
     const ctx = canvas.getContext('2d');
     let isRecording = false;
+    let audioCtx, analyser, micStream, dataArray;
 
     function drawSpectrum() {
       requestAnimationFrame(drawSpectrum);
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      const bars = 24;
-      const barWidth = canvas.width / bars;
-      for(let i = 0; i < bars; i++) {
-        const factor = isRecording ? 1.4 : 0.4;
-        const h = (Math.sin(Date.now() * 0.007 + i * 0.3) * 0.4 + 0.5) * canvas.height * factor;
-        const grad = ctx.createLinearGradient(0, canvas.height, 0, 0);
-        grad.addColorStop(0, '#06b6d4');
-        grad.addColorStop(1, '#8b5cf6');
-        ctx.fillStyle = grad;
-        ctx.fillRect(i * barWidth, canvas.height - h, barWidth - 3, h);
+
+      if (isRecording && analyser && dataArray) {
+        // DIBUJA EL AUDIO REAL DEL MICRÓFONO EN TIEMPO REAL
+        analyser.getByteFrequencyData(dataArray);
+        const numBars = dataArray.length;
+        const barWidth = canvas.width / numBars;
+        for (let i = 0; i < numBars; i++) {
+          const barHeight = (dataArray[i] / 255) * canvas.height * 0.9;
+          const grad = ctx.createLinearGradient(0, canvas.height, 0, 0);
+          grad.addColorStop(0, '#06b6d4');
+          grad.addColorStop(1, '#8b5cf6');
+          ctx.fillStyle = grad;
+          ctx.fillRect(i * barWidth, canvas.height - barHeight, barWidth - 3, barHeight);
+        }
+      } else {
+        // Onda sutil de reposo cuando no se está grabando
+        const bars = 24;
+        const barWidth = canvas.width / bars;
+        for(let i = 0; i < bars; i++) {
+          const h = (Math.sin(Date.now() * 0.005 + i * 0.3) * 0.25 + 0.3) * canvas.height * 0.25;
+          const grad = ctx.createLinearGradient(0, canvas.height, 0, 0);
+          grad.addColorStop(0, 'rgba(6,182,212,0.3)');
+          grad.addColorStop(1, 'rgba(139,92,246,0.3)');
+          ctx.fillStyle = grad;
+          ctx.fillRect(i * barWidth, canvas.height - h, barWidth - 3, h);
+        }
       }
     }
 
     function toggleMicRecording() {
-      isRecording = !isRecording;
+      if (!isRecording) {
+        navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
+          micStream = stream;
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+          analyser = audioCtx.createAnalyser();
+          analyser.fftSize = 64; // Genera 32 barras de frecuencia
+          const source = audioCtx.createMediaStreamSource(stream);
+          source.connect(analyser);
+          dataArray = new Uint8Array(analyser.frequencyBinCount);
+          isRecording = true;
+
+          // Actualizar botón
+          const btn = document.querySelector('.btn-action');
+          if (btn) btn.innerText = "🛑 Detener & Evaluar";
+        }).catch(err => {
+          alert("Permiso de micrófono no otorgado: " + err);
+        });
+      } else {
+        if (micStream) {
+          micStream.getTracks().forEach(track => track.stop());
+        }
+        if (audioCtx) {
+          audioCtx.close();
+        }
+        isRecording = false;
+        
+        const btn = document.querySelector('.btn-action');
+        if (btn) btn.innerText = "🎙️ Micrófono";
+
+        // Ejecutar evaluación de audio
+        evaluateObjectionText();
+      }
     }
 
     // 2. Typewriter Text Animation Function
