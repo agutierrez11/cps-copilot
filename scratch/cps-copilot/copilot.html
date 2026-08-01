@@ -629,8 +629,31 @@
 
     // 4. Evaluate Text via REST Endpoint
     function evaluateObjectionText() {
-      const text = document.getElementById('objectionInput').value;
+      const textInput = document.getElementById('objectionInput');
+      const text = textInput ? textInput.value.trim() : '';
       if (!text) return;
+
+      // Actualizar la caja de transcripción inmediatamente en pantalla
+      const transcriptBox = document.getElementById('transcriptDisplay');
+      if (transcriptBox) {
+        transcriptBox.innerText = `"${text}"`;
+      }
+
+      // Actualizar el feed de diarización
+      const feed = document.getElementById('diarizationFeed');
+      if (feed) {
+        feed.innerHTML += `
+          <div class="speaker-bubble speaker-client" style="margin-top:8px;">
+            <div class="speaker-tag">Speaker 1 (Cliente C-Level)</div>
+            "${text}"
+          </div>
+        `;
+        feed.scrollTop = feed.scrollHeight;
+      }
+
+      // Animación en botón de evaluar
+      const evalBtn = document.querySelector("button[onclick='evaluateObjectionText()']");
+      if (evalBtn) evalBtn.innerText = "⏳ Evaluando...";
 
       fetch('/evaluate', {
         method: 'POST',
@@ -639,6 +662,11 @@
       })
       .then(res => res.json())
       .then(data => {
+        if (evalBtn) evalBtn.innerText = "⚡ Evaluar";
+
+        // Animación Hero Card
+        gsap.fromTo('#heroCard', { opacity: 0.3, scale: 0.98 }, { opacity: 1, scale: 1, duration: 0.3 });
+
         if (data.pregunta_socratica) {
           runTypewriter(data.pregunta_socratica);
         }
@@ -653,7 +681,10 @@
           document.getElementById('headerTotalLatency').innerText = `${data.latencias.total_ms || 360} ms`;
         }
       })
-      .catch(err => console.error("Error:", err));
+      .catch(err => {
+        if (evalBtn) evalBtn.innerText = "⚡ Evaluar";
+        console.error("Error evaluando:", err);
+      });
     }
 
     window.onload = () => {

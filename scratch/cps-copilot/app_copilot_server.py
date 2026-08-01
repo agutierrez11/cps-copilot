@@ -119,7 +119,8 @@ def run_hybrid_multilayer_pipeline(user_text: str, audio_file_path: str = None) 
     if GROQ_AVAILABLE and GROQ_API_KEY:
         try:
             g_start = time.time()
-            client = Groq(api_key=GROQ_API_KEY)
+            # Groq Llama 70B con timeout corto para no congelar la UI
+            client = Groq(api_key=GROQ_API_KEY, timeout=2.5, max_retries=0)
             
             # STT con Groq Whisper si enviaron archivo
             if audio_file_path and os.path.exists(audio_file_path):
@@ -153,7 +154,8 @@ def run_hybrid_multilayer_pipeline(user_text: str, audio_file_path: str = None) 
             groq_res = json.loads(response.choices[0].message.content)
             groq_ms = round((time.time() - g_start) * 1000, 2)
         except Exception as e:
-            print(f"⚠️ Error Groq: {e}")
+            print(f"⚠️ Fallback de Groq a motor local por timeout/red: {e}")
+            groq_ms = round((time.time() - g_start) * 1000, 2)
 
     latencias["groq_ms"] = groq_ms if groq_ms else 350.0
 
