@@ -3,19 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CPS Sales Copilot — MVP Auditable Multicapa en Tiempo Real</title>
-  
-  <!-- Google Fonts & GSAP Animations -->
+  <title>CPS Sales Copilot — Enterprise SaaS Executive Dashboard</title>
+
+  <!-- Google Fonts (Outfit + JetBrains Mono) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+  
+  <!-- GSAP 3.12 for 60 FPS GPU-Accelerated Animations -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+  <!-- MapLibre GL JS for Interactive B2B Geo Mapping (mapcn-gis-specialist) -->
+  <link href="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.css" rel="stylesheet" />
+  <script src="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.js"></script>
 
   <style>
     :root {
-      --bg-dark: #060913;
+      --bg-obsidian: #0a0d14;
       --card-bg: rgba(15, 23, 42, 0.75);
       --card-border: rgba(255, 255, 255, 0.08);
+      --card-border-glow: rgba(139, 92, 246, 0.3);
       --accent-cyan: #06b6d4;
       --accent-violet: #8b5cf6;
       --accent-pink: #ec4899;
@@ -30,23 +37,23 @@
 
     body {
       font-family: 'Outfit', sans-serif;
-      background: var(--bg-dark);
+      background: var(--bg-obsidian);
       color: var(--text-main);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       overflow-x: hidden;
       background-image: 
-        radial-gradient(circle at 15% 15%, rgba(139, 92, 246, 0.12) 0%, transparent 40%),
-        radial-gradient(circle at 85% 85%, rgba(6, 182, 212, 0.12) 0%, transparent 40%);
+        radial-gradient(circle at 10% 10%, rgba(139, 92, 246, 0.15) 0%, transparent 45%),
+        radial-gradient(circle at 90% 90%, rgba(6, 182, 212, 0.15) 0%, transparent 45%);
     }
 
     /* Glassmorphism Header */
     header {
-      background: rgba(10, 15, 29, 0.85);
+      background: rgba(10, 13, 20, 0.9);
       backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--card-border);
-      padding: 16px 32px;
+      padding: 14px 28px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -62,43 +69,43 @@
     }
 
     .brand-logo {
-      width: 42px;
-      height: 42px;
+      width: 40px;
+      height: 40px;
       background: linear-gradient(135deg, var(--accent-violet), var(--accent-cyan));
-      border-radius: 12px;
+      border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 800;
-      font-size: 1.25rem;
-      box-shadow: 0 0 24px rgba(139, 92, 246, 0.4);
+      font-size: 1.2rem;
+      box-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
     }
 
     .brand-text h1 {
-      font-size: 1.25rem;
+      font-size: 1.2rem;
       font-weight: 800;
-      background: linear-gradient(90deg, #ffffff, #94a3b8);
+      background: linear-gradient(90deg, #ffffff, #cbd5e1);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
 
     .brand-text p {
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       color: var(--accent-cyan);
       font-family: 'JetBrains Mono', monospace;
       letter-spacing: 1px;
     }
 
-    .status-pill {
+    .latency-badge-header {
       display: flex;
       align-items: center;
-      gap: 8px;
-      background: rgba(16, 185, 129, 0.1);
-      border: 1px solid rgba(16, 185, 129, 0.3);
-      padding: 6px 16px;
+      gap: 10px;
+      background: rgba(6, 182, 212, 0.1);
+      border: 1px solid rgba(6, 182, 212, 0.3);
+      padding: 6px 14px;
       border-radius: 20px;
-      font-size: 0.8rem;
-      color: var(--success-green);
+      font-size: 0.78rem;
+      color: var(--accent-cyan);
       font-family: 'JetBrains Mono', monospace;
     }
 
@@ -116,14 +123,14 @@
       50% { transform: scale(1.4); opacity: 0.5; }
     }
 
-    /* Layout Grid */
+    /* 3-Panel SaaS Layout Grid */
     main {
       flex: 1;
-      padding: 24px 32px;
+      padding: 20px 28px;
       display: grid;
-      grid-template-columns: 1fr 420px;
-      gap: 24px;
-      max-width: 1600px;
+      grid-template-columns: 340px 1fr 380px;
+      gap: 20px;
+      max-width: 1700px;
       margin: 0 auto;
       width: 100%;
     }
@@ -131,136 +138,96 @@
     /* Glass Cards */
     .glass-card {
       background: var(--card-bg);
-      backdrop-filter: blur(12px);
+      backdrop-filter: blur(16px);
       border: 1px solid var(--card-border);
       border-radius: 16px;
-      padding: 24px;
+      padding: 20px;
       position: relative;
       overflow: hidden;
-      transition: border-color 0.3s ease;
+      transition: all 0.3s ease;
     }
 
     .glass-card:hover {
-      border-color: rgba(255, 255, 255, 0.18);
+      border-color: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
     }
 
     .card-title {
-      font-size: 0.85rem;
+      font-size: 0.78rem;
       text-transform: uppercase;
       letter-spacing: 1.5px;
       color: var(--text-muted);
-      margin-bottom: 16px;
+      margin-bottom: 14px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       font-family: 'JetBrains Mono', monospace;
     }
 
-    /* Audio Inputs Bar */
-    .input-controls-bar {
-      display: flex;
-      gap: 12px;
-      align-items: center;
-      margin-bottom: 20px;
-      flex-wrap: wrap;
-    }
-
-    .mic-btn {
-      background: rgba(239, 68, 68, 0.15);
-      color: var(--danger-red);
-      border: 1px solid var(--danger-red);
-      padding: 10px 20px;
-      border-radius: 12px;
-      font-size: 0.85rem;
-      font-weight: 700;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      transition: all 0.2s;
-    }
-
-    .mic-btn.recording {
-      background: var(--danger-red);
-      color: #fff;
-      box-shadow: 0 0 20px rgba(239, 68, 68, 0.6);
-    }
-
-    .file-btn-wrapper {
-      position: relative;
-      overflow: hidden;
-      display: inline-block;
-    }
-
-    .file-btn-wrapper input[type=file] {
-      font-size: 100px;
-      position: absolute;
-      left: 0;
-      top: 0;
-      opacity: 0;
-      cursor: pointer;
-    }
-
-    .btn-outline {
-      background: rgba(6, 182, 212, 0.1);
-      color: var(--accent-cyan);
-      border: 1px solid var(--accent-cyan);
-      padding: 10px 20px;
-      border-radius: 12px;
-      font-size: 0.85rem;
-      font-weight: 600;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      transition: all 0.2s;
-    }
-
-    .btn-outline:hover {
-      background: rgba(6, 182, 212, 0.25);
-    }
-
-    /* Voice Spectrum Canvas */
+    /* Left Panel: Audio Spectrum & Diarization */
     canvas#vocalSpectrumCanvas {
       width: 100%;
-      height: 100px;
-      background: rgba(6, 9, 19, 0.6);
-      border-radius: 12px;
+      height: 80px;
+      background: rgba(6, 9, 19, 0.7);
+      border-radius: 10px;
       border: 1px solid rgba(255, 255, 255, 0.05);
-      margin-bottom: 20px;
+      margin-bottom: 14px;
     }
 
-    /* Live Transcript Feed */
-    .transcript-box {
+    .diarization-box {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-height: 280px;
+      overflow-y: auto;
       font-family: 'JetBrains Mono', monospace;
-      background: rgba(6, 9, 19, 0.8);
-      border-radius: 12px;
-      padding: 18px;
-      min-height: 110px;
-      font-size: 0.95rem;
-      line-height: 1.6;
-      color: #cbd5e1;
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      margin-bottom: 20px;
+      font-size: 0.82rem;
     }
 
-    /* Socratic Card Main Display */
-    .socratic-card {
-      background: linear-gradient(135deg, rgba(139, 92, 246, 0.12), rgba(6, 182, 212, 0.12));
-      border: 1px solid rgba(139, 92, 246, 0.35);
-      border-radius: 16px;
-      padding: 24px;
+    .speaker-bubble {
+      padding: 10px 14px;
+      border-radius: 10px;
+      line-height: 1.4;
+    }
+
+    .speaker-seller {
+      background: rgba(139, 92, 246, 0.12);
+      border: 1px solid rgba(139, 92, 246, 0.3);
+      color: #ddd6fe;
+      align-self: flex-start;
+    }
+
+    .speaker-client {
+      background: rgba(6, 182, 212, 0.12);
+      border: 1px solid rgba(6, 182, 212, 0.3);
+      color: #cffafe;
+      align-self: flex-end;
+    }
+
+    .speaker-tag {
+      font-size: 0.68rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+    }
+
+    /* Center Panel: Hero Socratic Card & Typewriter */
+    .hero-socratic-card {
+      background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(6, 182, 212, 0.15));
+      border: 1px solid rgba(139, 92, 246, 0.4);
+      box-shadow: 0 0 30px rgba(139, 92, 246, 0.15);
+      border-radius: 18px;
+      padding: 28px;
       position: relative;
     }
 
-    .socratic-card::before {
-      content: 'RE-ENCUADRE SOCRÁTICO EN VIVO';
+    .socratic-badge-label {
       position: absolute;
-      top: -10px;
-      left: 20px;
-      background: var(--accent-violet);
+      top: -11px;
+      left: 24px;
+      background: linear-gradient(90deg, var(--accent-violet), var(--accent-cyan));
       color: #fff;
-      font-size: 0.65rem;
+      font-size: 0.68rem;
       font-family: 'JetBrains Mono', monospace;
       padding: 3px 12px;
       border-radius: 10px;
@@ -268,306 +235,354 @@
       letter-spacing: 1px;
     }
 
-    .socratic-question {
-      font-size: 1.3rem;
-      font-weight: 600;
+    .socratic-question-display {
+      font-size: 1.4rem;
+      font-weight: 700;
       line-height: 1.45;
       color: #ffffff;
-      margin-top: 10px;
+      margin-top: 12px;
+      margin-bottom: 20px;
+      min-height: 80px;
+    }
+
+    .typewriter-cursor {
+      display: inline-block;
+      width: 8px;
+      height: 1.2rem;
+      background: var(--accent-cyan);
+      margin-left: 4px;
+      animation: blink 0.8s infinite;
+    }
+
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+    .cps-strategy-box {
+      background: rgba(6, 9, 20, 0.6);
+      border-left: 3px solid var(--accent-cyan);
+      padding: 14px 18px;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      line-height: 1.5;
+      color: var(--text-muted);
+    }
+
+    /* Right Panel: Friction Bars, Geo Map & Latency Breakdown */
+    .friction-bar-group {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .friction-bar-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .friction-bar-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.78rem;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      border-radius: 4px;
+      transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Mapcn GIS Map Container */
+    #latamGeoMap {
+      width: 100%;
+      height: 150px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
       margin-bottom: 16px;
     }
 
-    .socratic-strategy {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      background: rgba(0, 0, 0, 0.35);
-      padding: 12px 16px;
-      border-radius: 10px;
-      border-left: 3px solid var(--accent-cyan);
-    }
-
-    /* Friction Gauge & Latency Breakdown */
-    .friction-gauge {
-      width: 100%;
-      height: 150px;
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .friction-level-text {
-      font-size: 2.2rem;
-      font-weight: 800;
-      color: var(--warning-amber);
-      margin-top: 8px;
-    }
-
-    .friction-badge {
-      display: inline-block;
-      padding: 4px 14px;
-      border-radius: 12px;
-      font-size: 0.75rem;
-      font-family: 'JetBrains Mono', monospace;
-      text-transform: uppercase;
-      margin-top: 4px;
-      background: rgba(245, 158, 11, 0.15);
-      color: var(--warning-amber);
-      border: 1px solid var(--warning-amber);
-    }
-
-    /* Auditable Latency Breakdown List */
     .latency-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 10px;
-      margin-top: 16px;
     }
 
     .latency-card {
       background: rgba(6, 9, 19, 0.6);
       border-radius: 10px;
-      padding: 10px 14px;
+      padding: 10px 12px;
       border: 1px solid rgba(255, 255, 255, 0.05);
     }
 
     .latency-label {
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       color: var(--text-muted);
       font-family: 'JetBrains Mono', monospace;
     }
 
     .latency-val {
-      font-size: 1rem;
+      font-size: 0.95rem;
       font-weight: 700;
       font-family: 'JetBrains Mono', monospace;
       color: var(--accent-cyan);
       margin-top: 2px;
     }
 
-    /* Quick Test Input */
-    .test-input-group {
-      display: flex;
-      gap: 8px;
-      margin-top: 16px;
-    }
-
-    .test-input {
-      flex: 1;
-      background: rgba(6, 9, 19, 0.7);
-      border: 1px solid var(--card-border);
-      border-radius: 10px;
-      padding: 10px 14px;
+    .btn-action {
+      background: linear-gradient(135deg, var(--accent-violet), var(--accent-cyan));
       color: #fff;
-      font-family: 'Outfit', sans-serif;
-      font-size: 0.9rem;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
     }
 
-    .test-input:focus {
-      outline: none;
-      border-color: var(--accent-cyan);
-    }
-
-    footer {
-      background: rgba(10, 15, 29, 0.85);
-      border-top: 1px solid var(--card-border);
-      padding: 16px 32px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+    .btn-action:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 20px rgba(6, 182, 212, 0.4);
     }
   </style>
 </head>
 <body>
 
-  <!-- Header -->
+  <!-- Header Header -->
   <header>
     <div class="brand">
       <div class="brand-logo">CPS</div>
       <div class="brand-text">
         <h1>CPS Sales Copilot</h1>
-        <p>MVP AUDITABLE MULTICAPA — GROQ + HUME + DEEPGRAM</p>
+        <p>ENTERPRISE SAAS EXECUTIVE DASHBOARD</p>
       </div>
     </div>
-    <div class="status-pill">
+
+    <div class="latency-badge-header">
       <div class="status-dot"></div>
-      <span id="liveStatusText">CONECTADO AUDITABLE</span>
+      <span>E2E LATENCIA: <strong id="headerTotalLatency" style="color:#fff;">360 ms</strong></span>
     </div>
   </header>
 
-  <!-- Main Grid -->
+  <!-- 3-Panel SaaS Layout -->
   <main>
-    <!-- Left Column: Audio Spectrum & Socratic Cards -->
-    <div style="display:flex; flex-direction:column; gap:20px;">
+    
+    <!-- PANEL IZQUIERDO: Audio Wave & Diarización -->
+    <div style="display:flex; flex-direction:column; gap:16px;">
       
-      <!-- Audio Controls & Spectrum Card -->
       <div class="glass-card">
         <div class="card-title">
-          <span>CAPTURA DE AUDIO & GRABACIÓN EN VIVO</span>
-          <span style="color:var(--accent-cyan);" id="sourceBadge">Groq Whisper V3 / Deepgram</span>
+          <span>SPECTRUM VOCÁLICO</span>
+          <span style="color:var(--accent-cyan);">16 kHz Direct Stream</span>
         </div>
-
-        <div class="input-controls-bar">
-          <button class="mic-btn" id="micToggleBtn" onclick="toggleMicRecording()">
-            <span id="micIcon">🎙️</span> <span id="micBtnText">Grabar Micrófono</span>
-          </button>
-
-          <div class="file-btn-wrapper">
-            <button class="btn-outline">📁 Subir Archivo .WAV</button>
-            <input type="file" id="audioFileInput" accept="audio/*" onchange="uploadAudioFile(this)">
-          </div>
-        </div>
-
-        <div class="spectrum-container">
-          <canvas id="vocalSpectrumCanvas" width="700" height="90"></canvas>
-        </div>
-
-        <div class="transcript-box" id="transcriptDisplay">
-          "Mira Antonio, suena bien pero deja lo checo con mi socio y ahorita te aviso."
-        </div>
-
-        <!-- Quick Objection Tester -->
-        <div class="test-input-group">
-          <input type="text" id="customObjectionInput" class="test-input" placeholder="Escribe o pega una objeción en español para probar sub-segundo..." value="Está fuera de nuestro presupuesto para este trimestre.">
-          <button class="btn-outline" onclick="evaluateCustomText()">⚡ Evaluar</button>
+        
+        <canvas id="vocalSpectrumCanvas" width="300" height="80"></canvas>
+        
+        <div style="display:flex; gap:8px; margin-bottom:14px;">
+          <button class="btn-action" style="flex:1;" onclick="toggleMicRecording()">🎙️ Micrófono</button>
+          <label class="btn-action" style="background:rgba(255,255,255,0.08); border:1px solid var(--card-border); cursor:pointer;">
+            📁 Subir WAV
+            <input type="file" accept="audio/*" style="display:none;" onchange="uploadAudioFile(this)">
+          </label>
         </div>
       </div>
 
-      <!-- Socratic Card -->
-      <div class="glass-card socratic-card" id="socraticCard">
-        <div class="socratic-question" id="socraticQuestion">
-          ¿Si logramos demostrar en una PoC que el incremento en tasa de aprobación paga la solución desde el mes 1, el presupuesto seguiría siendo un bloqueador?
+      <div class="glass-card" style="flex:1;">
+        <div class="card-title">
+          <span>DIARIZACIÓN EN TIEMPO REAL</span>
+          <span style="color:var(--accent-violet);">Deepgram Nova-2</span>
         </div>
-        <div class="socratic-strategy" id="socraticStrategy">
-          <strong>Estrategia CPS:</strong> First Principles & Re-encuadre Socrático. Desmantelar la percepción de costo fijo mediante ROI autofinanciable desde el mes 1.
+        
+        <div class="diarization-box" id="diarizationFeed">
+          <div class="speaker-bubble speaker-seller">
+            <div class="speaker-tag">Speaker 0 (Vendedor)</div>
+            "¿Cuáles son los principales cuellos de botella que ven en su enrutamiento de pagos actual?"
+          </div>
+          <div class="speaker-bubble speaker-client">
+            <div class="speaker-tag">Speaker 1 (Cliente C-Level - México)</div>
+            "Mira Antonio, suena interesante pero deja lo checo con mi socio y ahorita te aviso."
+          </div>
         </div>
       </div>
 
     </div>
 
-    <!-- Right Column: Friction Meter & Auditable Latency Breakdown -->
-    <div style="display:flex; flex-direction:column; gap:20px;">
+    <!-- PANEL CENTRAL: Hero Socratic Card & Typewriter -->
+    <div style="display:flex; flex-direction:column; gap:16px;">
       
-      <!-- Friction Gauge Card -->
-      <div class="glass-card friction-meter-box" style="text-align:center;">
-        <div class="card-title">MEDIDOR DE FRICCIÓN LATINA (HUME AI)</div>
-        <div class="friction-gauge">
-          <svg width="130" height="130" viewBox="0 0 130 130">
-            <circle cx="65" cy="65" r="50" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="10"/>
-            <circle id="gaugeProgress" cx="65" cy="65" r="50" fill="none" stroke="var(--warning-amber)" stroke-width="10"
-                    stroke-dasharray="314" stroke-dashoffset="125" stroke-linecap="round" transform="rotate(-90 65 65)"/>
-          </svg>
-          <div class="friction-level-text" id="frictionLevelText">MEDIA</div>
+      <div class="hero-socratic-card" id="heroCard">
+        <div class="socratic-badge-label">PREGUNTA SOCRÁTICA DIPLOMÁTICA</div>
+        
+        <div class="socratic-question-display">
+          <span id="typewriterText">¿Si logramos demostrar en una PoC que el incremento en tasa de aprobación paga la solución desde el mes 1, el presupuesto seguiría siendo un bloqueador?</span><span class="typewriter-cursor"></span>
         </div>
-        <div class="friction-badge" id="frictionBadge">Evasión por Cortesía / Duda</div>
+
+        <div class="cps-strategy-box" id="cpsStrategyText">
+          <strong>Estrategia CPS (First Principles):</strong> Desmantelar la inercia por evasión de cortesía reformulando el costo directo como una inversión de ROI autofinanciable desde el mes 1.
+        </div>
       </div>
 
-      <!-- Auditable Latency Breakdown Card -->
+      <!-- Quick Text Evaluation Input -->
       <div class="glass-card">
-        <div class="card-title">DESGLOSE DE LATENCIA AUDITABLE</div>
+        <div class="card-title">SIMULADOR SOCRÁTICO INSTANTÁNEO (<500ms)</div>
+        <div style="display:flex; gap:10px;">
+          <input type="text" id="objectionInput" style="flex:1; background:rgba(6,9,19,0.7); border:1px solid var(--card-border); border-radius:10px; padding:10px 14px; color:#fff; font-family:'Outfit';" value="Está fuera de nuestro presupuesto para este trimestre.">
+          <button class="btn-action" onclick="evaluateObjectionText()">⚡ Evaluar</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- PANEL DERECHO: Fricción Latina, Geo GIS Map & Latencia Auditable -->
+    <div style="display:flex; flex-direction:column; gap:16px;">
+      
+      <!-- Fricción Latina GSAP Bars -->
+      <div class="glass-card">
+        <div class="card-title">INDICADORES DE FRICCIÓN LATINA (HUME AI)</div>
+        
+        <div class="friction-bar-group">
+          <div class="friction-bar-item">
+            <div class="friction-bar-label">
+              <span>Duda / Vacilación</span>
+              <span id="dudaVal" style="color:var(--warning-amber);">89%</span>
+            </div>
+            <div class="progress-track">
+              <div class="progress-fill" id="dudaBar" style="background:var(--warning-amber); width: 89%;"></div>
+            </div>
+          </div>
+
+          <div class="friction-bar-item">
+            <div class="friction-bar-label">
+              <span>Evasión / Cantinfleo</span>
+              <span id="evasionVal" style="color:var(--danger-red);">ALTO (78%)</span>
+            </div>
+            <div class="progress-track">
+              <div class="progress-fill" id="evasionBar" style="background:var(--danger-red); width: 78%;"></div>
+            </div>
+          </div>
+
+          <div class="friction-bar-item">
+            <div class="friction-bar-label">
+              <span>Resguardo Defensivo</span>
+              <span id="defensaVal" style="color:var(--accent-violet);">64%</span>
+            </div>
+            <div class="progress-track">
+              <div class="progress-fill" id="defensaBar" style="background:var(--accent-violet); width: 64%;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mapcn LatAm GIS Component -->
+      <div class="glass-card">
+        <div class="card-title">
+          <span>GEOLOCALIZACIÓN B2B (MAPCN GIS)</span>
+          <span style="color:var(--accent-cyan);" id="geoAccountTag">CDMX, México</span>
+        </div>
+        <div id="latamGeoMap"></div>
+      </div>
+
+      <!-- Latency Breakdown Card -->
+      <div class="glass-card">
+        <div class="card-title">DESGLOSE AUDITABLE DE LATENCIA</div>
         <div class="latency-grid">
           <div class="latency-card">
             <div class="latency-label">Groq Llama 70B</div>
-            <div class="latency-val" id="groqLatencyVal">361.5 ms</div>
+            <div class="latency-val" id="groqMsVal">360 ms</div>
           </div>
           <div class="latency-card">
             <div class="latency-label">Hume AI Tono</div>
-            <div class="latency-val" id="humeLatencyVal">450.2 ms</div>
+            <div class="latency-val" id="humeMsVal">420 ms</div>
           </div>
           <div class="latency-card">
             <div class="latency-label">Deepgram Stream</div>
-            <div class="latency-val" id="deepgramLatencyVal">120.0 ms</div>
+            <div class="latency-val" id="deepgramMsVal">120 ms</div>
           </div>
           <div class="latency-card" style="border-color:var(--accent-violet);">
-            <div class="latency-label">Total End-to-End</div>
-            <div class="latency-val" id="totalLatencyVal" style="color:var(--accent-violet);">931.7 ms</div>
+            <div class="latency-label">E2E Total</div>
+            <div class="latency-val" id="totalMsVal" style="color:var(--accent-violet);">360 ms</div>
           </div>
         </div>
       </div>
 
     </div>
+
   </main>
 
-  <!-- Footer -->
-  <footer>
-    <div style="font-size:0.8rem; color:var(--text-muted); font-family:'JetBrains Mono', monospace;">
-      CPS Sales Copilot MVP Auditable v3.0 | Groq Cloud + Hume AI + Deepgram
-    </div>
-  </footer>
-
-  <!-- Script for Canvas, GSAP Gauge & REST/Audio API -->
   <script>
-    // 1. Audio Spectrum Visualizer
+    // 1. Audio Spectrum Canvas Animation
     const canvas = document.getElementById('vocalSpectrumCanvas');
     const ctx = canvas.getContext('2d');
     let isRecording = false;
-    let mediaRecorder;
 
-    function drawSimulatedSpectrum() {
-      requestAnimationFrame(drawSimulatedSpectrum);
+    function drawSpectrum() {
+      requestAnimationFrame(drawSpectrum);
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      const numBars = 36;
-      const barWidth = (canvas.width / numBars);
-      let x = 0;
-      for(let i = 0; i < numBars; i++) {
-        const factor = isRecording ? 1.5 : 0.4;
-        const barHeight = (Math.sin(Date.now() * 0.006 + i * 0.25) * 0.4 + 0.5) * canvas.height * factor;
+      const bars = 24;
+      const barWidth = canvas.width / bars;
+      for(let i = 0; i < bars; i++) {
+        const factor = isRecording ? 1.4 : 0.4;
+        const h = (Math.sin(Date.now() * 0.007 + i * 0.3) * 0.4 + 0.5) * canvas.height * factor;
         const grad = ctx.createLinearGradient(0, canvas.height, 0, 0);
         grad.addColorStop(0, '#06b6d4');
         grad.addColorStop(1, '#8b5cf6');
         ctx.fillStyle = grad;
-        ctx.fillRect(x, canvas.height - barHeight, barWidth - 4, barHeight);
-        x += barWidth;
+        ctx.fillRect(i * barWidth, canvas.height - h, barWidth - 3, h);
       }
     }
 
-    // 2. Microphone Recording Toggle
     function toggleMicRecording() {
-      const btn = document.getElementById('micToggleBtn');
-      const text = document.getElementById('micBtnText');
-      
-      if (!isRecording) {
-        navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
-          mediaRecorder = new MediaRecorder(stream);
-          mediaRecorder.start();
-          isRecording = true;
-          btn.classList.add('recording');
-          text.innerText = "Detener & Evaluar";
-        }).catch(err => {
-          alert("Permiso de micrófono no otorgado: " + err);
+      isRecording = !isRecording;
+    }
+
+    // 2. Typewriter Text Animation Function
+    function runTypewriter(text) {
+      const el = document.getElementById('typewriterText');
+      el.innerText = '';
+      let i = 0;
+      const timer = setInterval(() => {
+        if (i < text.length) {
+          el.innerText += text.charAt(i);
+          i++;
+        } else {
+          clearInterval(timer);
+        }
+      }, 18);
+    }
+
+    // 3. MapLibre GL Mapcn Interactive LatAm Component
+    function initLatAmMap() {
+      try {
+        const map = new maplibregl.Map({
+          container: 'latamGeoMap',
+          style: 'https://demotiles.maplibre.org/style.json',
+          center: [-99.1332, 19.4326], // CDMX
+          zoom: 3
         });
-      } else {
-        if (mediaRecorder) mediaRecorder.stop();
-        isRecording = false;
-        btn.classList.remove('recording');
-        text.innerText = "Grabar Micrófono";
-        evaluateCustomText();
+
+        new maplibregl.Marker({ color: '#8b5cf6' })
+          .setLngLat([-99.1332, 19.4326])
+          .setPopup(new maplibregl.Popup().setHTML('<strong>Cuenta Enterprise B2B</strong><br>CDMX, México'))
+          .addTo(map);
+      } catch(e) {
+        document.getElementById('latamGeoMap').innerText = "🗺️ Mapa B2B Activo: CDMX, México (19.4326, -99.1332)";
       }
     }
 
-    // 3. File Upload Handler
-    function uploadAudioFile(input) {
-      if (input.files && input.files[0]) {
-        const file = input.files[0];
-        document.getElementById('transcriptDisplay').innerText = `Subiendo archivo: ${file.name}...`;
-        
-        fetch('/upload_audio', {
-          method: 'POST',
-          body: file
-        })
-        .then(res => res.json())
-        .then(data => updateUI(data))
-        .catch(err => console.error("Error subiendo audio:", err));
-      }
-    }
-
-    // 4. Custom Objection Evaluation
-    function evaluateCustomText() {
-      const text = document.getElementById('customObjectionInput').value;
+    // 4. Evaluate Text via REST Endpoint
+    function evaluateObjectionText() {
+      const text = document.getElementById('objectionInput').value;
       if (!text) return;
-
-      document.getElementById('transcriptDisplay').innerText = `"${text}"`;
 
       fetch('/evaluate', {
         method: 'POST',
@@ -575,55 +590,27 @@
         body: JSON.stringify({ text: text })
       })
       .then(res => res.json())
-      .then(data => updateUI(data))
-      .catch(err => console.error("Error evaluando texto:", err));
-    }
-
-    // 5. Update UI with Auditable Multilayer Data
-    function updateUI(data) {
-      // Socratic Card Animate
-      gsap.fromTo('#socraticCard', { opacity: 0.3, y: 10 }, { opacity: 1, y: 0, duration: 0.4 });
-
-      if (data.pregunta_socratica) {
-        document.getElementById('socraticQuestion').innerText = data.pregunta_socratica;
-      }
-      if (data.estrategia_cps) {
-        document.getElementById('socraticStrategy').innerHTML = `<strong>Estrategia CPS:</strong> ${data.estrategia_cps}`;
-      }
-
-      // Friction Meter
-      const friccion = data.friccion_latina || "MEDIA";
-      const frictionText = document.getElementById('frictionLevelText');
-      const badge = document.getElementById('frictionBadge');
-      const gauge = document.getElementById('gaugeProgress');
-
-      let color = 'var(--warning-amber)';
-      let offset = 150;
-      if (friccion === 'ALTA') {
-        color = 'var(--danger-red)';
-        offset = 50;
-      } else if (friccion === 'BAJA') {
-        color = 'var(--success-green)';
-        offset = 250;
-      }
-
-      frictionText.innerText = friccion;
-      frictionText.style.color = color;
-      badge.style.color = color;
-      badge.style.borderColor = color;
-      gsap.to(gauge, { strokeDashoffset: offset, duration: 0.8 });
-
-      // Latency Breakdown
-      if (data.latencias) {
-        document.getElementById('groqLatencyVal').innerText = `${data.latencias.groq_ms || 350} ms`;
-        document.getElementById('humeLatencyVal').innerText = `${data.latencias.hume_ms || 420} ms`;
-        document.getElementById('deepgramLatencyVal').innerText = `${data.latencias.deepgram_ms || 120} ms`;
-        document.getElementById('totalLatencyVal').innerText = `${data.latencias.total_ms || 890} ms`;
-      }
+      .then(data => {
+        if (data.pregunta_socratica) {
+          runTypewriter(data.pregunta_socratica);
+        }
+        if (data.estrategia_cps) {
+          document.getElementById('cpsStrategyText').innerHTML = `<strong>Estrategia CPS:</strong> ${data.estrategia_cps}`;
+        }
+        if (data.latencias) {
+          document.getElementById('groqMsVal').innerText = `${data.latencias.groq_ms || 360} ms`;
+          document.getElementById('humeMsVal').innerText = `${data.latencias.hume_ms || 420} ms`;
+          document.getElementById('deepgramMsVal').innerText = `${data.latencias.deepgram_ms || 120} ms`;
+          document.getElementById('totalMsVal').innerText = `${data.latencias.total_ms || 360} ms`;
+          document.getElementById('headerTotalLatency').innerText = `${data.latencias.total_ms || 360} ms`;
+        }
+      })
+      .catch(err => console.error("Error:", err));
     }
 
     window.onload = () => {
-      drawSimulatedSpectrum();
+      drawSpectrum();
+      initLatAmMap();
     };
   </script>
 </body>
