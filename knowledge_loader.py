@@ -62,24 +62,19 @@ class LocalKnowledgeEngine:
         return results[:top_k]
 
     def get_combined_context(self, query_text: str) -> str:
-        """Devuelve el contexto estructurado de ambas fuentes (CPS + Venta Socrática)."""
-        cps_hits = self.query(query_text, category_filter="cps_frameworks", top_k=1)
-        socratic_hits = self.query(query_text, category_filter="socratic_sales", top_k=1)
-
+        """Devuelve el contexto relevante acumulado de todos los libros y frameworks cargados."""
+        hits = self.query(query_text, top_k=3)
         context_parts = []
-        if cps_hits:
-            context_parts.append(f"--- FUENTE 1: CPS FRAMEWORKS ---\n{cps_hits[0]['content']}")
-        else:
-            cps_doc = self.documents.get("cps_frameworks/SKILL.md")
-            if cps_doc:
-                context_parts.append(f"--- FUENTE 1: CPS FRAMEWORKS ---\n{cps_doc['content']}")
-
-        if socratic_hits:
-            context_parts.append(f"--- FUENTE 2: VENTA SOCRÁTICA ---\n{socratic_hits[0]['content']}")
-        else:
-            socratic_doc = self.documents.get("socratic_sales/SKILL.md")
-            if socratic_doc:
-                context_parts.append(f"--- FUENTE 2: VENTA SOCRÁTICA ---\n{socratic_doc['content']}")
+        for i, hit in enumerate(hits, 1):
+            snippet = hit['content'][:2500] # Limitar tamaño para latencia ultra-rápida
+            context_parts.append(f"--- FUENTE {i}: {hit['doc_id']} (Relevancia: {hit['score']}) ---\n{snippet}")
+        
+        if not context_parts:
+            # Fallback si no hay coincidencias por palabra clave
+            for key in ["cps_frameworks/SKILL.md", "socratic_sales/SKILL.md"]:
+                doc = self.documents.get(key)
+                if doc:
+                    context_parts.append(f"--- FUENTE BASE: {key} ---\n{doc['content'][:2000]}")
 
         return "\n\n".join(context_parts)
 
