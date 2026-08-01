@@ -14,9 +14,7 @@ TARGET_FILES = [
     ("CPS_Libro_Maestro", r"C:\Users\Antonio\Desktop\Materiales_CPS\CPS.pdf"),
     ("CPS_Entrenamiento", r"C:\Users\Antonio\Desktop\Materiales_CPS\Complex Problem Solving y Entrenamiento.pdf"),
     ("CPS_CST_Decisiones", r"C:\Users\Antonio\Desktop\Materiales_CPS\CSTDecisiones.pdf"),
-    ("CPS_Enlaces_Lista", r"C:\Users\Antonio\Desktop\Materiales_CPS\Listado_de_Enlaces_CPS_(con_icono_?).pdf"),
-    ("NERV_Battlecards_Galileo", r"C:\Users\Antonio\Desktop\NERV_BATTLECARDS_JUAN_GALILEO.md"),
-    ("Dossier_OnlyPayments_2026", r"C:\Users\Antonio\Downloads\DOSSIER_ONLYPAYMENTS_2026.pdf")
+    ("CPS_Enlaces_Lista", r"C:\Users\Antonio\Desktop\Materiales_CPS\Listado_de_Enlaces_CPS_(con_icono_?).pdf")
 ]
 
 def extract_pdf_to_md(name, pdf_path):
