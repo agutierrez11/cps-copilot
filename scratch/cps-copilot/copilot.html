@@ -424,7 +424,7 @@
       <div class="glass-card">
         <div class="card-title">
           <span>SPECTRUM VOCÁLICO</span>
-          <span style="color:var(--accent-cyan);">16 kHz Direct Stream</span>
+          <span style="color:var(--accent-cyan);" id="micStatusTag">16 kHz Direct Stream</span>
         </div>
         
         <canvas id="vocalSpectrumCanvas" width="300" height="80"></canvas>
@@ -592,17 +592,29 @@
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       if (isRecording && analyser && dataArray) {
-        // DIBUJA EL AUDIO REAL DEL MICRÓFONO EN TIEMPO REAL
+        // DIBUJA EL AUDIO REAL DEL MICRÓFONO EN TIEMPO REAL CON ALTA SENSIBILIDAD
         analyser.getByteFrequencyData(dataArray);
         const numBars = dataArray.length;
         const barWidth = canvas.width / numBars;
+        let sum = 0;
         for (let i = 0; i < numBars; i++) {
-          const barHeight = (dataArray[i] / 255) * canvas.height * 0.9;
+          sum += dataArray[i];
+          const valNormalized = dataArray[i] / 255;
+          // Ganancia amplificada 2.2x para sensibilidad extrema
+          const barHeight = Math.max(3, valNormalized * canvas.height * 2.2);
           const grad = ctx.createLinearGradient(0, canvas.height, 0, 0);
           grad.addColorStop(0, '#06b6d4');
           grad.addColorStop(1, '#8b5cf6');
           ctx.fillStyle = grad;
           ctx.fillRect(i * barWidth, canvas.height - barHeight, barWidth - 3, barHeight);
+        }
+        
+        // Indicador numérico de decibeles en pantalla
+        const avg = Math.round(sum / numBars);
+        const tag = document.getElementById('micStatusTag');
+        if (tag) {
+          tag.innerText = `🎙️ Entrada Mic: ${avg} dB (AUDIO REAL EN VIVO)`;
+          tag.style.color = avg > 15 ? "var(--success-green)" : "var(--accent-cyan)";
         }
       } else {
         // Onda sutil de reposo cuando no se está grabando
@@ -616,6 +628,8 @@
           ctx.fillStyle = grad;
           ctx.fillRect(i * barWidth, canvas.height - h, barWidth - 3, h);
         }
+        const tag = document.getElementById('micStatusTag');
+        if (tag) tag.innerText = "16 kHz Direct Stream";
       }
     }
 
@@ -632,6 +646,10 @@
           }
           analyser = audioCtx.createAnalyser();
           analyser.fftSize = 64; // Genera 32 barras de frecuencia
+          analyser.minDecibels = -85;
+          analyser.maxDecibels = -25;
+          analyser.smoothingTimeConstant = 0.5;
+
           const source = audioCtx.createMediaStreamSource(stream);
           source.connect(analyser);
           dataArray = new Uint8Array(analyser.frequencyBinCount);
