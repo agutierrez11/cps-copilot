@@ -6,6 +6,7 @@ import sys
 import json
 import time
 import queue
+import tempfile
 import threading
 import http.server
 import socketserver
@@ -14,6 +15,9 @@ import concurrent.futures
 from pathlib import Path
 from datetime import datetime
 from knowledge_loader import evaluate_cps_rules, engine as knowledge_engine
+
+# Lock global para proteger escrituras concurrentes sobre latest_state
+_state_lock = threading.Lock()
 
 # Forzar codificación UTF-8
 if hasattr(sys.stdout, 'reconfigure'):
@@ -76,13 +80,13 @@ latest_state = {
     "rule": "RULE_01 — EVALUACIÓN DE PRECIO",
     "attractor": "Fricción por costo de oportunidad",
     "question": "¿Si logramos demostrar en una PoC que el incremento en tasa de aprobación paga la solución desde el mes 1, el presupuesto seguiría siendo un bloqueador?",
-    "cdi": "$6,869.86 MXN / día",
+    "cdi": "<!-- PENDIENTE: verificar fuente de CDI con datos reales -->",
     "friccion_latina": "MEDIA",
     "latencias": {
-        "groq_ms": 320.5,
-        "hume_ms": 450.2,
-        "deepgram_ms": 120.0,
-        "total_ms": 890.7
+        "groq_ms": 0,
+        "hume_ms": 0,
+        "deepgram_ms": 0,
+        "total_ms": 0
     },
     "timestamp": time.strftime("%H:%M:%S")
 }
@@ -183,14 +187,14 @@ class CopilotHTTPHandler(http.server.SimpleHTTPRequestHandler):
                 
                 result = run_hybrid_multilayer_pipeline(text)
                 
-                # Actualizar estado global
-                global latest_state
-                latest_state["transcript"] = text
-                latest_state["rule"] = f"CPS — {result['objecion_detectada']}"
-                latest_state["question"] = result["pregunta_socratica"]
-                latest_state["friccion_latina"] = result["friccion_latina"]
-                latest_state["latencias"] = result["latencias"]
-                latest_state["timestamp"] = time.strftime("%H:%M:%S")
+                # Actualizar estado global con lock para evitar race conditions
+                with _state_lock:
+                    latest_state["transcript"] = text
+                    latest_state["rule"] = f"CPS — {result['objecion_detectada']}"
+                    latest_state["question"] = result["pregunta_socratica"]
+                    latest_state["friccion_latina"] = result["friccion_latina"]
+                    latest_state["latencias"] = result["latencias"]
+                    latest_state["timestamp"] = time.strftime("%H:%M:%S")
 
                 log_insight(result)
                 
@@ -205,16 +209,56 @@ class CopilotHTTPHandler(http.server.SimpleHTTPRequestHandler):
                 self.wfile.write(json.dumps({"error": str(e)}).encode('utf-8'))
 
         elif self.path == '/upload_audio':
-            # Subida de archivo WAV / MP3
+            # Subida de audio desde micrófono — transcribe con Groq Whisper si disponible
             content_length = int(self.headers.get('Content-Length', 0))
+            if content_length == 0:
+                self.send_response(400)
+                self.end_headers()
+                self.wfile.write(json.dumps({"error": "Audio vacío"}).encode('utf-8'))
+                return
+
             raw_body = self.rfile.read(content_length)
+            transcript_text = ""
+
+            # Determinar extensión por Content-Type del cliente
+            ctype = self.headers.get('Content-Type', 'audio/webm')
+            ext = '.webm' if 'webm' in ctype else '.wav'
+
             try:
-                temp_wav = Path("temp_uploaded_audio.wav")
-                with open(temp_wav, "wb") as f:
-                    f.write(raw_body)
-                
-                result = run_hybrid_multilayer_pipeline("Audio recibido por micrófono/archivo", audio_file_path=str(temp_wav))
-                
+                # Guardar en archivo temporal seguro (auto-cleanup)
+                with tempfile.NamedTemporaryFile(suffix=ext, delete=False) as tmp:
+                    tmp.write(raw_body)
+                    tmp_path = tmp.name
+
+                # Transcripción real con Groq Whisper
+                if GROQ_AVAILABLE and GROQ_API_KEY:
+                    try:
+                        client = Groq(api_key=GROQ_API_KEY)
+                        with open(tmp_path, 'rb') as audio_f:
+                            transcription = client.audio.transcriptions.create(
+                                file=(Path(tmp_path).name, audio_f.read()),
+                                model='whisper-large-v3-turbo',
+                                language='es',
+                                response_format='text'
+                            )
+                        transcript_text = str(transcription).strip()
+                    except Exception as whisper_err:
+                        print(f"⚠️ Whisper error: {whisper_err}")
+                        transcript_text = ""
+                    finally:
+                        try:
+                            os.unlink(tmp_path)
+                        except Exception:
+                            pass
+
+                if not transcript_text:
+                    # Fallback: pedir texto de evaluación al frontend si no hay transcripción
+                    result = run_hybrid_multilayer_pipeline("audio enviado sin transcripción disponible")
+                    result["transcript"] = ""
+                    result["warning"] = "Sin API de transcripción activa — configura GROQ_API_KEY en .env"
+                else:
+                    result = run_hybrid_multilayer_pipeline(transcript_text)
+
                 self.send_response(200)
                 self.send_header('Content-Type', 'application/json')
                 self.send_header('Access-Control-Allow-Origin', '*')
