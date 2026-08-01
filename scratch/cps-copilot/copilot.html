@@ -581,121 +581,169 @@
   </main>
 
   <script>
-    // 1. Real-time WebAudio API Spectrum Visualizer
+    // ═══════════════════════════════════════════════════
+    // 1. MOTOR DE AUDIO EN TIEMPO REAL - WebAudio API
+    // ═══════════════════════════════════════════════════
     const canvas = document.getElementById('vocalSpectrumCanvas');
     const ctx = canvas.getContext('2d');
     let isRecording = false;
-    let audioCtx, analyser, micStream, dataArray;
+    let audioCtx = null;
+    let analyser = null;
+    let micStream = null;
+    let dataArray = null;
+    let animFrameId = null;
 
+    // Arranca el loop de animación inmediatamente al cargar la página
     function drawSpectrum() {
-      requestAnimationFrame(drawSpectrum);
+      animFrameId = requestAnimationFrame(drawSpectrum);
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       if (isRecording && analyser && dataArray) {
-        // DIBUJA EL AUDIO REAL DEL MICRÓFONO EN TIEMPO REAL CON ALTA SENSIBILIDAD
-        analyser.getByteFrequencyData(dataArray);
-        const numBars = dataArray.length;
-        const barWidth = canvas.width / numBars;
-        let sum = 0;
-        for (let i = 0; i < numBars; i++) {
-          sum += dataArray[i];
-          const valNormalized = dataArray[i] / 255;
-          // Ganancia amplificada 2.2x para sensibilidad extrema
-          const barHeight = Math.max(3, valNormalized * canvas.height * 2.2);
-          const grad = ctx.createLinearGradient(0, canvas.height, 0, 0);
-          grad.addColorStop(0, '#06b6d4');
-          grad.addColorStop(1, '#8b5cf6');
-          ctx.fillStyle = grad;
-          ctx.fillRect(i * barWidth, canvas.height - barHeight, barWidth - 3, barHeight);
-        }
+        // ONDA DE VOZ REAL (waveform) — máxima sensibilidad con timeDomain
+        analyser.getByteTimeDomainData(dataArray);
         
-        // Indicador numérico de decibeles en pantalla
-        const avg = Math.round(sum / numBars);
+        // Calcular volumen RMS para el indicador de dB
+        let sumSquares = 0;
+        for (let i = 0; i < dataArray.length; i++) {
+          const normalized = (dataArray[i] - 128) / 128;
+          sumSquares += normalized * normalized;
+        }
+        const rms = Math.sqrt(sumSquares / dataArray.length);
+        const volumePercent = Math.round(rms * 300); // Escala visual 0-100+
+
+        // Dibujar onda vocálica real tipo waveform
+        ctx.lineWidth = 2.5;
+        const grad = ctx.createLinearGradient(0, 0, canvas.width, 0);
+        grad.addColorStop(0, '#06b6d4');
+        grad.addColorStop(0.5, '#8b5cf6');
+        grad.addColorStop(1, '#06b6d4');
+        ctx.strokeStyle = grad;
+        ctx.beginPath();
+        const sliceWidth = canvas.width / dataArray.length;
+        let x = 0;
+        for (let i = 0; i < dataArray.length; i++) {
+          const v = dataArray[i] / 128.0;
+          const y = (v * canvas.height) / 2;
+          if (i === 0) {
+            ctx.moveTo(x, y);
+          } else {
+            ctx.lineTo(x, y);
+          }
+          x += sliceWidth;
+        }
+        ctx.lineTo(canvas.width, canvas.height / 2);
+        ctx.stroke();
+
+        // Indicador de nivel de voz
         const tag = document.getElementById('micStatusTag');
         if (tag) {
-          tag.innerText = `🎙️ Entrada Mic: ${avg} dB (AUDIO REAL EN VIVO)`;
-          tag.style.color = avg > 15 ? "var(--success-green)" : "var(--accent-cyan)";
+          const level = volumePercent > 5 ? `🟢 Captando voz: ${volumePercent}%` : `🔴 Sin señal aún (habla más fuerte)`;
+          tag.innerText = level;
+          tag.style.color = volumePercent > 5 ? "var(--success-green)" : "#f59e0b";
         }
+
       } else {
-        // Onda sutil de reposo cuando no se está grabando
-        const bars = 24;
-        const barWidth = canvas.width / bars;
-        for(let i = 0; i < bars; i++) {
-          const h = (Math.sin(Date.now() * 0.005 + i * 0.3) * 0.25 + 0.3) * canvas.height * 0.25;
-          const grad = ctx.createLinearGradient(0, canvas.height, 0, 0);
-          grad.addColorStop(0, 'rgba(6,182,212,0.3)');
-          grad.addColorStop(1, 'rgba(139,92,246,0.3)');
-          ctx.fillStyle = grad;
-          ctx.fillRect(i * barWidth, canvas.height - h, barWidth - 3, h);
+        // Onda de reposo sutil (idle state)
+        ctx.lineWidth = 1.5;
+        const restGrad = ctx.createLinearGradient(0, 0, canvas.width, 0);
+        restGrad.addColorStop(0, 'rgba(6,182,212,0.25)');
+        restGrad.addColorStop(1, 'rgba(139,92,246,0.25)');
+        ctx.strokeStyle = restGrad;
+        ctx.beginPath();
+        for (let x = 0; x < canvas.width; x++) {
+          const y = canvas.height / 2 + Math.sin(Date.now() * 0.003 + x * 0.05) * 6;
+          if (x === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
         }
+        ctx.stroke();
         const tag = document.getElementById('micStatusTag');
         if (tag) tag.innerText = "16 kHz Direct Stream";
       }
     }
 
+    // INICIAR EL LOOP INMEDIATAMENTE
+    drawSpectrum();
+
+    // ═══════════════════════════════════════════════════
+    // 2. CONTROL DEL MICRÓFONO
+    // ═══════════════════════════════════════════════════
     let mediaRecorder, audioChunks = [];
 
     function toggleMicRecording() {
       const micBtn = document.getElementById('micBtn');
       if (!isRecording) {
-        navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
-          micStream = stream;
+        // Crear AudioContext SINCRÓNICO desde el click handler (requerido por Chrome)
+        if (!audioCtx) {
           audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-          if (audioCtx.state === 'suspended') {
-            audioCtx.resume();
-          }
-          analyser = audioCtx.createAnalyser();
-          analyser.fftSize = 64; // Genera 32 barras de frecuencia
-          analyser.minDecibels = -85;
-          analyser.maxDecibels = -25;
-          analyser.smoothingTimeConstant = 0.5;
+        }
+        // resume() también debe estar en el click handler
+        audioCtx.resume().then(() => {
+          navigator.mediaDevices.getUserMedia({ 
+            audio: { 
+              echoCancellation: true, 
+              noiseSuppression: true,
+              sampleRate: 16000
+            } 
+          }).then(stream => {
+            micStream = stream;
+            analyser = audioCtx.createAnalyser();
+            analyser.fftSize = 2048; // Alta resolución de onda
+            analyser.smoothingTimeConstant = 0.3;
+            const source = audioCtx.createMediaStreamSource(stream);
+            source.connect(analyser);
+            dataArray = new Uint8Array(analyser.fftSize);
 
-          const source = audioCtx.createMediaStreamSource(stream);
-          source.connect(analyser);
-          dataArray = new Uint8Array(analyser.frequencyBinCount);
+            // MediaRecorder para captura y envío de audio
+            audioChunks = [];
+            try {
+              mediaRecorder = new MediaRecorder(stream);
+              mediaRecorder.ondataavailable = e => {
+                if (e.data && e.data.size > 0) audioChunks.push(e.data);
+              };
+              mediaRecorder.start(250);
+            } catch(e) {
+              console.warn("MediaRecorder:", e);
+            }
 
-          // Capturar bloques de audio real con MediaRecorder
-          audioChunks = [];
-          try {
-            mediaRecorder = new MediaRecorder(stream);
-            mediaRecorder.ondataavailable = e => {
-              if (e.data.size > 0) audioChunks.push(e.data);
-            };
-            mediaRecorder.start(100);
-          } catch(e) {
-            console.warn("MediaRecorder warning:", e);
-          }
-
-          isRecording = true;
-          if (micBtn) {
-            micBtn.innerText = "🛑 Detener & Evaluar";
-            micBtn.style.background = "linear-gradient(135deg, #ef4444, #f59e0b)";
-          }
-        }).catch(err => {
-          alert("Permiso de micrófono no otorgado en el navegador: " + err);
+            isRecording = true;
+            if (micBtn) {
+              micBtn.innerText = "🛑 Detener & Evaluar";
+              micBtn.style.background = "linear-gradient(135deg, #ef4444, #f59e0b)";
+            }
+          }).catch(err => {
+            alert("❌ Permiso de micrófono denegado: " + err + "\n\nRevisa que el navegador tenga acceso al micrófono en Configuración.");
+          });
         });
       } else {
+        // DETENER GRABACIÓN
         isRecording = false;
+        analyser = null;
+        dataArray = null;
         if (micBtn) {
-          micBtn.innerText = "⏳ Transcribiendo Voz...";
+          micBtn.innerText = "⏳ Transcribiendo...";
+          micBtn.style.background = "rgba(139,92,246,0.4)";
         }
-
         if (mediaRecorder && mediaRecorder.state !== 'inactive') {
           mediaRecorder.stop();
           mediaRecorder.onstop = () => {
-            const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+            const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
             sendAudioForEvaluation(audioBlob);
           };
         } else {
+          resetMicBtn(micBtn);
           evaluateObjectionText();
         }
-
         if (micStream) {
-          micStream.getTracks().forEach(track => track.stop());
+          micStream.getTracks().forEach(t => t.stop());
+          micStream = null;
         }
-        if (audioCtx) {
-          audioCtx.close();
-        }
+      }
+    }
+
+    function resetMicBtn(micBtn) {
+      if (micBtn) {
+        micBtn.innerText = "🎙️ Micrófono";
+        micBtn.style.background = "linear-gradient(135deg, var(--accent-violet), var(--accent-cyan))";
       }
     }
 
