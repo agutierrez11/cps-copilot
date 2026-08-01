@@ -33,4 +33,33 @@ Bienvenido al espacio de trabajo enfocado en la estrategia comercial, arquitectu
 - ⚙️ **[.agents/AGENTS.md](file:///c:/Users/Antonio/.gemini/antigravity-ide/scratch/CPS Sales Copilot/.agents/AGENTS.md)** — Reglas del agente e instrucciones de RevOps / MEDDIC.
 
 ---
+
+## 🚀 Roadmap de Evolución a Machine Learning (ML Engine)
+
+Para evolucionar el motor de **CPS Sales Copilot** desde las reglas deterministas iniciales hacia una inteligencia predictiva adaptativa, se define la siguiente hoja de ruta en 4 fases:
+
+```mermaid
+graph LR
+    A[Fase 1: Dataset RLHF] --> B[Fase 2: Clasificador ML]
+    B --> C[Fase 3: Predictor de Cierre]
+    C --> D[Fase 4: Fine-Tuning LLM]
+```
+
+### 1. 📊 Fase 1: Recolección & Curaduría de Dataset RLHF *(En Progreso)*
+- **Mecanismo:** Registro automático de transcripciones y retroalimentación ejecutiva a 1-clic (`🟢 Avanzó a PoC`, `🟡 Seguimiento`, `🔴 Sin Cierre`) guardado en `rlhf_sales_dataset.jsonl` e `insights_reunion_*.jsonl`.
+- **Meta:** Acumular entre **200 y 500 interacciones reales etiquetadas** para garantizar la calidad del dataset de entrenamiento.
+
+### 2. 🧠 Fase 2: Clasificador de Objeciones Semánticas *(Supervised ML)*
+- **Objetivo:** Sustituir la coincidencia por palabras clave (`evaluate_cps_rules`) por un clasificador semántico en `scikit-learn` / `fastText`.
+- **Impacto:** Clasificación precisa de objeciones implícitas o coloquiales (*"está muy pesado el costo"*, *"ahorita no aplica para nosotros"*, *"hay que validarlo con el comité"*).
+
+### 3. 📈 Fase 3: Predictor de Probabilidad de Cierre en Tiempo Real
+- **Objetivo:** Modelo predictivo (XGBoost / LightGBM) entrenado sobre el historial de conversaciones.
+- **Impacto:** Estimación en vivo del % de probabilidad de avance a PoC o Cierre durante la reunión según la progresión del diálogo y el manejo socrático.
+
+### 4. 🎯 Fase 4: Fine-Tuning de LLM Especializado *(LoRA / QLoRA)*
+- **Objetivo:** Fine-tuning de un modelo open-source (Llama 3 / Mistral) en pares de objeción y re-encuadre socrático con terminología financiera/fintech mexicana.
+
+---
 *Estructurado para la Célula de Agentes Globales de Antonio Gutiérrez.*
+
