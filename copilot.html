@@ -409,9 +409,15 @@
       </div>
     </div>
 
-    <div class="latency-badge-header">
-      <div class="status-dot"></div>
-      <span>E2E LATENCIA: <strong id="headerTotalLatency" style="color:#fff;">360 ms</strong></span>
+    <div style="display:flex; align-items:center; gap:14px;">
+      <label style="display:flex; align-items:center; gap:6px; font-size:0.75rem; color:#94a3b8; cursor:pointer; background:rgba(255,255,255,0.05); padding:6px 12px; border-radius:8px; border:1px solid rgba(255,255,255,0.1);">
+        <input type="checkbox" id="testModeToggle" style="accent-color:var(--accent-cyan); cursor:pointer;">
+        🧪 Modo Sandbox (Sin logs)
+      </label>
+      <div class="latency-badge-header">
+        <div class="status-dot"></div>
+        <span>E2E LATENCIA: <strong id="headerTotalLatency" style="color:#fff;">360 ms</strong></span>
+      </div>
     </div>
   </header>
 
@@ -747,11 +753,19 @@
       }
     }
 
+    function isTestMode() {
+      const toggle = document.getElementById('testModeToggle');
+      return toggle && toggle.checked ? '1' : '0';
+    }
+
     function sendAudioForEvaluation(blob) {
       const micBtn = document.getElementById('micBtn');
       fetch('/upload_audio', {
         method: 'POST',
-        headers: { 'Content-Type': 'audio/wav' },
+        headers: { 
+          'Content-Type': 'audio/wav',
+          'X-Test-Mode': isTestMode()
+        },
         body: blob
       })
       .then(res => res.json())
@@ -869,7 +883,10 @@
 
       fetch('/evaluate', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'X-Test-Mode': isTestMode()
+        },
         body: JSON.stringify({ text: text })
       })
       .then(res => res.json())
@@ -893,6 +910,11 @@
           document.getElementById('headerTotalLatency').innerText = `${data.latencias.total_ms || 360} ms`;
         }
       })
+      .catch(err => {
+        if (evalBtn) evalBtn.innerText = "⚡ Evaluar";
+      });
+    }
+
     // 5. Executive HITL Actions & Call Outcome Logging
     function sendFeedbackAction(action) {
       const question = document.getElementById('typewriterText').innerText;
@@ -908,7 +930,10 @@
 
       fetch('/rlhf_feedback', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'X-Test-Mode': isTestMode()
+        },
         body: JSON.stringify({
           action: action,
           transcript: transcript,
@@ -934,16 +959,21 @@
       const question = document.getElementById('typewriterText').innerText;
       fetch('/rlhf_feedback', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'X-Test-Mode': isTestMode()
+        },
         body: JSON.stringify({
           resultado_llamada: outcome,
           pregunta_socratica: question,
           tipo: "RESULTADO_REUNION"
         })
       })
-      .then(() => {
+      .then(res => res.json())
+      .then(data => {
         const msg = document.getElementById('outcomeFeedbackMsg');
         if (msg) {
+          msg.innerText = data.message || "✓ Resultado procesado";
           msg.style.display = 'block';
           setTimeout(() => { msg.style.display = 'none'; }, 3000);
         }
