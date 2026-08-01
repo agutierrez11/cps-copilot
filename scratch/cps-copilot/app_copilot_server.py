@@ -114,15 +114,25 @@ def run_hybrid_multilayer_pipeline(user_text: str, audio_file_path: str = None) 
         def _call_groq():
             g_start = time.time()
             client = Groq(api_key=GROQ_API_KEY, timeout=0.8, max_retries=0)
-            system_prompt = """
+            
+            # Recuperar contexto metodológico de la bóveda local (Book-to-Skill)
+            local_context = ""
+            if KNOWLEDGE_ENGINE_AVAILABLE and knowledge_engine:
+                local_context = knowledge_engine.get_combined_context(user_text)
+
+            system_prompt = f"""
             Eres el motor de Inteligencia Conversacional de CPS Sales Copilot.
+            Usa ESTRICTAMENTE la metodología de Venta Socrática, First Principles y CPS Frameworks del siguiente contexto local para formular tu respuesta:
+
+            {local_context}
+
             Analiza la objeción en español y devuelve JSON estricto con:
-            {
-              "objecion_detectada": "...",
+            {{
+              "objecion_detectada": "Categoría clave de la objeción",
               "friccion_latina": "ALTA / MEDIA / BAJA",
-              "pregunta_socratica": "...",
-              "estrategia_cps": "..."
-            }
+              "pregunta_socratica": "Pregunta socrática incisiva basada en First Principles que desmantele la objeción sin confrontar",
+              "estrategia_cps": "Estrategia CPS concisa basada en el libro maestro"
+            }}
             """
             response = client.chat.completions.create(
                 model="llama-3.3-70b-versatile",
