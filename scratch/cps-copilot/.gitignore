@@ -1,0 +1,23 @@
+# Entorno y Secretos
+.env
+.env.local
+.env.*
+*.env
+*.key
+*.pem
+secrets.json
+
+# Cache de Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.venv/
+env/
+venv/
+
+# IDE & OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
