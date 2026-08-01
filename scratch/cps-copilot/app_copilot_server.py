@@ -15,6 +15,8 @@ import concurrent.futures
 from pathlib import Path
 from datetime import datetime
 from knowledge_loader import evaluate_cps_rules, engine as knowledge_engine
+from graph_engine import graph_engine
+from game_theory_engine import game_theory_engine
 
 # Lock global para proteger escrituras concurrentes sobre latest_state
 _state_lock = threading.Lock()
@@ -109,6 +111,10 @@ def run_hybrid_multilayer_pipeline(user_text: str, audio_file_path: str = None) 
     pregunta = local_eval.get("pregunta_socratica")
     estrategia = local_eval.get("estrategia")
 
+    # Ejecución determinista de Infraestructura Matemática (<2ms)
+    graph_analysis = graph_engine.analyze_conversational_nodes(user_text)
+    game_theory_analysis = game_theory_engine.evaluate_negotiation_state(user_text)
+
     groq_ms = 0
     if GROQ_AVAILABLE and GROQ_API_KEY:
         def _call_groq():
@@ -174,6 +180,8 @@ def run_hybrid_multilayer_pipeline(user_text: str, audio_file_path: str = None) 
         "friccion_latina": friccion,
         "pregunta_socratica": pregunta,
         "estrategia_cps": estrategia,
+        "analisis_grafos": graph_analysis,
+        "analisis_teoria_juegos": game_theory_analysis,
         "contexto_local": "Book-to-Skill Engine",
         "latencias": latencias
     }
