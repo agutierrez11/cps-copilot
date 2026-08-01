@@ -206,6 +206,45 @@
       align-self: flex-end;
     }
 
+    /* Executive HITL & Outcome Action Buttons */
+    .btn-hitl {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 8px 14px;
+      color: #fff;
+      font-size: 0.76rem;
+      font-family: 'JetBrains Mono', monospace;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-hitl:hover {
+      background: rgba(139, 92, 246, 0.2);
+      border-color: var(--accent-violet);
+    }
+    .btn-use:hover {
+      background: rgba(16, 185, 129, 0.2) !important;
+      border-color: var(--success-green) !important;
+    }
+    .btn-outcome {
+      background: rgba(6, 9, 19, 0.6);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 8px 4px;
+      font-size: 0.72rem;
+      color: #fff;
+      font-family: 'JetBrains Mono', monospace;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s ease;
+    }
+    .btn-win:hover { border-color: var(--success-green); background: rgba(16, 185, 129, 0.15); }
+    .btn-follow:hover { border-color: var(--warning-amber); background: rgba(245, 158, 11, 0.15); }
+    .btn-lost:hover { border-color: var(--danger-red); background: rgba(239, 68, 68, 0.15); }
+
     .speaker-tag {
       font-size: 0.68rem;
       font-weight: 700;
@@ -432,6 +471,13 @@
         <div class="cps-strategy-box" id="cpsStrategyText">
           <strong>Estrategia CPS (First Principles):</strong> Estado listo. El motor analizará la causa raíz de la objeción en <500ms usando el libro de conocimiento local.
         </div>
+
+        <!-- Acciones Ejecutivas en Tiempo Real (HITL) -->
+        <div style="display:flex; gap:10px; margin-top:16px; flex-wrap:wrap;">
+          <button class="btn-hitl btn-use" onclick="sendFeedbackAction('USADA')">✨ Usar Sugerencia (Enter)</button>
+          <button class="btn-hitl btn-edit" onclick="enableInlineEdit()">✏️ Ajustar Tono (Tab)</button>
+          <button class="btn-hitl btn-reframing" onclick="sendFeedbackAction('REGENERAR')">🔄 Reformular Ángulo (Esc)</button>
+        </div>
       </div>
 
       <!-- Quick Text Evaluation Input -->
@@ -514,6 +560,19 @@
             <div class="latency-label">E2E Total</div>
             <div class="latency-val" id="totalMsVal" style="color:var(--accent-violet);">360 ms</div>
           </div>
+        </div>
+      </div>
+
+      <!-- Registrar Resultado de Llamada -->
+      <div class="glass-card">
+        <div class="card-title">REGISTRAR RESULTADO DE LLAMADA</div>
+        <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:8px;">
+          <button class="btn-outcome btn-win" onclick="logCallOutcome('GANADO_POC')">🟢 Avanzó a PoC</button>
+          <button class="btn-outcome btn-follow" onclick="logCallOutcome('SEGUIMIENTO')">🟡 Seguimiento</button>
+          <button class="btn-outcome btn-lost" onclick="logCallOutcome('PERDIDO')">🔴 Sin Cierre</button>
+        </div>
+        <div id="outcomeFeedbackMsg" style="font-size:0.7rem; color:var(--success-green); margin-top:8px; display:none; font-family:'JetBrains Mono';">
+          ✓ Resultado guardado en la bóveda de inteligencia local.
         </div>
       </div>
 
@@ -702,11 +761,80 @@
           document.getElementById('headerTotalLatency').innerText = `${data.latencias.total_ms || 360} ms`;
         }
       })
-      .catch(err => {
-        if (evalBtn) evalBtn.innerText = "⚡ Evaluar";
-        console.error("Error evaluando:", err);
-      });
+    // 5. Executive HITL Actions & Call Outcome Logging
+    function sendFeedbackAction(action) {
+      const question = document.getElementById('typewriterText').innerText;
+      const textInput = document.getElementById('objectionInput');
+      const transcript = textInput ? textInput.value : '';
+
+      if (action === 'USADA') {
+        navigator.clipboard.writeText(question).catch(() => {});
+        gsap.fromTo('#heroCard', { borderColor: '#10b981', boxShadow: '0 0 25px rgba(16, 185, 129, 0.4)' }, { borderColor: 'rgba(139, 92, 246, 0.4)', boxShadow: '0 0 30px rgba(139, 92, 246, 0.15)', duration: 1 });
+      } else if (action === 'REGENERAR') {
+        evaluateObjectionText();
+      }
+
+      fetch('/rlhf_feedback', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: action,
+          transcript: transcript,
+          pregunta_socratica: question,
+          tipo: "ACCION_EJECUTIVA"
+        })
+      }).catch(err => console.error("Error enviando feedback:", err));
     }
+
+    function enableInlineEdit() {
+      const el = document.getElementById('typewriterText');
+      el.contentEditable = "true";
+      el.focus();
+      el.style.borderBottom = "2px solid var(--accent-cyan)";
+      el.onblur = () => {
+        el.contentEditable = "false";
+        el.style.borderBottom = "none";
+        sendFeedbackAction('EDITADA');
+      };
+    }
+
+    function logCallOutcome(outcome) {
+      const question = document.getElementById('typewriterText').innerText;
+      fetch('/rlhf_feedback', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          resultado_llamada: outcome,
+          pregunta_socratica: question,
+          tipo: "RESULTADO_REUNION"
+        })
+      })
+      .then(() => {
+        const msg = document.getElementById('outcomeFeedbackMsg');
+        if (msg) {
+          msg.style.display = 'block';
+          setTimeout(() => { msg.style.display = 'none'; }, 3000);
+        }
+      })
+      .catch(err => console.error("Error enviando resultado:", err));
+    }
+
+    // Atajos de teclado ejecutivos (Enter: Usar, Tab: Ajustar, Esc: Reformular)
+    document.addEventListener('keydown', (e) => {
+      const isInputFocused = document.activeElement.tagName === 'INPUT' || document.activeElement.isContentEditable;
+      if (!isInputFocused) {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          sendFeedbackAction('USADA');
+        } else if (e.key === 'Tab') {
+          e.preventDefault();
+          enableInlineEdit();
+        } else if (e.key === 'Escape') {
+          e.preventDefault();
+          sendFeedbackAction('REGENERAR');
+        }
+      }
+    });
 
     window.onload = () => {
       drawSpectrum();

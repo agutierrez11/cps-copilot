@@ -224,6 +224,28 @@ class CopilotHTTPHandler(http.server.SimpleHTTPRequestHandler):
                 self.send_response(500)
                 self.end_headers()
                 self.wfile.write(json.dumps({"error": str(e)}).encode('utf-8'))
+
+        elif self.path == '/rlhf_feedback':
+            content_length = int(self.headers.get('Content-Length', 0))
+            post_data = self.rfile.read(content_length)
+            try:
+                data = json.loads(post_data.decode('utf-8'))
+                data["timestamp"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                
+                # Guardar en dataset local
+                rlhf_file = Path("rlhf_sales_dataset.jsonl")
+                with open(rlhf_file, "a", encoding="utf-8") as f:
+                    f.write(json.dumps(data, ensure_ascii=False) + "\n")
+                    
+                self.send_response(200)
+                self.send_header('Content-Type', 'application/json')
+                self.send_header('Access-Control-Allow-Origin', '*')
+                self.end_headers()
+                self.wfile.write(json.dumps({"status": "SUCCESS", "message": "Feedback registrado en dataset local"}).encode('utf-8'))
+            except Exception as e:
+                self.send_response(500)
+                self.end_headers()
+                self.wfile.write(json.dumps({"error": str(e)}).encode('utf-8'))
         else:
             super().do_POST()
 
