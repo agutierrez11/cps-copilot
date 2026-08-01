@@ -155,12 +155,14 @@
     .card-title {
       font-size: 0.78rem;
       text-transform: uppercase;
-      letter-spacing: 1.5px;
+      letter-spacing: 1px;
       color: var(--text-muted);
       margin-bottom: 14px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
       font-family: 'JetBrains Mono', monospace;
     }
 
@@ -627,29 +629,48 @@
       }
     }
 
+    let hasClearedDemo = false;
+
+    function appendDiarizationBubble(speakerTag, text, bubbleClass) {
+      const feed = document.getElementById('diarizationFeed');
+      if (!feed) return;
+      if (!hasClearedDemo) {
+        feed.innerHTML = ''; // Limpia las preguntas estáticas de demo
+        hasClearedDemo = true;
+      }
+      feed.innerHTML += `
+        <div class="speaker-bubble ${bubbleClass}" style="margin-top:8px;">
+          <div class="speaker-tag">${speakerTag}</div>
+          "${text}"
+        </div>
+      `;
+      feed.scrollTop = feed.scrollHeight;
+    }
+
+    function initSSEConnection() {
+      try {
+        const evtSource = new EventSource('/events');
+        evtSource.onmessage = function(event) {
+          try {
+            const data = JSON.parse(event.data);
+            if (data.pregunta_socratica) {
+              runTypewriter(data.pregunta_socratica);
+            }
+            if (data.transcript) {
+              appendDiarizationBubble("Speaker 1 (Cliente C-Level)", data.transcript, "speaker-client");
+            }
+          } catch(e) {}
+        };
+      } catch(e) {}
+    }
+
     // 4. Evaluate Text via REST Endpoint
     function evaluateObjectionText() {
       const textInput = document.getElementById('objectionInput');
       const text = textInput ? textInput.value.trim() : '';
       if (!text) return;
 
-      // Actualizar la caja de transcripción inmediatamente en pantalla
-      const transcriptBox = document.getElementById('transcriptDisplay');
-      if (transcriptBox) {
-        transcriptBox.innerText = `"${text}"`;
-      }
-
-      // Actualizar el feed de diarización
-      const feed = document.getElementById('diarizationFeed');
-      if (feed) {
-        feed.innerHTML += `
-          <div class="speaker-bubble speaker-client" style="margin-top:8px;">
-            <div class="speaker-tag">Speaker 1 (Cliente C-Level)</div>
-            "${text}"
-          </div>
-        `;
-        feed.scrollTop = feed.scrollHeight;
-      }
+      appendDiarizationBubble("Speaker 1 (Cliente C-Level)", text, "speaker-client");
 
       // Animación en botón de evaluar
       const evalBtn = document.querySelector("button[onclick='evaluateObjectionText()']");
@@ -690,6 +711,7 @@
     window.onload = () => {
       drawSpectrum();
       initLatAmMap();
+      initSSEConnection();
     };
   </script>
 </body>
