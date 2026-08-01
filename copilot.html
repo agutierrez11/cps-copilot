@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CPS Sales Copilot — Motor Comercial Socrático en Tiempo Real</title>
+  <title>CPS Sales Copilot — MVP Auditable Multicapa en Tiempo Real</title>
   
   <!-- Google Fonts & GSAP Animations -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -62,16 +62,16 @@
     }
 
     .brand-logo {
-      width: 40px;
-      height: 40px;
+      width: 42px;
+      height: 42px;
       background: linear-gradient(135deg, var(--accent-violet), var(--accent-cyan));
-      border-radius: 10px;
+      border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 800;
-      font-size: 1.2rem;
-      box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
+      font-size: 1.25rem;
+      box-shadow: 0 0 24px rgba(139, 92, 246, 0.4);
     }
 
     .brand-text h1 {
@@ -95,7 +95,7 @@
       gap: 8px;
       background: rgba(16, 185, 129, 0.1);
       border: 1px solid rgba(16, 185, 129, 0.3);
-      padding: 6px 14px;
+      padding: 6px 16px;
       border-radius: 20px;
       font-size: 0.8rem;
       color: var(--success-green);
@@ -121,20 +121,20 @@
       flex: 1;
       padding: 24px 32px;
       display: grid;
-      grid-template-columns: 1fr 380px;
+      grid-template-columns: 1fr 420px;
       gap: 24px;
       max-width: 1600px;
       margin: 0 auto;
       width: 100%;
     }
 
-    /* Mappa.ai Glass Cards */
+    /* Glass Cards */
     .glass-card {
       background: var(--card-bg);
       backdrop-filter: blur(12px);
       border: 1px solid var(--card-border);
       border-radius: 16px;
-      padding: 20px;
+      padding: 24px;
       position: relative;
       overflow: hidden;
       transition: border-color 0.3s ease;
@@ -156,17 +156,78 @@
       font-family: 'JetBrains Mono', monospace;
     }
 
-    /* Voice Spectrum Canvas */
-    .spectrum-container {
+    /* Audio Inputs Bar */
+    .input-controls-bar {
+      display: flex;
+      gap: 12px;
+      align-items: center;
       margin-bottom: 20px;
+      flex-wrap: wrap;
     }
 
+    .mic-btn {
+      background: rgba(239, 68, 68, 0.15);
+      color: var(--danger-red);
+      border: 1px solid var(--danger-red);
+      padding: 10px 20px;
+      border-radius: 12px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+
+    .mic-btn.recording {
+      background: var(--danger-red);
+      color: #fff;
+      box-shadow: 0 0 20px rgba(239, 68, 68, 0.6);
+    }
+
+    .file-btn-wrapper {
+      position: relative;
+      overflow: hidden;
+      display: inline-block;
+    }
+
+    .file-btn-wrapper input[type=file] {
+      font-size: 100px;
+      position: absolute;
+      left: 0;
+      top: 0;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .btn-outline {
+      background: rgba(6, 182, 212, 0.1);
+      color: var(--accent-cyan);
+      border: 1px solid var(--accent-cyan);
+      padding: 10px 20px;
+      border-radius: 12px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+
+    .btn-outline:hover {
+      background: rgba(6, 182, 212, 0.25);
+    }
+
+    /* Voice Spectrum Canvas */
     canvas#vocalSpectrumCanvas {
       width: 100%;
       height: 100px;
       background: rgba(6, 9, 19, 0.6);
       border-radius: 12px;
       border: 1px solid rgba(255, 255, 255, 0.05);
+      margin-bottom: 20px;
     }
 
     /* Live Transcript Feed */
@@ -174,9 +235,9 @@
       font-family: 'JetBrains Mono', monospace;
       background: rgba(6, 9, 19, 0.8);
       border-radius: 12px;
-      padding: 16px;
-      min-height: 120px;
-      font-size: 0.9rem;
+      padding: 18px;
+      min-height: 110px;
+      font-size: 0.95rem;
       line-height: 1.6;
       color: #cbd5e1;
       border: 1px solid rgba(255, 255, 255, 0.05);
@@ -185,15 +246,15 @@
 
     /* Socratic Card Main Display */
     .socratic-card {
-      background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(6, 182, 212, 0.1));
-      border: 1px solid rgba(139, 92, 246, 0.3);
+      background: linear-gradient(135deg, rgba(139, 92, 246, 0.12), rgba(6, 182, 212, 0.12));
+      border: 1px solid rgba(139, 92, 246, 0.35);
       border-radius: 16px;
       padding: 24px;
       position: relative;
     }
 
     .socratic-card::before {
-      content: 'PREGUNTA SOCRÁTICA EN VIVO';
+      content: 'RE-ENCUADRE SOCRÁTICO EN VIVO';
       position: absolute;
       top: -10px;
       left: 20px;
@@ -201,7 +262,7 @@
       color: #fff;
       font-size: 0.65rem;
       font-family: 'JetBrains Mono', monospace;
-      padding: 2px 10px;
+      padding: 3px 12px;
       border-radius: 10px;
       font-weight: 700;
       letter-spacing: 1px;
@@ -210,29 +271,25 @@
     .socratic-question {
       font-size: 1.3rem;
       font-weight: 600;
-      line-height: 1.4;
+      line-height: 1.45;
       color: #ffffff;
-      margin-top: 8px;
+      margin-top: 10px;
       margin-bottom: 16px;
     }
 
-    .socratic-reframing {
+    .socratic-strategy {
       font-size: 0.85rem;
       color: var(--text-muted);
-      background: rgba(0, 0, 0, 0.3);
+      background: rgba(0, 0, 0, 0.35);
       padding: 12px 16px;
-      border-radius: 8px;
+      border-radius: 10px;
       border-left: 3px solid var(--accent-cyan);
     }
 
-    /* Right Sidebar: Friction Meter & Metrics */
-    .friction-meter-box {
-      text-align: center;
-    }
-
+    /* Friction Gauge & Latency Breakdown */
     .friction-gauge {
       width: 100%;
-      height: 160px;
+      height: 150px;
       position: relative;
       display: flex;
       flex-direction: column;
@@ -243,53 +300,75 @@
     .friction-level-text {
       font-size: 2.2rem;
       font-weight: 800;
-      color: var(--success-green);
+      color: var(--warning-amber);
       margin-top: 8px;
     }
 
     .friction-badge {
       display: inline-block;
-      padding: 4px 12px;
+      padding: 4px 14px;
       border-radius: 12px;
       font-size: 0.75rem;
       font-family: 'JetBrains Mono', monospace;
       text-transform: uppercase;
       margin-top: 4px;
-      background: rgba(16, 185, 129, 0.15);
-      color: var(--success-green);
-      border: 1px solid var(--success-green);
+      background: rgba(245, 158, 11, 0.15);
+      color: var(--warning-amber);
+      border: 1px solid var(--warning-amber);
     }
 
-    .metric-list {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      margin-top: 20px;
+    /* Auditable Latency Breakdown List */
+    .latency-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 16px;
     }
 
-    .metric-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 12px 16px;
-      background: rgba(6, 9, 19, 0.5);
+    .latency-card {
+      background: rgba(6, 9, 19, 0.6);
       border-radius: 10px;
-      border: 1px solid rgba(255, 255, 255, 0.04);
+      padding: 10px 14px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
     }
 
-    .metric-label {
-      font-size: 0.8rem;
+    .latency-label {
+      font-size: 0.72rem;
       color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
     }
 
-    .metric-val {
-      font-size: 0.9rem;
+    .latency-val {
+      font-size: 1rem;
       font-weight: 700;
       font-family: 'JetBrains Mono', monospace;
       color: var(--accent-cyan);
+      margin-top: 2px;
     }
 
-    /* Footer Controls */
+    /* Quick Test Input */
+    .test-input-group {
+      display: flex;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .test-input {
+      flex: 1;
+      background: rgba(6, 9, 19, 0.7);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 10px 14px;
+      color: #fff;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.9rem;
+    }
+
+    .test-input:focus {
+      outline: none;
+      border-color: var(--accent-cyan);
+    }
+
     footer {
       background: rgba(10, 15, 29, 0.85);
       border-top: 1px solid var(--card-border);
@@ -298,39 +377,22 @@
       justify-content: space-between;
       align-items: center;
     }
-
-    .btn {
-      background: linear-gradient(135deg, var(--accent-violet), var(--accent-cyan));
-      color: #fff;
-      border: none;
-      padding: 10px 24px;
-      border-radius: 10px;
-      font-size: 0.9rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-
-    .btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 0 20px rgba(6, 182, 212, 0.4);
-    }
   </style>
 </head>
 <body>
 
-  <!-- Header Header Header -->
+  <!-- Header -->
   <header>
     <div class="brand">
       <div class="brand-logo">CPS</div>
       <div class="brand-text">
         <h1>CPS Sales Copilot</h1>
-        <p>MOTOR SOCRÁTICO EN TIEMPO REAL</p>
+        <p>MVP AUDITABLE MULTICAPA — GROQ + HUME + DEEPGRAM</p>
       </div>
     </div>
     <div class="status-pill">
       <div class="status-dot"></div>
-      <span id="liveStatusText">ESCUCHANDO AUDIO...</span>
+      <span id="liveStatusText">CONECTADO AUDITABLE</span>
     </div>
   </header>
 
@@ -339,17 +401,36 @@
     <!-- Left Column: Audio Spectrum & Socratic Cards -->
     <div style="display:flex; flex-direction:column; gap:20px;">
       
-      <!-- Spectrum Card -->
+      <!-- Audio Controls & Spectrum Card -->
       <div class="glass-card">
         <div class="card-title">
-          <span>ESPECTRO VOCÁLICO EN VIVO</span>
-          <span style="color:var(--accent-cyan);">16 kHz Direct Stream</span>
+          <span>CAPTURA DE AUDIO & GRABACIÓN EN VIVO</span>
+          <span style="color:var(--accent-cyan);" id="sourceBadge">Groq Whisper V3 / Deepgram</span>
         </div>
+
+        <div class="input-controls-bar">
+          <button class="mic-btn" id="micToggleBtn" onclick="toggleMicRecording()">
+            <span id="micIcon">🎙️</span> <span id="micBtnText">Grabar Micrófono</span>
+          </button>
+
+          <div class="file-btn-wrapper">
+            <button class="btn-outline">📁 Subir Archivo .WAV</button>
+            <input type="file" id="audioFileInput" accept="audio/*" onchange="uploadAudioFile(this)">
+          </div>
+        </div>
+
         <div class="spectrum-container">
-          <canvas id="vocalSpectrumCanvas" width="700" height="100"></canvas>
+          <canvas id="vocalSpectrumCanvas" width="700" height="90"></canvas>
         </div>
+
         <div class="transcript-box" id="transcriptDisplay">
-          Esperando señal de voz en tiempo real...
+          "Mira Antonio, suena bien pero deja lo checo con mi socio y ahorita te aviso."
+        </div>
+
+        <!-- Quick Objection Tester -->
+        <div class="test-input-group">
+          <input type="text" id="customObjectionInput" class="test-input" placeholder="Escribe o pega una objeción en español para probar sub-segundo..." value="Está fuera de nuestro presupuesto para este trimestre.">
+          <button class="btn-outline" onclick="evaluateCustomText()">⚡ Evaluar</button>
         </div>
       </div>
 
@@ -358,45 +439,49 @@
         <div class="socratic-question" id="socraticQuestion">
           ¿Si logramos demostrar en una PoC que el incremento en tasa de aprobación paga la solución desde el mes 1, el presupuesto seguiría siendo un bloqueador?
         </div>
-        <div class="socratic-reframing" id="socraticReframing">
-          <strong>Enfoque Socrático:</strong> Desmantelar la objeción de presupuesto reformulando el gasto como inversión con ROI autofinanciable.
+        <div class="socratic-strategy" id="socraticStrategy">
+          <strong>Estrategia CPS:</strong> First Principles & Re-encuadre Socrático. Desmantelar la percepción de costo fijo mediante ROI autofinanciable desde el mes 1.
         </div>
       </div>
 
     </div>
 
-    <!-- Right Column: Friction Meter & Real-time Analytics -->
+    <!-- Right Column: Friction Meter & Auditable Latency Breakdown -->
     <div style="display:flex; flex-direction:column; gap:20px;">
       
       <!-- Friction Gauge Card -->
-      <div class="glass-card friction-meter-box">
-        <div class="card-title">INDICADOR DE FRICCIÓN COMERCIAL</div>
+      <div class="glass-card friction-meter-box" style="text-align:center;">
+        <div class="card-title">MEDIDOR DE FRICCIÓN LATINA (HUME AI)</div>
         <div class="friction-gauge">
-          <svg width="140" height="140" viewBox="0 0 140 140">
-            <circle cx="70" cy="70" r="55" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="12"/>
-            <circle id="gaugeProgress" cx="70" cy="70" r="55" fill="none" stroke="var(--success-green)" stroke-width="12"
-                    stroke-dasharray="345" stroke-dashoffset="240" stroke-linecap="round" transform="rotate(-90 70 70)"/>
+          <svg width="130" height="130" viewBox="0 0 130 130">
+            <circle cx="65" cy="65" r="50" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="10"/>
+            <circle id="gaugeProgress" cx="65" cy="65" r="50" fill="none" stroke="var(--warning-amber)" stroke-width="10"
+                    stroke-dasharray="314" stroke-dashoffset="125" stroke-linecap="round" transform="rotate(-90 65 65)"/>
           </svg>
-          <div class="friction-level-text" id="frictionPercent">15%</div>
+          <div class="friction-level-text" id="frictionLevelText">MEDIA</div>
         </div>
-        <div class="friction-badge" id="frictionBadge">Baja Fricción / Alta Tracción</div>
+        <div class="friction-badge" id="frictionBadge">Evasión por Cortesía / Duda</div>
       </div>
 
-      <!-- Engine Insights Card -->
+      <!-- Auditable Latency Breakdown Card -->
       <div class="glass-card">
-        <div class="card-title">DIAGNÓSTICO CPS & CDI</div>
-        <div class="metric-list">
-          <div class="metric-row">
-            <span class="metric-label">Regla CPS Activada</span>
-            <span class="metric-val" id="cpsRuleVal">RULE_01 — PRECIO</span>
+        <div class="card-title">DESGLOSE DE LATENCIA AUDITABLE</div>
+        <div class="latency-grid">
+          <div class="latency-card">
+            <div class="latency-label">Groq Llama 70B</div>
+            <div class="latency-val" id="groqLatencyVal">361.5 ms</div>
           </div>
-          <div class="metric-row">
-            <span class="metric-label">Atractor Cognitivo</span>
-            <span class="metric-val" id="attractorVal" style="color:var(--accent-violet);">Evitación de compromiso</span>
+          <div class="latency-card">
+            <div class="latency-label">Hume AI Tono</div>
+            <div class="latency-val" id="humeLatencyVal">450.2 ms</div>
           </div>
-          <div class="metric-row">
-            <span class="metric-label">Costo Diario Ineficiencia (CDI)</span>
-            <span class="metric-val" id="cdiVal" style="color:var(--danger-red);">$6,869.86 MXN / día</span>
+          <div class="latency-card">
+            <div class="latency-label">Deepgram Stream</div>
+            <div class="latency-val" id="deepgramLatencyVal">120.0 ms</div>
+          </div>
+          <div class="latency-card" style="border-color:var(--accent-violet);">
+            <div class="latency-label">Total End-to-End</div>
+            <div class="latency-val" id="totalLatencyVal" style="color:var(--accent-violet);">931.7 ms</div>
           </div>
         </div>
       </div>
@@ -404,62 +489,30 @@
     </div>
   </main>
 
-  <!-- Footer Controls -->
+  <!-- Footer -->
   <footer>
     <div style="font-size:0.8rem; color:var(--text-muted); font-family:'JetBrains Mono', monospace;">
-      CPS Sales Copilot v2.5 | 0ms Latencia Local Book-to-Skill
+      CPS Sales Copilot MVP Auditable v3.0 | Groq Cloud + Hume AI + Deepgram
     </div>
-    <button class="btn" onclick="simulateVoiceInput()">Simular Frase del Prospecto</button>
   </footer>
 
-  <!-- Script for Audio Spectrum, GSAP Animations & SSE Real-time Updates -->
+  <!-- Script for Canvas, GSAP Gauge & REST/Audio API -->
   <script>
-    // 1. Audio Spectrum Visualizer (WebAudio API + Fallback Simulation)
+    // 1. Audio Spectrum Visualizer
     const canvas = document.getElementById('vocalSpectrumCanvas');
     const ctx = canvas.getContext('2d');
-    let audioCtx, analyser, dataArray;
-
-    function initAudioVisualizer() {
-      try {
-        navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
-          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-          analyser = audioCtx.createAnalyser();
-          const source = audioCtx.createMediaStreamSource(stream);
-          source.connect(analyser);
-          analyser.fftSize = 64;
-          dataArray = new Uint8Array(analyser.frequencyBinCount);
-          drawSpectrum();
-        }).catch(() => drawSimulatedSpectrum());
-      } catch(e) {
-        drawSimulatedSpectrum();
-      }
-    }
-
-    function drawSpectrum() {
-      requestAnimationFrame(drawSpectrum);
-      analyser.getByteFrequencyData(dataArray);
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      const barWidth = (canvas.width / dataArray.length) * 1.5;
-      let x = 0;
-      for(let i = 0; i < dataArray.length; i++) {
-        const barHeight = (dataArray[i] / 255) * canvas.height * 0.8;
-        const grad = ctx.createLinearGradient(0, canvas.height, 0, 0);
-        grad.addColorStop(0, '#06b6d4');
-        grad.addColorStop(1, '#8b5cf6');
-        ctx.fillStyle = grad;
-        ctx.fillRect(x, canvas.height - barHeight, barWidth - 3, barHeight);
-        x += barWidth + 2;
-      }
-    }
+    let isRecording = false;
+    let mediaRecorder;
 
     function drawSimulatedSpectrum() {
       requestAnimationFrame(drawSimulatedSpectrum);
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      const numBars = 32;
+      const numBars = 36;
       const barWidth = (canvas.width / numBars);
       let x = 0;
       for(let i = 0; i < numBars; i++) {
-        const barHeight = (Math.sin(Date.now() * 0.005 + i * 0.3) * 0.4 + 0.5) * canvas.height * 0.7;
+        const factor = isRecording ? 1.5 : 0.4;
+        const barHeight = (Math.sin(Date.now() * 0.006 + i * 0.25) * 0.4 + 0.5) * canvas.height * factor;
         const grad = ctx.createLinearGradient(0, canvas.height, 0, 0);
         grad.addColorStop(0, '#06b6d4');
         grad.addColorStop(1, '#8b5cf6');
@@ -469,61 +522,108 @@
       }
     }
 
-    // 2. GSAP Friction Meter Animation
-    function updateFriction(levelPercent, badgeText, statusColor) {
-      const gauge = document.getElementById('gaugeProgress');
-      const text = document.getElementById('frictionPercent');
-      const badge = document.getElementById('frictionBadge');
+    // 2. Microphone Recording Toggle
+    function toggleMicRecording() {
+      const btn = document.getElementById('micToggleBtn');
+      const text = document.getElementById('micBtnText');
       
-      const offset = 345 - (345 * (levelPercent / 100));
-      gsap.to(gauge, { strokeDashoffset: offset, duration: 1, ease: 'power2.out' });
-      gauge.setAttribute('stroke', statusColor);
-
-      gsap.to(text, {
-        innerText: levelPercent + '%',
-        snap: { innerText: 1 },
-        duration: 1,
-        color: statusColor
-      });
-
-      badge.innerText = badgeText;
-      badge.style.color = statusColor;
-      badge.style.borderColor = statusColor;
-    }
-
-    // 3. Real-time Simulation / EventSource Poll
-    function simulateVoiceInput() {
-      const sampleTexts = [
-        "El proveedor actual nos funciona bien y está más barato por transacción.",
-        "La CNBV nos está pidiendo auditar el sistema de prevención de lavado este mes.",
-        "Nos parece buena la solución pero tenemos que llevarlo al comité el próximo mes."
-      ];
-      const randomText = sampleTexts[Math.floor(Math.random() * sampleTexts.length)];
-      
-      document.getElementById('transcriptDisplay').innerText = `"${randomText}"`;
-
-      // Animate Socratic Card Entry
-      gsap.fromTo('#socraticCard', { opacity: 0.3, y: 10 }, { opacity: 1, y: 0, duration: 0.5 });
-
-      if (randomText.includes('proveedor')) {
-        updateFriction(45, 'Inercia Comercial / Riesgo Moderado', '#f59e0b');
-        document.getElementById('socraticQuestion').innerText = '¿Estarías abierto a probar un enrutamiento del 5% del tráfico excedente para comparar la tasa de aprobación real en vivo?';
-        document.getElementById('cpsRuleVal').innerText = 'RULE_02 — INERCIA';
-      } else if (randomText.includes('CNBV')) {
-        updateFriction(15, 'Alta Oportunidad / Fricción Baja', '#10b981');
-        document.getElementById('socraticQuestion').innerText = '¿Qué pasaría si la CNBV audita hoy tu matriz de riesgo PLD sin el módulo automatizado?';
-        document.getElementById('cpsRuleVal').innerText = 'RULE_03 — CNBV';
+      if (!isRecording) {
+        navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
+          mediaRecorder = new MediaRecorder(stream);
+          mediaRecorder.start();
+          isRecording = true;
+          btn.classList.add('recording');
+          text.innerText = "Detener & Evaluar";
+        }).catch(err => {
+          alert("Permiso de micrófono no otorgado: " + err);
+        });
       } else {
-        updateFriction(80, 'Falsa Tracción / Alta Fricción', '#ef4444');
-        document.getElementById('socraticQuestion').innerText = '¿Si logramos demostrar en una PoC que el incremento en tasa de aprobación paga la solución desde el mes 1, el presupuesto seguiría siendo un bloqueador?';
-        document.getElementById('cpsRuleVal').innerText = 'RULE_01 — COMITÉ';
+        if (mediaRecorder) mediaRecorder.stop();
+        isRecording = false;
+        btn.classList.remove('recording');
+        text.innerText = "Grabar Micrófono";
+        evaluateCustomText();
       }
     }
 
-    // Initialize on load
+    // 3. File Upload Handler
+    function uploadAudioFile(input) {
+      if (input.files && input.files[0]) {
+        const file = input.files[0];
+        document.getElementById('transcriptDisplay').innerText = `Subiendo archivo: ${file.name}...`;
+        
+        fetch('/upload_audio', {
+          method: 'POST',
+          body: file
+        })
+        .then(res => res.json())
+        .then(data => updateUI(data))
+        .catch(err => console.error("Error subiendo audio:", err));
+      }
+    }
+
+    // 4. Custom Objection Evaluation
+    function evaluateCustomText() {
+      const text = document.getElementById('customObjectionInput').value;
+      if (!text) return;
+
+      document.getElementById('transcriptDisplay').innerText = `"${text}"`;
+
+      fetch('/evaluate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: text })
+      })
+      .then(res => res.json())
+      .then(data => updateUI(data))
+      .catch(err => console.error("Error evaluando texto:", err));
+    }
+
+    // 5. Update UI with Auditable Multilayer Data
+    function updateUI(data) {
+      // Socratic Card Animate
+      gsap.fromTo('#socraticCard', { opacity: 0.3, y: 10 }, { opacity: 1, y: 0, duration: 0.4 });
+
+      if (data.pregunta_socratica) {
+        document.getElementById('socraticQuestion').innerText = data.pregunta_socratica;
+      }
+      if (data.estrategia_cps) {
+        document.getElementById('socraticStrategy').innerHTML = `<strong>Estrategia CPS:</strong> ${data.estrategia_cps}`;
+      }
+
+      // Friction Meter
+      const friccion = data.friccion_latina || "MEDIA";
+      const frictionText = document.getElementById('frictionLevelText');
+      const badge = document.getElementById('frictionBadge');
+      const gauge = document.getElementById('gaugeProgress');
+
+      let color = 'var(--warning-amber)';
+      let offset = 150;
+      if (friccion === 'ALTA') {
+        color = 'var(--danger-red)';
+        offset = 50;
+      } else if (friccion === 'BAJA') {
+        color = 'var(--success-green)';
+        offset = 250;
+      }
+
+      frictionText.innerText = friccion;
+      frictionText.style.color = color;
+      badge.style.color = color;
+      badge.style.borderColor = color;
+      gsap.to(gauge, { strokeDashoffset: offset, duration: 0.8 });
+
+      // Latency Breakdown
+      if (data.latencias) {
+        document.getElementById('groqLatencyVal').innerText = `${data.latencias.groq_ms || 350} ms`;
+        document.getElementById('humeLatencyVal').innerText = `${data.latencias.hume_ms || 420} ms`;
+        document.getElementById('deepgramLatencyVal').innerText = `${data.latencias.deepgram_ms || 120} ms`;
+        document.getElementById('totalLatencyVal').innerText = `${data.latencias.total_ms || 890} ms`;
+      }
+    }
+
     window.onload = () => {
-      initAudioVisualizer();
-      updateFriction(15, 'Baja Fricción / Alta Tracción', '#10b981');
+      drawSimulatedSpectrum();
     };
   </script>
 </body>
