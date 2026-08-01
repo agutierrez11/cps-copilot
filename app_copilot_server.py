@@ -60,9 +60,12 @@ except ImportError:
 INSIGHTS_LOG_PATH = f"insights_reunion_{datetime.now().strftime('%Y%m%d_%H%M')}.jsonl"
 
 def log_insight(entry: dict):
-    """Guarda log auditable local de cada evaluación."""
-    with open(INSIGHTS_LOG_PATH, "a", encoding="utf-8") as f:
-        f.write(json.dumps(entry, ensure_ascii=False) + "\n")
+    """Guarda log auditable local de cada evaluación en UTF-8."""
+    try:
+        with open(INSIGHTS_LOG_PATH, "a", encoding="utf-8") as f:
+            f.write(json.dumps(entry, ensure_ascii=False) + "\n")
+    except Exception as e:
+        print(f"⚠️ Error escribiendo insight log: {e}")
 
 event_queue = queue.Queue()
 latest_state = {
