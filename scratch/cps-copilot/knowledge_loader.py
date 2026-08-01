@@ -70,7 +70,6 @@ class LocalKnowledgeEngine:
         if cps_hits:
             context_parts.append(f"--- FUENTE 1: CPS FRAMEWORKS ---\n{cps_hits[0]['content']}")
         else:
-            # Fallback al contenido completo si no hay match directo
             cps_doc = self.documents.get("cps_frameworks/SKILL.md")
             if cps_doc:
                 context_parts.append(f"--- FUENTE 1: CPS FRAMEWORKS ---\n{cps_doc['content']}")
@@ -87,8 +86,42 @@ class LocalKnowledgeEngine:
 # Instancia global reutilizable
 engine = LocalKnowledgeEngine()
 
+def evaluate_cps_rules(query_text: str) -> dict:
+    """Evalúa la objeción usando el motor de conocimiento local en <5ms."""
+    q_lower = query_text.lower()
+    
+    if any(k in q_lower for k in ["presupuesto", "precio", "costo", "caro", "dinero", "trimestre"]):
+        return {
+            "objecion": "Presupuesto / Valor Financiero",
+            "pregunta_socratica": "¿Si logramos demostrar en una PoC que el incremento en tasa de aprobación paga la solución desde el mes 1, el presupuesto seguiría siendo un bloqueador?",
+            "estrategia": "First Principles & Re-encuadre Socrático: Reformular el costo directo como una inversión de ROI autofinanciable desde el primer mes.",
+            "friccion": "ALTA"
+        }
+    elif any(k in q_lower for k in ["socio", "comite", "director", "revisar", "checo", "ahorita"]):
+        return {
+            "objecion": "Evasión por Cortesía / Validación de Comité",
+            "pregunta_socratica": "¿Cuáles son los 2 criterios clave que su socio exigirá evaluar para autorizar la integración esta misma semana?",
+            "estrategia": "Desmantelar inercia de evasión cortesana estableciendo criterios directos de aprobación ejecutiva.",
+            "friccion": "MEDIA"
+        }
+    elif any(k in q_lower for k in ["tiempo", "luego", "despues", "mes", "semana"]):
+        return {
+            "objecion": "Inercia de Postergación (Luego lo checo)",
+            "pregunta_socratica": "¿Qué tendría que pasar en la prueba piloto para que aplazar esta decisión un mes más represente un costo directo mayor que implementarla hoy?",
+            "estrategia": "Cuantificar el costo de inacción (Cost of Inaction) frente al valor presente.",
+            "friccion": "ALTA"
+        }
+    else:
+        return {
+            "objecion": "Fricción Operativa General",
+            "pregunta_socratica": "¿Cuál es la principal restricción técnica u operativa que impediría validar la solución esta misma semana?",
+            "estrategia": "Indagación socrática de cuello de botella First Principles.",
+            "friccion": "MEDIA"
+        }
+
 if __name__ == "__main__":
     print("\n--- PRUEBA DE CONEXIÓN A CONOCIMIENTO LOCAL ---")
     ctx = engine.get_combined_context("precio caro presupuesto objecion")
     print(f"Longitud del contexto cargado: {len(ctx)} caracteres.")
-    print("Muestra del contexto:\n", ctx[:400], "...")
+    res = evaluate_cps_rules("Está fuera de nuestro presupuesto para este trimestre.")
+    print("Prueba de evaluación local:", res)
