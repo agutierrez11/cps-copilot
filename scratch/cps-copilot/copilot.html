@@ -605,49 +605,34 @@
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       if (isRecording && analyser && dataArray) {
-        // ONDA DE VOZ REAL (waveform) — máxima sensibilidad con timeDomain
-        analyser.getByteTimeDomainData(dataArray);
+        // ESPECTRO DE FRECUENCIA EN TIEMPO REAL CON UMBRAL DE RUIDO
+        analyser.getByteFrequencyData(dataArray);
+        const numBars = dataArray.length;
+        const barWidth = canvas.width / numBars;
+        let sum = 0;
         
-        // Calcular volumen RMS para el indicador de dB
-        let sumSquares = 0;
-        for (let i = 0; i < dataArray.length; i++) {
-          const normalized = (dataArray[i] - 128) / 128;
-          sumSquares += normalized * normalized;
+        for (let i = 0; i < numBars; i++) {
+          sum += dataArray[i];
+          const valNormalized = dataArray[i] / 255;
+          const barHeight = Math.max(2, valNormalized * canvas.height * 2.0);
+          const grad = ctx.createLinearGradient(0, canvas.height, 0, 0);
+          grad.addColorStop(0, '#06b6d4');
+          grad.addColorStop(1, '#8b5cf6');
+          ctx.fillStyle = grad;
+          ctx.fillRect(i * barWidth, canvas.height - barHeight, barWidth - 3, barHeight);
         }
-        const rms = Math.sqrt(sumSquares / dataArray.length);
-        const volumePercent = Math.round(rms * 300); // Escala visual 0-100+
-
-        // Dibujar onda vocálica real tipo waveform
-        ctx.lineWidth = 2.5;
-        const grad = ctx.createLinearGradient(0, 0, canvas.width, 0);
-        grad.addColorStop(0, '#06b6d4');
-        grad.addColorStop(0.5, '#8b5cf6');
-        grad.addColorStop(1, '#06b6d4');
-        ctx.strokeStyle = grad;
-        ctx.beginPath();
-        const sliceWidth = canvas.width / dataArray.length;
-        let x = 0;
-        for (let i = 0; i < dataArray.length; i++) {
-          const v = dataArray[i] / 128.0;
-          const y = (v * canvas.height) / 2;
-          if (i === 0) {
-            ctx.moveTo(x, y);
-          } else {
-            ctx.lineTo(x, y);
-          }
-          x += sliceWidth;
-        }
-        ctx.lineTo(canvas.width, canvas.height / 2);
-        ctx.stroke();
-
-        // Indicador de nivel de voz
+        
+        const avg = Math.round(sum / numBars);
         const tag = document.getElementById('micStatusTag');
         if (tag) {
-          const level = volumePercent > 5 ? `🟢 Captando voz: ${volumePercent}%` : `🔴 Sin señal aún (habla más fuerte)`;
-          tag.innerText = level;
-          tag.style.color = volumePercent > 5 ? "var(--success-green)" : "#f59e0b";
+          if (avg > 12) {
+            tag.innerText = `🎙️ Captando voz: ${avg} dB`;
+            tag.style.color = "var(--success-green)";
+          } else {
+            tag.innerText = `🎙️ Micrófono activo — Habla ahora...`;
+            tag.style.color = "var(--accent-cyan)";
+          }
         }
-
       } else {
         // Onda de reposo sutil (idle state)
         ctx.lineWidth = 1.5;
@@ -678,37 +663,39 @@
     function toggleMicRecording() {
       const micBtn = document.getElementById('micBtn');
       if (!isRecording) {
-        // Crear AudioContext SINCRÓNICO desde el click handler (requerido por Chrome)
         if (!audioCtx) {
           audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         }
-        // resume() también debe estar en el click handler
         audioCtx.resume().then(() => {
           navigator.mediaDevices.getUserMedia({ 
             audio: { 
               echoCancellation: true, 
               noiseSuppression: true,
-              sampleRate: 16000
+              autoGainControl: true
             } 
           }).then(stream => {
             micStream = stream;
             analyser = audioCtx.createAnalyser();
-            analyser.fftSize = 2048; // Alta resolución de onda
-            analyser.smoothingTimeConstant = 0.3;
+            analyser.fftSize = 64; // 32 barras espectrales limpias
+            analyser.smoothingTimeConstant = 0.6;
+            analyser.minDecibels = -80;
+            analyser.maxDecibels = -20;
+
             const source = audioCtx.createMediaStreamSource(stream);
             source.connect(analyser);
-            dataArray = new Uint8Array(analyser.fftSize);
+            dataArray = new Uint8Array(analyser.frequencyBinCount);
 
             // MediaRecorder para captura y envío de audio
             audioChunks = [];
             try {
-              mediaRecorder = new MediaRecorder(stream);
+              const mime = MediaRecorder.isTypeSupported('audio/webm;codecs=opus') ? 'audio/webm;codecs=opus' : 'audio/webm';
+              mediaRecorder = new MediaRecorder(stream, { mimeType: mime });
               mediaRecorder.ondataavailable = e => {
                 if (e.data && e.data.size > 0) audioChunks.push(e.data);
               };
-              mediaRecorder.start(250);
+              mediaRecorder.start(100);
             } catch(e) {
-              console.warn("MediaRecorder:", e);
+              console.warn("MediaRecorder init:", e);
             }
 
             isRecording = true;
@@ -717,32 +704,37 @@
               micBtn.style.background = "linear-gradient(135deg, #ef4444, #f59e0b)";
             }
           }).catch(err => {
-            alert("❌ Permiso de micrófono denegado: " + err + "\n\nRevisa que el navegador tenga acceso al micrófono en Configuración.");
+            alert("❌ Permiso de micrófono denegado: " + err);
           });
         });
       } else {
         // DETENER GRABACIÓN
         isRecording = false;
-        analyser = null;
-        dataArray = null;
         if (micBtn) {
-          micBtn.innerText = "⏳ Transcribiendo...";
+          micBtn.innerText = "⏳ Transcribiendo Voz...";
           micBtn.style.background = "rgba(139,92,246,0.4)";
         }
+        
         if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+          try { mediaRecorder.requestData(); } catch(e) {}
           mediaRecorder.stop();
           mediaRecorder.onstop = () => {
-            const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+            const mimeType = mediaRecorder.mimeType || 'audio/webm';
+            const audioBlob = new Blob(audioChunks, { type: mimeType });
+            console.log("Audio Blob Creado:", audioBlob.size, "bytes", mimeType);
             sendAudioForEvaluation(audioBlob);
           };
         } else {
           resetMicBtn(micBtn);
           evaluateObjectionText();
         }
+
         if (micStream) {
           micStream.getTracks().forEach(t => t.stop());
           micStream = null;
         }
+        analyser = null;
+        dataArray = null;
       }
     }
 

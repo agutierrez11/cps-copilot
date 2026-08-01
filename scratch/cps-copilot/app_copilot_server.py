@@ -176,9 +176,10 @@ class CopilotHTTPHandler(http.server.SimpleHTTPRequestHandler):
         self.send_response(200)
         self.send_header('Access-Control-Allow-Origin', '*')
         self.send_header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
-        self.send_header('Access-Control-Allow-Headers', 'Content-Type')
+        self.send_header('Access-Control-Allow-Headers', 'Content-Type, X-Test-Mode')
         self.end_headers()
 
+    def do_POST(self):
         is_test = self.headers.get('X-Test-Mode') == '1'
 
         if self.path == '/evaluate':
@@ -235,16 +236,20 @@ class CopilotHTTPHandler(http.server.SimpleHTTPRequestHandler):
                 if GROQ_AVAILABLE and GROQ_API_KEY:
                     try:
                         client = Groq(api_key=GROQ_API_KEY)
-                        with open(tmp_path, 'rb') as audio_f:
-                            transcription = client.audio.transcriptions.create(
-                                file=(Path(tmp_path).name, audio_f.read()),
-                                model='whisper-large-v3-turbo',
-                                language='es',
-                                response_format='text'
-                            )
+                        mime_type = 'audio/webm' if 'webm' in ctype else 'audio/wav'
+                        fname = f"speech{ext}"
+                        print(f"🎙️ [AUDIO RECIBIDO]: {len(raw_body)} bytes ({mime_type})")
+                        
+                        transcription = client.audio.transcriptions.create(
+                            file=(fname, raw_body, mime_type),
+                            model='whisper-large-v3-turbo',
+                            language='es',
+                            response_format='text'
+                        )
                         transcript_text = str(transcription).strip()
+                        print(f"✅ [TRANCRIPCIÓN GROQ]: '{transcript_text}'")
                     except Exception as whisper_err:
-                        print(f"⚠️ Whisper error: {whisper_err}")
+                        print(f"⚠️ Error en Groq Whisper API: {whisper_err}")
                         transcript_text = ""
                     finally:
                         try:
