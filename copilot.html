@@ -430,7 +430,7 @@
         <canvas id="vocalSpectrumCanvas" width="300" height="80"></canvas>
         
         <div style="display:flex; gap:8px; margin-bottom:14px;">
-          <button class="btn-action" style="flex:1;" onclick="toggleMicRecording()">🎙️ Micrófono</button>
+          <button id="micBtn" class="btn-action" style="flex:1;" onclick="toggleMicRecording()">🎙️ Micrófono</button>
           <label class="btn-action" style="background:rgba(255,255,255,0.08); border:1px solid var(--card-border); cursor:pointer;">
             📁 Subir WAV
             <input type="file" accept="audio/*" style="display:none;" onchange="uploadAudioFile(this)">
@@ -619,39 +619,105 @@
       }
     }
 
+    let mediaRecorder, audioChunks = [];
+
     function toggleMicRecording() {
+      const micBtn = document.getElementById('micBtn');
       if (!isRecording) {
         navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
           micStream = stream;
           audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+          if (audioCtx.state === 'suspended') {
+            audioCtx.resume();
+          }
           analyser = audioCtx.createAnalyser();
           analyser.fftSize = 64; // Genera 32 barras de frecuencia
           const source = audioCtx.createMediaStreamSource(stream);
           source.connect(analyser);
           dataArray = new Uint8Array(analyser.frequencyBinCount);
-          isRecording = true;
 
-          // Actualizar botón
-          const btn = document.querySelector('.btn-action');
-          if (btn) btn.innerText = "🛑 Detener & Evaluar";
+          // Capturar bloques de audio real con MediaRecorder
+          audioChunks = [];
+          try {
+            mediaRecorder = new MediaRecorder(stream);
+            mediaRecorder.ondataavailable = e => {
+              if (e.data.size > 0) audioChunks.push(e.data);
+            };
+            mediaRecorder.start(100);
+          } catch(e) {
+            console.warn("MediaRecorder warning:", e);
+          }
+
+          isRecording = true;
+          if (micBtn) {
+            micBtn.innerText = "🛑 Detener & Evaluar";
+            micBtn.style.background = "linear-gradient(135deg, #ef4444, #f59e0b)";
+          }
         }).catch(err => {
-          alert("Permiso de micrófono no otorgado: " + err);
+          alert("Permiso de micrófono no otorgado en el navegador: " + err);
         });
       } else {
+        isRecording = false;
+        if (micBtn) {
+          micBtn.innerText = "⏳ Transcribiendo Voz...";
+        }
+
+        if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+          mediaRecorder.stop();
+          mediaRecorder.onstop = () => {
+            const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+            sendAudioForEvaluation(audioBlob);
+          };
+        } else {
+          evaluateObjectionText();
+        }
+
         if (micStream) {
           micStream.getTracks().forEach(track => track.stop());
         }
         if (audioCtx) {
           audioCtx.close();
         }
-        isRecording = false;
-        
-        const btn = document.querySelector('.btn-action');
-        if (btn) btn.innerText = "🎙️ Micrófono";
-
-        // Ejecutar evaluación de audio
-        evaluateObjectionText();
       }
+    }
+
+    function sendAudioForEvaluation(blob) {
+      const micBtn = document.getElementById('micBtn');
+      fetch('/upload_audio', {
+        method: 'POST',
+        headers: { 'Content-Type': 'audio/wav' },
+        body: blob
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (micBtn) {
+          micBtn.innerText = "🎙️ Micrófono";
+          micBtn.style.background = "linear-gradient(135deg, var(--accent-violet), var(--accent-cyan))";
+        }
+        if (data.transcript) {
+          appendDiarizationBubble("Speaker 1 (Cliente - Micrófono)", data.transcript, "speaker-client");
+        }
+        if (data.pregunta_socratica) {
+          runTypewriter(data.pregunta_socratica);
+        }
+        if (data.estrategia_cps) {
+          document.getElementById('cpsStrategyText').innerHTML = `<strong>Estrategia CPS:</strong> ${data.estrategia_cps}`;
+        }
+        if (data.latencias) {
+          document.getElementById('groqMsVal').innerText = `${data.latencias.groq_ms || 360} ms`;
+          document.getElementById('humeMsVal').innerText = `${data.latencias.hume_ms || 420} ms`;
+          document.getElementById('deepgramMsVal').innerText = `${data.latencias.deepgram_ms || 120} ms`;
+          document.getElementById('totalMsVal').innerText = `${data.latencias.total_ms || 360} ms`;
+          document.getElementById('headerTotalLatency').innerText = `${data.latencias.total_ms || 360} ms`;
+        }
+      })
+      .catch(err => {
+        if (micBtn) {
+          micBtn.innerText = "🎙️ Micrófono";
+          micBtn.style.background = "linear-gradient(135deg, var(--accent-violet), var(--accent-cyan))";
+        }
+        evaluateObjectionText();
+      });
     }
 
     // 2. Typewriter Text Animation Function

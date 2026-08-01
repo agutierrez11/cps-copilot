@@ -1,0 +1,27 @@
+[
+  {
+    "name": "CPS_Libro_Maestro",
+    "file": "CPS_Libro_Maestro.md",
+    "type": "pdf"
+  },
+  {
+    "name": "CPS_Entrenamiento",
+    "file": "CPS_Entrenamiento.md",
+    "type": "pdf"
+  },
+  {
+    "name": "CPS_CST_Decisiones",
+    "file": "CPS_CST_Decisiones.md",
+    "type": "pdf"
+  },
+  {
+    "name": "NERV_Battlecards_Galileo",
+    "file": "NERV_Battlecards_Galileo.md",
+    "type": "md"
+  },
+  {
+    "name": "Dossier_OnlyPayments_2026",
+    "file": "Dossier_OnlyPayments_2026.md",
+    "type": "pdf"
+  }
+]

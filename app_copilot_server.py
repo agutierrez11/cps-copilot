@@ -250,7 +250,20 @@ class CopilotHTTPHandler(http.server.SimpleHTTPRequestHandler):
             super().do_POST()
 
     def do_GET(self):
-        if self.path == '/events':
+        if self.path in ['/', '/copilot.html']:
+            try:
+                html_path = Path(__file__).parent / "copilot.html"
+                content = html_path.read_text(encoding='utf-8')
+                self.send_response(200)
+                self.send_header('Content-Type', 'text/html; charset=utf-8')
+                self.send_header('Access-Control-Allow-Origin', '*')
+                self.end_headers()
+                self.wfile.write(content.encode('utf-8'))
+            except Exception as e:
+                self.send_response(500)
+                self.end_headers()
+                self.wfile.write(str(e).encode('utf-8'))
+        elif self.path == '/events':
             self.send_response(200)
             self.send_header('Content-Type', 'text/event-stream')
             self.send_header('Cache-Control', 'no-cache')
@@ -260,7 +273,7 @@ class CopilotHTTPHandler(http.server.SimpleHTTPRequestHandler):
 
             while True:
                 try:
-                    state = event_queue.get(timeout=10)
+                    state = event_queue.get(timeout=5)
                     payload = f"data: {json.dumps(state, ensure_ascii=False)}\n\n"
                     self.wfile.write(payload.encode('utf-8'))
                     self.wfile.flush()
@@ -268,6 +281,8 @@ class CopilotHTTPHandler(http.server.SimpleHTTPRequestHandler):
                     payload = f"data: {json.dumps(latest_state, ensure_ascii=False)}\n\n"
                     self.wfile.write(payload.encode('utf-8'))
                     self.wfile.flush()
+                except (ConnectionAbortedError, ConnectionResetError, BrokenPipeError):
+                    break
                 except Exception:
                     break
         else:
