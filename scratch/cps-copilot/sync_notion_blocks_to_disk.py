@@ -16,12 +16,13 @@ HEADERS = {
 }
 
 def main():
-    print("🚀 CONSULTANDO LA BASE DE DATOS DE NOTION CPS NOTEBOOK VIA API...")
-    url = "https://www.notion.so/api/v3/queryCollection"
+    print("🚀 CONSULTANDO BLOQUES DE NOTION VIA loadPageChunk...")
+    url = "https://www.notion.so/api/v3/loadPageChunk"
     payload = {
-        "collection": {"id": "3944b478-6d2d-4f26-b89b-6a4322dfd198", "spaceId": "08d6f312-d812-4ee4-8cb3-b1d6db7965bd"},
-        "collectionView": {"id": "db3da4d9-328d-40ce-b2b4-4da94bb753da", "spaceId": "08d6f312-d812-4ee4-8cb3-b1d6db7965bd"},
-        "loader": {"type": "reducer", "reducers": {"collection_group_results": {"type": "results", "limit": 500}}}
+        "pageId": "e0933110-2a97-4216-a056-e13d433a9c60",
+        "limit": 500,
+        "chunkNumber": 0,
+        "verticalColumns": False
     }
     
     r = httpx.post(url, json=payload, headers=HEADERS, timeout=30)
@@ -31,7 +32,7 @@ def main():
 
     data = r.json()
     blocks = data.get("recordMap", {}).get("block", {})
-    print(f"✅ Se obtuvieron {len(blocks)} bloques en total de Notion!")
+    print(f"✅ ¡ÉXITO! Se obtuvieron {len(blocks)} bloques reales de Notion!")
 
     index_items = []
     saved_count = 0
@@ -58,7 +59,6 @@ def main():
                 out.write(f"**ID Notion:** `{b_id}`\n")
                 out.write(f"**Tipo de Bloque:** `{b_type}`\n\n")
                 
-                # Extraer propiedades adicionales si existen
                 for p_key, p_val in props.items():
                     if p_key != "title":
                         val_str = str(p_val)
@@ -67,9 +67,8 @@ def main():
             index_items.append({"id": b_id, "title": title, "file": fname})
             saved_count += 1
 
-    print(f"🎉 ¡SE EXTRAJERON Y GUARDARON {saved_count} ARTÍCULOS EN MARKDOWN EN DISCO!")
+    print(f"🎉 ¡SE EXTRAJERON Y GUARDARON {saved_count} ARTÍCULOS Y SECCIONES EN MARKDOWN EN DISCO!")
     
-    # Guardar índice JSON
     idx_path = os.path.join(OUTPUT_DIR, "INDICE_NOTION_CPS_FULL.json")
     with open(idx_path, "w", encoding="utf-8") as f:
         json.dump(index_items, f, indent=2, ensure_ascii=False)
