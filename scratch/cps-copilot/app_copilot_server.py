@@ -66,7 +66,9 @@ except ImportError:
 INSIGHTS_LOG_PATH = f"insights_reunion_{datetime.now().strftime('%Y%m%d_%H%M')}.jsonl"
 
 def log_insight(entry: dict):
-    """Guarda log auditable local de cada evaluación en UTF-8."""
+    """Guarda log auditable local de cada evaluación en UTF-8 (omite si está en Modo Prueba)."""
+    if entry.get("is_test_mode"):
+        return
     try:
         with open(INSIGHTS_LOG_PATH, "a", encoding="utf-8") as f:
             f.write(json.dumps(entry, ensure_ascii=False) + "\n")
@@ -177,7 +179,8 @@ class CopilotHTTPHandler(http.server.SimpleHTTPRequestHandler):
         self.send_header('Access-Control-Allow-Headers', 'Content-Type')
         self.end_headers()
 
-    def do_POST(self):
+        is_test = self.headers.get('X-Test-Mode') == '1'
+
         if self.path == '/evaluate':
             content_length = int(self.headers.get('Content-Length', 0))
             post_data = self.rfile.read(content_length)
@@ -186,7 +189,9 @@ class CopilotHTTPHandler(http.server.SimpleHTTPRequestHandler):
                 text = data.get('text', '')
                 
                 result = run_hybrid_multilayer_pipeline(text)
-                
+                if is_test or data.get('is_test_mode'):
+                    result['is_test_mode'] = True
+
                 # Actualizar estado global con lock para evitar race conditions
                 with _state_lock:
                     latest_state["transcript"] = text
@@ -209,7 +214,6 @@ class CopilotHTTPHandler(http.server.SimpleHTTPRequestHandler):
                 self.wfile.write(json.dumps({"error": str(e)}).encode('utf-8'))
 
         elif self.path == '/upload_audio':
-            # Subida de audio desde micrófono — transcribe con Groq Whisper si disponible
             content_length = int(self.headers.get('Content-Length', 0))
             if content_length == 0:
                 self.send_response(400)
@@ -220,17 +224,14 @@ class CopilotHTTPHandler(http.server.SimpleHTTPRequestHandler):
             raw_body = self.rfile.read(content_length)
             transcript_text = ""
 
-            # Determinar extensión por Content-Type del cliente
             ctype = self.headers.get('Content-Type', 'audio/webm')
             ext = '.webm' if 'webm' in ctype else '.wav'
 
             try:
-                # Guardar en archivo temporal seguro (auto-cleanup)
                 with tempfile.NamedTemporaryFile(suffix=ext, delete=False) as tmp:
                     tmp.write(raw_body)
                     tmp_path = tmp.name
 
-                # Transcripción real con Groq Whisper
                 if GROQ_AVAILABLE and GROQ_API_KEY:
                     try:
                         client = Groq(api_key=GROQ_API_KEY)
@@ -252,12 +253,15 @@ class CopilotHTTPHandler(http.server.SimpleHTTPRequestHandler):
                             pass
 
                 if not transcript_text:
-                    # Fallback: pedir texto de evaluación al frontend si no hay transcripción
                     result = run_hybrid_multilayer_pipeline("audio enviado sin transcripción disponible")
                     result["transcript"] = ""
                     result["warning"] = "Sin API de transcripción activa — configura GROQ_API_KEY en .env"
                 else:
                     result = run_hybrid_multilayer_pipeline(transcript_text)
+
+                if is_test:
+                    result['is_test_mode'] = True
+                log_insight(result)
 
                 self.send_response(200)
                 self.send_header('Content-Type', 'application/json')
@@ -274,18 +278,20 @@ class CopilotHTTPHandler(http.server.SimpleHTTPRequestHandler):
             post_data = self.rfile.read(content_length)
             try:
                 data = json.loads(post_data.decode('utf-8'))
-                data["timestamp"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                
-                # Guardar en dataset local
-                rlhf_file = Path("rlhf_sales_dataset.jsonl")
-                with open(rlhf_file, "a", encoding="utf-8") as f:
-                    f.write(json.dumps(data, ensure_ascii=False) + "\n")
-                    
+                if not is_test:
+                    data["timestamp"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                    rlhf_file = Path("rlhf_sales_dataset.jsonl")
+                    with open(rlhf_file, "a", encoding="utf-8") as f:
+                        f.write(json.dumps(data, ensure_ascii=False) + "\n")
+                    msg = "Feedback registrado en dataset local"
+                else:
+                    msg = "Modo Prueba activo — Log no guardado"
+
                 self.send_response(200)
                 self.send_header('Content-Type', 'application/json')
                 self.send_header('Access-Control-Allow-Origin', '*')
                 self.end_headers()
-                self.wfile.write(json.dumps({"status": "SUCCESS", "message": "Feedback registrado en dataset local"}).encode('utf-8'))
+                self.wfile.write(json.dumps({"status": "SUCCESS", "message": msg}).encode('utf-8'))
             except Exception as e:
                 self.send_response(500)
                 self.end_headers()
