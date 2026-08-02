@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interview Simulator - CPS Copilot</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f9fafb;
+      --card: #ffffff;
+      --text: #111827;
+      --muted: #6b7280;
+      --border: #e5e7eb;
+      --primary: #2563eb;
+      --success: #22c55e;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --radius: 12px;
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .brand-icon {
+      width: 32px; height: 32px;
+      background: var(--text);
+      color: white;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    main {
+      flex: 1;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 350px;
+      gap: 24px;
+    }
+
+    @media (max-width: 800px) {
+      main { grid-template-columns: 1fr; }
+    }
+
+    .panel {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    h2 { font-size: 1.25rem; font-weight: 600; }
+    h3 { font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); margin-bottom: 8px; }
+
+    .question-box {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 8px;
+      padding: 16px;
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: #1e3a8a;
+    }
+
+    .controls {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    button {
+      padding: 10px 20px;
+      border-radius: 8px;
+      border: none;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+
+    .btn-primary { background: var(--primary); color: white; }
+    .btn-primary:hover { background: #1d4ed8; }
+    .btn-danger { background: var(--danger); color: white; }
+    .btn-danger:hover { background: #b91c1c; }
+    .btn-outline { background: white; border: 1px solid var(--border); color: var(--text); }
+    .btn-outline:hover { background: var(--bg); }
+
+    .visualizer-container {
+      height: 80px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    
+    #canvas {
+      width: 100%;
+      height: 100%;
+    }
+
+    .transcript-box {
+      flex: 1;
+      min-height: 200px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      font-size: 1rem;
+      overflow-y: auto;
+      white-space: pre-wrap;
+    }
+
+    .transcript-box .interim { color: var(--muted); }
+    .transcript-box .filler { background: #fef2f2; color: #ef4444; text-decoration: underline; font-weight: 500; }
+
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .metric-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      text-align: center;
+    }
+
+    .metric-value { font-family: 'JetBrains Mono', monospace; font-size: 1.5rem; font-weight: 700; margin-bottom: 4px; }
+    .metric-label { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; }
+
+    .status-good { color: var(--success); }
+    .status-warn { color: var(--warning); }
+    .status-bad { color: var(--danger); }
+
+    .feedback-list {
+      list-style: none;
+      font-size: 0.875rem;
+    }
+    .feedback-list li {
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    .feedback-list li:last-child { border-bottom: none; }
+    
+    .badge {
+      font-size: 0.7rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+    .badge.err { background: #fef2f2; color: #ef4444; border: 1px solid #fecaca; }
+    .badge.ok { background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0; }
+
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="index.html" class="brand">
+      <div class="brand-icon">⚡</div>
+      <span>CPS Copilot</span>
+    </a>
+    <div style="font-size: 0.875rem; color: var(--muted);">Módulo 06: Interview Simulator</div>
+  </header>
+
+  <main>
+    <!-- Left Panel: Interview -->
+    <div class="panel">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h2>Executive Interview Practice</h2>
+        <button id="btnNextQ" class="btn-outline" onclick="nextQuestion()">Next Question ↻</button>
+      </div>
+
+      <div class="question-box" id="questionDisplay">
+        Press Start to begin the interview simulation.
+      </div>
+
+      <div class="controls">
+        <button id="btnStart" class="btn-primary" onclick="startRecording()">🎙️ Start Speaking</button>
+        <button id="btnStop" class="btn-danger" style="display: none;" onclick="stopRecording()">⏹ Stop</button>
+      </div>
+
+      <div class="visualizer-container">
+        <canvas id="canvas"></canvas>
+        <div id="statusText" style="position: absolute; font-size: 0.8rem; color: var(--muted); bottom: 4px; right: 8px;">Mic Off</div>
+      </div>
+
+      <div>
+        <h3>Live Transcript (EN)</h3>
+        <div class="transcript-box" id="transcript"></div>
+      </div>
+    </div>
+
+    <!-- Right Panel: Real-time Evaluation -->
+    <div class="panel">
+      <h2>Live Evaluation</h2>
+      
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="metric-value" id="valTime">0s</div>
+          <div class="metric-label">Duration</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-value" id="valWPM">0</div>
+          <div class="metric-label">Words / Min</div>
+        </div>
+      </div>
+
+      <div>
+        <h3>Structure & Fillers</h3>
+        <ul class="feedback-list" id="feedbackList">
+          <li>Waiting for speech...</li>
+        </ul>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // --- Questions ---
+    const questions = [
+      "Tell me about yourself and your acquiring background.",
+      "Can you explain your Full-Cycle Sales experience in payments?",
+      "How do you handle high-risk verticals like iGaming or Crypto?",
+      "How do you deal with technical API friction during closing?",
+      "What are your salary expectations?",
+      "Why are you looking to leave your current role?"
+    ];
+    let qIndex = 0;
+
+    // --- Web Speech API ---
+    let recognition;
+    let isRecording = false;
+    let finalTranscript = '';
+    let startTime;
+    let timerInterval;
+
+    // Fillers to detect
+    const fillers = ["a kind of", "how i say", "basically", "literally", "like", "uh", "um"];
+    
+    // --- Audio Visualizer ---
+    let audioCtx;
+    let analyzer;
+    let source;
+    let animationId;
+    const canvas = document.getElementById('canvas');
+    const canvasCtx = canvas.getContext('2d');
+
+    function initSpeechRecognition() {
+      if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+        alert("Your browser doesn't support the Web Speech API. Please use Chrome or Edge.");
+        return;
+      }
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      recognition = new SpeechRecognition();
+      recognition.continuous = true;
+      recognition.interimResults = true;
+      recognition.lang = 'en-US';
+
+      recognition.onresult = (event) => {
+        let interimTranscript = '';
+        for (let i = event.resultIndex; i < event.results.length; ++i) {
+          if (event.results[i].isFinal) {
+            finalTranscript += event.results[i][0].transcript + ' ';
+          } else {
+            interimTranscript += event.results[i][0].transcript;
+          }
+        }
+        updateTranscriptDisplay(finalTranscript, interimTranscript);
+        evaluatePitch(finalTranscript + interimTranscript);
+      };
+
+      recognition.onerror = (event) => {
+        console.error("Speech error", event.error);
+        if(event.error === 'not-allowed') {
+          alert("Microphone access denied.");
+          stopRecording();
+        }
+      };
+
+      recognition.onend = () => {
+        if (isRecording) {
+          recognition.start(); // Auto-restart if accidentally stopped
+        }
+      };
+    }
+
+    async function setupAudioVisualizer() {
+      if(!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if(audioCtx.state === 'suspended') {
+        await audioCtx.resume();
+      }
+      
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        analyzer = audioCtx.createAnalyser();
+        analyzer.fftSize = 256;
+        source = audioCtx.createMediaStreamSource(stream);
+        source.connect(analyzer);
+        drawVisualizer();
+      } catch(e) {
+        console.error("Mic error for visualizer", e);
+      }
+    }
+
+    function drawVisualizer() {
+      if(!isRecording) return;
+      animationId = requestAnimationFrame(drawVisualizer);
+      
+      // Fix canvas dimensions
+      canvas.width = canvas.parentElement.clientWidth;
+      canvas.height = canvas.parentElement.clientHeight;
+
+      const bufferLength = analyzer.frequencyBinCount;
+      const dataArray = new Uint8Array(bufferLength);
+      analyzer.getByteFrequencyData(dataArray);
+
+      canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      const barWidth = (canvas.width / bufferLength) * 2.5;
+      let barHeight;
+      let x = 0;
+
+      for(let i = 0; i < bufferLength; i++) {
+        barHeight = dataArray[i] / 2.5;
+        
+        // Shadcn primary blue
+        canvasCtx.fillStyle = `rgba(37, 99, 235, ${dataArray[i]/255 + 0.2})`;
+        
+        // Draw centered vertically
+        const y = (canvas.height / 2) - (barHeight / 2);
+        canvasCtx.fillRect(x, y, barWidth - 1, barHeight);
+        x += barWidth;
+      }
+    }
+
+    function startRecording() {
+      if(!recognition) initSpeechRecognition();
+      
+      document.getElementById('btnStart').style.display = 'none';
+      document.getElementById('btnStop').style.display = 'flex';
+      document.getElementById('statusText').innerText = "🔴 Live";
+      
+      finalTranscript = '';
+      document.getElementById('transcript').innerHTML = '';
+      
+      isRecording = true;
+      startTime = Date.now();
+      
+      setupAudioVisualizer();
+      recognition.start();
+      
+      timerInterval = setInterval(updateMetrics, 1000);
+      
+      if(document.getElementById('questionDisplay').innerText.includes("Press Start")) {
+         nextQuestion();
+      }
+    }
+
+    function stopRecording() {
+      isRecording = false;
+      document.getElementById('btnStart').style.display = 'flex';
+      document.getElementById('btnStop').style.display = 'none';
+      document.getElementById('statusText').innerText = "Mic Off";
+      
+      if(recognition) recognition.stop();
+      if(animationId) cancelAnimationFrame(animationId);
+      clearInterval(timerInterval);
+      
+      canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+
+    function nextQuestion() {
+      document.getElementById('questionDisplay').innerText = questions[qIndex];
+      qIndex = (qIndex + 1) % questions.length;
+      
+      // Read question out loud
+      if('speechSynthesis' in window) {
+        speechSynthesis.cancel();
+        const msg = new SpeechSynthesisUtterance(document.getElementById('questionDisplay').innerText);
+        msg.lang = 'en-US';
+        msg.rate = 0.95;
+        speechSynthesis.speak(msg);
+      }
+    }
+
+    function highlightFillers(text) {
+      let highlighted = text;
+      fillers.forEach(f => {
+        const regex = new RegExp(`\\b${f}\\b`, 'gi');
+        highlighted = highlighted.replace(regex, `<span class="filler">$&</span>`);
+      });
+      return highlighted;
+    }
+
+    function updateTranscriptDisplay(final, interim) {
+      const box = document.getElementById('transcript');
+      box.innerHTML = highlightFillers(final) + `<span class="interim">${interim}</span>`;
+      box.scrollTop = box.scrollHeight;
+    }
+
+    function updateMetrics() {
+      const seconds = Math.floor((Date.now() - startTime) / 1000);
+      const valTime = document.getElementById('valTime');
+      valTime.innerText = seconds + "s";
+      
+      // Color coding time
+      valTime.className = "metric-value";
+      if(seconds >= 45 && seconds <= 60) valTime.classList.add("status-good");
+      else if(seconds > 60 && seconds <= 90) valTime.classList.add("status-warn");
+      else if(seconds > 90) valTime.classList.add("status-bad");
+
+      const wordCount = finalTranscript.trim().split(/\s+/).filter(w => w.length > 0).length;
+      if(seconds > 0) {
+        const wpm = Math.floor((wordCount / seconds) * 60);
+        document.getElementById('valWPM').innerText = wpm;
+      }
+    }
+
+    function evaluatePitch(text) {
+      const textLower = text.toLowerCase();
+      const feedback = document.getElementById('feedbackList');
+      feedback.innerHTML = '';
+      
+      // Check Numbering Structure (First, Second, Third)
+      const hasFirst = textLower.includes("first");
+      const hasSecond = textLower.includes("second");
+      
+      if(hasFirst && hasSecond) {
+        feedback.innerHTML += `<li><span class="badge ok">OK</span> Structured numbering used.</li>`;
+      } else {
+        feedback.innerHTML += `<li><span class="badge err">WARN</span> No clear numbering (First/Second). Try to structure points.</li>`;
+      }
+      
+      // Check Fillers
+      let foundFillers = [];
+      fillers.forEach(f => {
+        if(textLower.includes(f)) foundFillers.push(f);
+      });
+      
+      if(foundFillers.length > 0) {
+        feedback.innerHTML += `<li><span class="badge err">FILLER</span> Avoid: "${foundFillers.join(', ')}". Pause instead.</li>`;
+      } else if (text.length > 20) {
+        feedback.innerHTML += `<li><span class="badge ok">CLEAN</span> No common fillers detected.</li>`;
+      }
+      
+      // Check Action Verbs
+      const verbs = ["managed", "led", "developed", "increased", "generated", "closed"];
+      const hasVerb = verbs.some(v => textLower.includes(v));
+      if(hasVerb) {
+        feedback.innerHTML += `<li><span class="badge ok">STRONG</span> Good use of action verbs.</li>`;
+      }
+      
+      if(feedback.innerHTML === '') {
+        feedback.innerHTML = `<li>Keep speaking...</li>`;
+      }
+    }
+
+  </script>
+</body>
+</html>
