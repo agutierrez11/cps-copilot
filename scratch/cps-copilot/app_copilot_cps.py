@@ -257,7 +257,11 @@ with tab_copilot:
 # ==============================================================================
 # TAB 2: MATRIZ DE PROSPECCIÓN OUTBOUND (RELEVANCE FIRST)
 # ==============================================================================
-with tab_outbound:
+tab_copilot, tab_outbound, tab_interview = st.tabs([
+    "💡 CPS Objection Copilot", 
+    "🎯 Outbound Relevance Matrix & OmniVoice",
+    "🎯 StarPago English Interview Simulator"
+])
     st.subheader("🎯 Matriz de Inyección de Anomalía Outbound (CPS Relevance First)")
     st.caption("Estrategia de prospección por Atractores Cognitivos para romper el statu quo en los primeros 3 segundos.")
     
@@ -341,6 +345,48 @@ with tab_outbound:
             </div>
             """, unsafe_allow_html=True)
             st.success("✅ Script optimizado listo para renderizar en el motor local de OmniVoice Studio (Skill: `local-voice-cloning`).")
+
+# ==============================================================================
+# TAB 3: STARPAGO ENGLISH INTERVIEW SIMULATOR (FULL-CYCLE & HIGH-RISK)
+# ==============================================================================
+with tab_interview:
+    st.subheader("🎯 StarPago Executive English Interview Coach")
+    st.caption("Entrenador interactivo para la entrevista con el equipo de Asia en StarPago. Práctica de respuestas de 45-60 segundos en formato STAR y numeración ejecutiva.")
+
+    col_i1, col_i2 = st.columns([1, 1])
+
+    with col_i1:
+        qa_topic = st.selectbox(
+            "Selecciona la Pregunta de la Batería Maestra",
+            [
+                "1. Tell me about yourself and your acquiring background",
+                "2. Can you explain your Full-Cycle Sales experience in payments?",
+                "3. How do you handle high-risk verticals (iGaming, Forex, Crypto)?",
+                "4. How do you deal with technical API friction during closing?",
+                "5. What are your monthly base salary expectations?",
+                "6. What is your current employment situation?"
+            ]
+        )
+        st.info("💡 **Regla de Asia:** Manten la respuesta entre **45 y 60 segundos** usando numeración oral (*First, Second, Third*). Evita 'a kind of' o 'how I say'.")
+
+    with col_i2:
+        topic_key = "full_cycle_overview"
+        if "Full-Cycle" in qa_topic:
+            topic_key = "full_cycle_overview"
+        elif "high-risk" in qa_topic:
+            topic_key = "high_risk_closing"
+
+        pitch_text = generate_full_cycle_interview_pitch(topic_key)
+
+        st.markdown(f"""
+        <div class="cps-card">
+            <h4>📜 Guion Guía en Inglés Ejecutivo (45-60s)</h4>
+            <p><b>Focus:</b> {qa_topic}</p>
+            <hr/>
+            <i>"{pitch_text}"</i>
+        </div>
+        """, unsafe_allow_html=True)
+        st.button("🎧 Renderizar Audio Guía (Skill `local-voice-cloning`)", use_container_width=True)
 
 
 # ==============================================================================
