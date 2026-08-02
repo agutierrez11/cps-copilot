@@ -78,6 +78,29 @@ def generate_omnivoice_b2b_script(lead_name, company_name, Pain_point, reference
         "estimated_duration_sec": 22
     }
 
+# ==============================================================================
+# SIMULADOR DE ENTREVISTA EN INGLÉS: FULL-CYCLE SALES (STARPAGO / ASIAN TEAM)
+# ==============================================================================
+def generate_full_cycle_interview_pitch(stage_topic):
+    """
+    Genera pitch estructurado en formato STAR y numeración ejecutiva en inglés (45-60s)
+    para defender la experiencia Full-Cycle Sales (Prospecting ➔ Closing ➔ Onboarding).
+    """
+    pitches = {
+        "full_cycle_overview": (
+            "My experience covers the entire Full-Cycle Sales pipeline across three distinct phases: "
+            "1. Prospecting & Qualification: Building Python data pipelines to identify high-volume enterprise merchants. "
+            "2. C-Level Negotiation & Pitching: Conducting direct pitches with CFOs and Heads of Payments to optimize authorization rates and FX fees. "
+            "3. Contract Closure & API Onboarding: Coordinating legal compliance, AML/KYC checks, and technical API integration to ensure immediate TPV activation."
+        ),
+        "high_risk_closing": (
+            "When closing high-risk and cross-border merchants in iGaming, Forex, and E-commerce, my Full-Cycle approach addresses three key friction points: "
+            "First, structuring compliant AML/KYC onboarding; Second, implementing anti-fraud and chargeback controls; "
+            "and Third, delivering multi-currency local settlement rails (like Pix, OXXO, and PSE) to maximize approval rates."
+        )
+    }
+    return pitches.get(stage_topic, pitches["full_cycle_overview"])
+
 def query_ollama_local(prompt_text, system_instruction, model_name="llama3.1"):
     """Consulta al servidor local de Ollama (http://localhost:11434)"""
     url = "http://localhost:11434/api/chat"
