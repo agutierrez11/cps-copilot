@@ -353,40 +353,59 @@ with tab_interview_block:
     st.subheader("🎯 StarPago Executive English Interview Coach")
     st.caption("Entrenador interactivo para la entrevista con el equipo de Asia en StarPago. Práctica de respuestas de 45-60 segundos en formato STAR y numeración ejecutiva.")
 
-    col_i1, col_i2 = st.columns([1, 1])
+    # --------------------------------------------------------------------------
+    # MÓDULO EVALUADOR EN TIEMPO REAL CON ANOTACIONES & RETROALIMENTACIÓN
+    # --------------------------------------------------------------------------
+    st.markdown("---")
+    st.subheader("🗣️ Ensayador de Respuesta Oral & Evaluación en Tiempo Real")
+    st.caption("Escribe o dicta tu respuesta en inglés para recibir retroalimentación fonética, medición de estructura y anotaciones inmediatas.")
 
-    with col_i1:
-        qa_topic = st.selectbox(
-            "Selecciona la Pregunta de la Batería Maestra",
-            [
-                "1. Tell me about yourself and your acquiring background",
-                "2. Can you explain your Full-Cycle Sales experience in payments?",
-                "3. How do you handle high-risk verticals (iGaming, Forex, Crypto)?",
-                "4. How do you deal with technical API friction during closing?",
-                "5. What are your monthly base salary expectations?",
-                "6. What is your current employment situation?"
-            ]
+    col_practice1, col_practice2 = st.columns([1, 1])
+
+    with col_practice1:
+        user_spoken_text = st.text_area(
+            "Escribe o pega aquí tu respuesta como la dirías oralmente:",
+            height=150,
+            placeholder="e.g. My experience covers the entire Full-Cycle Sales pipeline across three main phases. First, prospecting..."
         )
-        st.info("💡 **Regla de Asia:** Manten la respuesta entre **45 y 60 segundos** usando numeración oral (*First, Second, Third*). Evita 'a kind of' o 'how I say'.")
+        evaluate_btn = st.button("⚡ Evaluar mi Respuesta & Ver Anotaciones", use_container_width=True)
 
-    with col_i2:
-        topic_key = "full_cycle_overview"
-        if "Full-Cycle" in qa_topic:
-            topic_key = "full_cycle_overview"
-        elif "high-risk" in qa_topic:
-            topic_key = "high_risk_closing"
+    with col_practice2:
+        if evaluate_btn and user_spoken_text.strip():
+            words = user_spoken_text.split()
+            word_count = len(words)
+            est_seconds = round(word_count / 2.3) # ~140 wpm avg
+            
+            # Filtro de muletillas y errores detectados en la auditoría
+            fillers_found = []
+            for filler in ["a kind of", "how i say", "scrapping", "hair quake", "slavo", "cause for example"]:
+                if filler in user_spoken_text.lower():
+                    fillers_found.append(filler)
+            
+            # Verificación de numeración oral (First, Second, Third, etc.)
+            has_numbering = any(n in user_spoken_text.lower() for n in ["first", "second", "third", "1.", "2.", "3."])
 
-        pitch_text = generate_full_cycle_interview_pitch(topic_key)
+            st.markdown("#### 📊 Anotaciones de la Evaluación:")
+            
+            # 1. Medición de Tiempo
+            if 30 <= est_seconds <= 65:
+                st.success(f"⏱️ **Tiempo estimado:** ~{est_seconds} segundos ({word_count} palabras). ¡Duración perfecta para el equipo de Asia!")
+            else:
+                st.warning(f"⏱️ **Tiempo estimado:** ~{est_seconds} segundos ({word_count} palabras). Ajusta a 45-60s (aprox 90-120 palabras).")
 
-        st.markdown(f"""
-        <div class="cps-card">
-            <h4>📜 Guion Guía en Inglés Ejecutivo (45-60s)</h4>
-            <p><b>Focus:</b> {qa_topic}</p>
-            <hr/>
-            <i>"{pitch_text}"</i>
-        </div>
-        """, unsafe_allow_html=True)
-        st.button("🎧 Renderizar Audio Guía (Skill `local-voice-cloning`)", use_container_width=True)
+            # 2. Estructura de Numeración
+            if has_numbering:
+                st.success("🔢 **Estructura Executíva:** ¡Excelente uso de numeración oral (First, Second, Third)!")
+            else:
+                st.error("🔢 **Estructura Faltante:** Recuerda usar numeración oral (*1. First, 2. Second, 3. Third*) para estructurar el mensaje.")
+
+            # 3. Filtro de Muletillas
+            if fillers_found:
+                st.error(f"⚠️ **Muletillas Detectadas a Corregir:** {', '.join(fillers_found)}")
+                st.info("💡 **Tip:** Reemplaza 'a kind of' por sustantivos fuertes ('data pipeline', 'acquiring framework').")
+            else:
+                st.success("✨ **Limpieza del Lenguaje:** Cero muletillas detectadas. ¡Muy profesional!")
+
 
 
 # ==============================================================================
