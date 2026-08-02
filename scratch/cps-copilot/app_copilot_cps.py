@@ -55,6 +55,29 @@ def calculate_cdi(hours_wasted_daily, hourly_rate_mxn, annual_cnbv_risk_mxn, mon
     cdi_monthly = cdi_daily * 30.0
     return round(cdi_daily, 2), round(cdi_monthly, 2)
 
+# ==============================================================================
+# INTEGRACIÓN OMNIVOICE STUDIO / LOCAL VOICE CLONING (DM AUDIO NOTES B2B)
+# ==============================================================================
+def generate_omnivoice_b2b_script(lead_name, company_name, Pain_point, reference_voice="default_ceo.wav"):
+    """
+    Genera el script y simula el pipeline para crear notas de voz B2B personalizadas
+    (15-30s) utilizando el motor local OmniVoice Studio (Skill: local-voice-cloning).
+    """
+    script = (
+        f"Hola {lead_name}, vi el crecimiento de {company_name}. "
+        f"Sabemos que el dolor principal actual es {Pain_point}. "
+        f"Diseñamos un pipeline agéntico local que elimina ineficiencias sin costo de API en la nube. "
+        f"¿Vale la pena platicarlo 5 minutos este jueves?"
+    )
+    return {
+        "lead_name": lead_name,
+        "company": company_name,
+        "script": script,
+        "reference_voice": reference_voice,
+        "engine": "OmniVoice Studio (Local Zero-Shot TTS)",
+        "estimated_duration_sec": 22
+    }
+
 def query_ollama_local(prompt_text, system_instruction, model_name="llama3.1"):
     """Consulta al servidor local de Ollama (http://localhost:11434)"""
     url = "http://localhost:11434/api/chat"
