@@ -254,14 +254,14 @@ with tab_copilot:
                     ollama_res = query_ollama_local(prospect_dialogue, sys_prompt, model_name=ollama_model)
                     st.write(ollama_res)
 
-# ==============================================================================
-# TAB 2: MATRIZ DE PROSPECCIÓN OUTBOUND (RELEVANCE FIRST)
-# ==============================================================================
-tab_copilot, tab_outbound, tab_interview = st.tabs([
+# Define pestañas principales arriba
+tab_copilot_block, tab_outbound_block, tab_interview_block = st.tabs([
     "💡 CPS Objection Copilot", 
     "🎯 Outbound Relevance Matrix & OmniVoice",
     "🎯 StarPago English Interview Simulator"
 ])
+
+with tab_outbound_block:
     st.subheader("🎯 Matriz de Inyección de Anomalía Outbound (CPS Relevance First)")
     st.caption("Estrategia de prospección por Atractores Cognitivos para romper el statu quo en los primeros 3 segundos.")
     
@@ -349,7 +349,7 @@ tab_copilot, tab_outbound, tab_interview = st.tabs([
 # ==============================================================================
 # TAB 3: STARPAGO ENGLISH INTERVIEW SIMULATOR (FULL-CYCLE & HIGH-RISK)
 # ==============================================================================
-with tab_interview:
+with tab_interview_block:
     st.subheader("🎯 StarPago Executive English Interview Coach")
     st.caption("Entrenador interactivo para la entrevista con el equipo de Asia en StarPago. Práctica de respuestas de 45-60 segundos en formato STAR y numeración ejecutiva.")
 
