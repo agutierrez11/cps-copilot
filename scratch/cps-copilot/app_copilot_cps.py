@@ -282,6 +282,44 @@ with tab_outbound:
         </div>
         """, unsafe_allow_html=True)
 
+    # --------------------------------------------------------------------------
+    # MÓDULO OMNIVOICE STUDIO (GENERADOR DE NOTAS DE VOZ B2B CON LOCAL VOICE CLONING)
+    # --------------------------------------------------------------------------
+    st.markdown("---")
+    st.subheader("🎙️ Generador de Notas de Voz B2B (OmniVoice Studio Engine)")
+    st.caption("Genera scripts y notas de voz personalizadas de 15-30 seg para DMs en LinkedIn/WhatsApp utilizando la skill `local-voice-cloning` (Zero-Shot TTS Local).")
+
+    col_v1, col_v2 = st.columns([1, 1])
+    with col_v1:
+        lead_input = st.text_input("Nombre del Lead", value="Carlos Mendoza")
+        company_input = st.text_input("Empresa Prospecto", value="Financiera Crece SOFOM")
+        pain_input = st.selectbox(
+            "Dolor Principal Detectado",
+            [
+                "Multas CNBV por parches manuales en PLD",
+                "Costo elevado por fragmentación de APIs de KYC",
+                "Saturación del equipo de TI en parches operativos",
+                "Abandono de solicitudes por onboarding lento"
+            ]
+        )
+        voice_ref = st.selectbox("Voz de Referencia Local (Clonada)", ["ceo_antonio_3s.wav", "consultor_b2b_sample.wav"])
+        
+    with col_v2:
+        if st.button("⚡ Generar Script & Simular Audio Note", use_container_width=True):
+            audio_data = generate_omnivoice_b2b_script(lead_input, company_input, pain_input, reference_voice=voice_ref)
+            st.markdown(f"""
+            <div class="cps-card">
+                <h4>🔊 Nota de Voz B2B Generada ({audio_data['estimated_duration_sec']}s)</h4>
+                <p><b>Motor Local:</b> {audio_data['engine']}</p>
+                <p><b>Voz Clonada:</b> <code>{audio_data['reference_voice']}</code></p>
+                <hr/>
+                <p><b>📜 Script Renderizado:</b></p>
+                <i>"{audio_data['script']}"</i>
+            </div>
+            """, unsafe_allow_html=True)
+            st.success("✅ Script optimizado listo para renderizar en el motor local de OmniVoice Studio (Skill: `local-voice-cloning`).")
+
+
 # ==============================================================================
 # FOOTER & GOBERNANZA DE DATOS
 # ==============================================================================
