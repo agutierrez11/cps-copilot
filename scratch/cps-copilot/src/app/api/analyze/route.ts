@@ -2,6 +2,7 @@ export const runtime = 'edge';
 
 import { NextResponse } from 'next/server';
 import { Groq } from 'groq-sdk';
+import { CPS_SOCRATIC_GUIDE, CPS_PERSPECTIVES } from '@/lib/cps-framework';
 
 const groq = new Groq({
   apiKey: process.env.NEXT_PUBLIC_GROQ_API_KEY,
@@ -16,7 +17,6 @@ export async function POST(req: Request) {
       return NextResponse.json({ insights: [] });
     }
 
-    // Default context if none provided
     const config = contextConfig || {
       mode: 'Reunión Comercial B2B',
       clientRole: 'Prospecto C-Level',
@@ -25,32 +25,37 @@ export async function POST(req: Request) {
     };
 
     const systemPrompt = `
-      Eres el "CPS Copilot", un asistente táctico de ventas en tiempo real.
+      Eres el "CPS Socratic Copilot", un asistente táctico de ventas en tiempo real entrenado en Complex Problem Solving (CPS).
+      
       ESTE ES TU CONTEXTO COMERCIAL ACTUAL:
-      - Modo de Operación: ${config.mode}
-      - Perfil del Cliente: ${config.clientRole}
-      - Industria del Cliente: ${config.industry}
-      - Objetivo del Vendedor: ${config.goal}
+      - Modo: ${config.mode}
+      - Cliente: ${config.clientRole}
+      - Industria: ${config.industry}
+      - Objetivo: ${config.goal}
 
-      Tu objetivo es analizar la transcripción en vivo de la llamada con este cliente y extraer insights accionables.
+      ${CPS_SOCRATIC_GUIDE}
+      
+      ${CPS_PERSPECTIVES}
 
-      REGLAS ESTRICTAS DE EXTRACCIÓN:
-      Analiza el texto y genera un JSON con un arreglo llamado "insights". Cada insight debe tener:
-      - "type": "objection" (si el prospecto pone una traba o inquietud) o "cdi" (señales de compra o dolores financieros/operativos).
-      - "title": Título corto del hallazgo (ej. "Objeción de Presupuesto", "Dolor Operativo").
-      - "text": Resumen de 1 línea de lo que dijo el prospecto.
-      - "suggestion": Sugerencia táctica accionable de 1-2 líneas para el vendedor. Adapta tu táctica al contexto comercial provisto. Usa frameworks como Aislamiento, MEDDIC, o cálculo de Cost of Inaction (CDI).
+      Tu misión es escuchar al prospecto y actuar como Sparring Partner para el vendedor, generando reflexiones socráticas.
 
-      Solo responde con JSON válido. No incluyas markdown, saludos, ni texto adicional.
-      Si no hay objeciones ni dolores claros en el texto, devuelve un arreglo vacío [].
+      REGLAS ESTRICTAS DE EXTRACCIÓN (RESPONDER SOLO EN JSON):
+      Genera un JSON con un arreglo llamado "insights". Cada insight debe tener:
+      - "type": "cynefin" (Diagnóstico del entorno), "factor_x" (Sesgos, miedos, incentivos humanos), o "socratic_friction" (Pregunta para desafiar al prospecto).
+      - "title": Título corto (ej. "Entorno Complejo detectado", "Factor X: Miedo al Riesgo", "Fricción Socrática").
+      - "text": Explicación corta (1-2 líneas) de lo que dice el prospecto o su implicación sistémica.
+      - "suggestion": La pregunta Socrática exacta o el "empujón táctico" que el vendedor debe usar para desarmar la situación y hacer pensar al prospecto.
+
+      Solo responde con JSON válido en este formato. No incluyas markdown, saludos, ni texto adicional.
+      Si no hay información útil, devuelve { "insights": [] }.
     `;
 
     const completion = await groq.chat.completions.create({
       messages: [
         { role: "system", content: systemPrompt },
-        { role: "user", content: `Transcripción reciente de la llamada: "${transcript}"` }
+        { role: "user", content: `Transcripción de la llamada: "${transcript}"` }
       ],
-      model: "llama3-70b-8192", // Fast and capable for zero-shot JSON extraction
+      model: "llama3-70b-8192", 
       temperature: 0.1,
       response_format: { type: "json_object" },
     });
