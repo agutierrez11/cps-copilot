@@ -5,7 +5,7 @@ import { Mic, MicOff, Settings, Sparkles, Activity, AlertCircle, CheckCircle2, X
 import { useDeepgram } from '@/hooks/useDeepgram';
 
 type Insight = {
-  type: 'objection' | 'cdi';
+  type: 'cynefin' | 'factor_x' | 'socratic_friction';
   title: string;
   text: string;
   suggestion: string;
@@ -207,31 +207,55 @@ export default function CopilotPage() {
         <div className="glass-panel p-6 flex flex-col">
            <h2 className="text-sm font-semibold text-zinc-800 uppercase tracking-wider mb-4 flex items-center gap-2">
             <Sparkles size={16} className="text-indigo-500" />
-            Objeciones y Señales (CDI)
+            CPS Socratic Insights
           </h2>
           
           <div className="flex flex-col gap-4 overflow-y-auto max-h-[60vh] pr-2 scroll-smooth">
             {insights.length > 0 ? (
-              insights.map((insight, idx) => (
-                <div key={idx} className={`p-4 rounded-xl border ${insight.type === 'objection' ? 'bg-amber-50 border-amber-200' : 'bg-emerald-50 border-emerald-200'} shadow-sm animate-in fade-in slide-in-from-bottom-4`}>
-                  <div className="flex items-center gap-2 mb-2">
-                    {insight.type === 'objection' ? <AlertCircle size={16} className="text-amber-600" /> : <CheckCircle2 size={16} className="text-emerald-600" />}
-                    <h3 className={`font-semibold text-sm ${insight.type === 'objection' ? 'text-amber-900' : 'text-emerald-900'}`}>
-                      {insight.title}
-                    </h3>
+              insights.map((insight, idx) => {
+                let bgColor = 'bg-zinc-50 border-zinc-200';
+                let iconColor = 'text-zinc-600';
+                let textColor = 'text-zinc-900';
+                
+                if (insight.type === 'socratic_friction') {
+                  bgColor = 'bg-amber-50 border-amber-200';
+                  iconColor = 'text-amber-600';
+                  textColor = 'text-amber-900';
+                } else if (insight.type === 'factor_x') {
+                  bgColor = 'bg-indigo-50 border-indigo-200';
+                  iconColor = 'text-indigo-600';
+                  textColor = 'text-indigo-900';
+                } else if (insight.type === 'cynefin') {
+                  bgColor = 'bg-emerald-50 border-emerald-200';
+                  iconColor = 'text-emerald-600';
+                  textColor = 'text-emerald-900';
+                }
+
+                return (
+                  <div key={idx} className={`p-4 rounded-xl border ${bgColor} shadow-sm animate-in fade-in slide-in-from-bottom-4`}>
+                    <div className="flex items-center gap-2 mb-2">
+                      {insight.type === 'socratic_friction' ? <AlertCircle size={16} className={iconColor} /> : 
+                       insight.type === 'factor_x' ? <Activity size={16} className={iconColor} /> :
+                       <CheckCircle2 size={16} className={iconColor} />}
+                      <h3 className={`font-semibold text-sm ${textColor}`}>
+                        {insight.title}
+                      </h3>
+                    </div>
+                    <p className="text-sm text-zinc-700 mb-3 font-medium">"{insight.text}"</p>
+                    <div className="bg-white/70 p-3 rounded-lg border border-white/60 shadow-inner">
+                      <p className={`text-[11px] font-bold uppercase tracking-wider mb-1 ${iconColor}`}>
+                        {insight.type === 'socratic_friction' ? '🔥 Reto Socrático' : '💡 Análisis CPS'}
+                      </p>
+                      <p className="text-sm text-zinc-800 leading-relaxed">{insight.suggestion}</p>
+                    </div>
                   </div>
-                  <p className="text-sm text-zinc-700 mb-3 font-medium">"{insight.text}"</p>
-                  <div className="bg-white/70 p-3 rounded-lg border border-white/60 shadow-inner">
-                    <p className="text-[11px] font-bold text-indigo-700 uppercase tracking-wider mb-1">🔥 Acción Recomendada</p>
-                    <p className="text-sm text-zinc-800 leading-relaxed">{insight.suggestion}</p>
-                  </div>
-                </div>
-              ))
+                );
+              })
             ) : (
               <div className="flex-1 flex flex-col items-center justify-center text-center p-8 border-2 border-dashed border-zinc-200 rounded-xl bg-zinc-50/50">
                 <Activity size={32} className={`text-zinc-300 mb-3 ${isListening ? 'animate-bounce' : ''}`} />
                 <p className="text-sm text-zinc-500 font-medium">
-                  {isListening ? "Analizando conversación en vivo..." : "El copiloto está inactivo. Enciende el micrófono para recibir playbooks en tiempo real."}
+                  {isListening ? "Analizando conversación en vivo..." : "El copiloto está inactivo. Enciende el micrófono para recibir fricción socrática."}
                 </p>
               </div>
             )}
