@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState, useRef } from 'react';
-import { Mic, MicOff, Settings, Sparkles, Activity, AlertCircle, CheckCircle2 } from 'lucide-react';
+import { Mic, MicOff, Settings, Sparkles, Activity, AlertCircle, CheckCircle2, X } from 'lucide-react';
 import { useDeepgram } from '@/hooks/useDeepgram';
 
 type Insight = {
@@ -17,6 +17,15 @@ export default function CopilotPage() {
   const [insights, setInsights] = useState<Insight[]>([]);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const lastAnalyzedLengthRef = useRef(0);
+
+  // Context Engine State
+  const [isConfigOpen, setIsConfigOpen] = useState(true);
+  const [contextConfig, setContextConfig] = useState({
+    mode: 'Reunión Comercial B2B',
+    clientRole: 'Director Financiero (CFO)',
+    industry: 'Fintech / Pagos B2B',
+    goal: 'Descubrimiento y Manejo de Objeciones'
+  });
 
   // Interval-based Analysis Engine
   useEffect(() => {
@@ -34,7 +43,10 @@ export default function CopilotPage() {
             const response = await fetch('/api/analyze', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ transcript: recentContext }),
+              body: JSON.stringify({ 
+                transcript: recentContext,
+                contextConfig: contextConfig 
+              }),
             });
             
             if (response.ok) {
@@ -57,19 +69,94 @@ export default function CopilotPage() {
     return () => {
       if (interval) clearInterval(interval);
     };
-  }, [isListening, transcript]);
+  }, [isListening, transcript, contextConfig]);
 
   return (
-    <div className="min-h-screen bg-[#fafafa] flex flex-col p-6">
+    <div className="min-h-screen bg-[#fafafa] flex flex-col p-6 relative">
+      
+      {/* Configuration Modal (Context Engine) */}
+      {isConfigOpen && (
+        <div className="absolute inset-0 z-50 flex items-center justify-center bg-zinc-900/40 backdrop-blur-sm p-4">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+            <div className="bg-indigo-600 px-6 py-4 flex items-center justify-between">
+              <h2 className="text-lg font-bold text-white flex items-center gap-2">
+                <Settings size={20} />
+                Configuración del Contexto
+              </h2>
+              <button onClick={() => setIsConfigOpen(false)} className="text-white/70 hover:text-white transition-colors">
+                <X size={24} />
+              </button>
+            </div>
+            
+            <div className="p-6 space-y-5">
+              <div>
+                <label className="block text-sm font-semibold text-zinc-700 mb-1">Modo de Operación</label>
+                <select 
+                  className="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-3 py-2 text-sm text-zinc-800 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  value={contextConfig.mode}
+                  onChange={e => setContextConfig({...contextConfig, mode: e.target.value})}
+                >
+                  <option>Reunión Comercial B2B</option>
+                  <option>Entrevista de Práctica (Roleplay)</option>
+                  <option>Llamada de Calificación (SDR)</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-zinc-700 mb-1">Perfil del Cliente / Cargo</label>
+                <input 
+                  type="text"
+                  className="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-3 py-2 text-sm text-zinc-800 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  value={contextConfig.clientRole}
+                  onChange={e => setContextConfig({...contextConfig, clientRole: e.target.value})}
+                  placeholder="Ej. Director de Operaciones"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-zinc-700 mb-1">Industria</label>
+                <input 
+                  type="text"
+                  className="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-3 py-2 text-sm text-zinc-800 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  value={contextConfig.industry}
+                  onChange={e => setContextConfig({...contextConfig, industry: e.target.value})}
+                  placeholder="Ej. Retail, Banca, Manufactura"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-zinc-700 mb-1">Objetivo del Vendedor</label>
+                <input 
+                  type="text"
+                  className="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-3 py-2 text-sm text-zinc-800 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  value={contextConfig.goal}
+                  onChange={e => setContextConfig({...contextConfig, goal: e.target.value})}
+                  placeholder="Ej. Descubrimiento y Cierre"
+                />
+              </div>
+              
+              <div className="pt-4">
+                <button 
+                  onClick={() => setIsConfigOpen(false)}
+                  className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-xl transition-all shadow-md hover:shadow-lg"
+                >
+                  Guardar y Activar Copiloto
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Header */}
-      <header className="flex items-center justify-between glass-panel p-4 mb-6">
+      <header className="flex items-center justify-between glass-panel p-4 mb-6 relative z-10">
         <div className="flex items-center gap-3">
           <div className="bg-indigo-600 p-2 rounded-lg text-white">
             <Sparkles size={20} />
           </div>
           <div>
             <h1 className="text-xl font-bold text-zinc-900 tracking-tight">CPS Copilot</h1>
-            <p className="text-xs text-zinc-500 font-medium">Real-Time Analysis Mode</p>
+            <p className="text-xs text-zinc-500 font-medium">{contextConfig.mode}</p>
           </div>
         </div>
         <div className="flex items-center gap-4">
@@ -77,14 +164,17 @@ export default function CopilotPage() {
             <Activity size={14} className={isListening || isAnalyzing ? 'animate-pulse' : ''} />
             {isAnalyzing ? 'Groq Analizando...' : isListening ? 'Deepgram Live' : 'En Espera'}
           </div>
-          <button className="text-zinc-400 hover:text-zinc-600 transition-colors">
+          <button 
+            onClick={() => setIsConfigOpen(true)}
+            className="text-zinc-400 hover:text-indigo-600 transition-colors p-2 bg-white rounded-full border border-zinc-200 shadow-sm"
+          >
             <Settings size={20} />
           </button>
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <main className="flex-1 grid grid-cols-1 lg:grid-cols-3 gap-6 relative z-10">
         
         {/* Left Column - Transcript & Controls */}
         <div className="lg:col-span-2 flex flex-col gap-6">
@@ -117,10 +207,10 @@ export default function CopilotPage() {
         <div className="glass-panel p-6 flex flex-col">
            <h2 className="text-sm font-semibold text-zinc-800 uppercase tracking-wider mb-4 flex items-center gap-2">
             <Sparkles size={16} className="text-indigo-500" />
-            CPS Insights
+            Objeciones y Señales (CDI)
           </h2>
           
-          <div className="flex flex-col gap-4 overflow-y-auto max-h-[60vh]">
+          <div className="flex flex-col gap-4 overflow-y-auto max-h-[60vh] pr-2 scroll-smooth">
             {insights.length > 0 ? (
               insights.map((insight, idx) => (
                 <div key={idx} className={`p-4 rounded-xl border ${insight.type === 'objection' ? 'bg-amber-50 border-amber-200' : 'bg-emerald-50 border-emerald-200'} shadow-sm animate-in fade-in slide-in-from-bottom-4`}>
@@ -130,17 +220,18 @@ export default function CopilotPage() {
                       {insight.title}
                     </h3>
                   </div>
-                  <p className="text-sm text-zinc-700 mb-3">{insight.text}</p>
-                  <div className="bg-white/60 p-3 rounded-lg border border-white/40">
-                    <p className="text-xs font-semibold text-indigo-700 mb-1">🔥 Acción Recomendada</p>
-                    <p className="text-xs text-zinc-800">{insight.suggestion}</p>
+                  <p className="text-sm text-zinc-700 mb-3 font-medium">"{insight.text}"</p>
+                  <div className="bg-white/70 p-3 rounded-lg border border-white/60 shadow-inner">
+                    <p className="text-[11px] font-bold text-indigo-700 uppercase tracking-wider mb-1">🔥 Acción Recomendada</p>
+                    <p className="text-sm text-zinc-800 leading-relaxed">{insight.suggestion}</p>
                   </div>
                 </div>
               ))
             ) : (
-              <div className="flex-1 flex items-center justify-center text-center p-8 border-2 border-dashed border-zinc-200 rounded-xl">
-                <p className="text-sm text-zinc-500">
-                  {isListening ? "Escuchando... Groq analizará la llamada en busca de objeciones o CDI cada 5 segundos." : "Inicia el copiloto para recibir insights en tiempo real procesados por Groq."}
+              <div className="flex-1 flex flex-col items-center justify-center text-center p-8 border-2 border-dashed border-zinc-200 rounded-xl bg-zinc-50/50">
+                <Activity size={32} className={`text-zinc-300 mb-3 ${isListening ? 'animate-bounce' : ''}`} />
+                <p className="text-sm text-zinc-500 font-medium">
+                  {isListening ? "Analizando conversación en vivo..." : "El copiloto está inactivo. Enciende el micrófono para recibir playbooks en tiempo real."}
                 </p>
               </div>
             )}

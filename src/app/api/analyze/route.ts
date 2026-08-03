@@ -9,22 +9,37 @@ const groq = new Groq({
 
 export async function POST(req: Request) {
   try {
-    const { transcript } = await req.json();
+    const body = await req.json();
+    const { transcript, contextConfig } = body;
 
     if (!transcript || transcript.trim().length < 20) {
       return NextResponse.json({ insights: [] });
     }
 
+    // Default context if none provided
+    const config = contextConfig || {
+      mode: 'Reunión Comercial B2B',
+      clientRole: 'Prospecto C-Level',
+      industry: 'Tecnología/General',
+      goal: 'Descubrimiento y Manejo de Objeciones'
+    };
+
     const systemPrompt = `
-      Eres el "CPS Copilot", un asistente táctico de ventas en tiempo real para un vendedor B2B.
-      Tu objetivo es analizar la transcripción en vivo de una llamada con un prospecto (ej. StarPago u otras empresas) y extraer insights accionables.
+      Eres el "CPS Copilot", un asistente táctico de ventas en tiempo real.
+      ESTE ES TU CONTEXTO COMERCIAL ACTUAL:
+      - Modo de Operación: ${config.mode}
+      - Perfil del Cliente: ${config.clientRole}
+      - Industria del Cliente: ${config.industry}
+      - Objetivo del Vendedor: ${config.goal}
+
+      Tu objetivo es analizar la transcripción en vivo de la llamada con este cliente y extraer insights accionables.
 
       REGLAS ESTRICTAS DE EXTRACCIÓN:
       Analiza el texto y genera un JSON con un arreglo llamado "insights". Cada insight debe tener:
-      - "type": "objection" (si el prospecto pone una traba) o "cdi" (si menciona dolores que cuestan dinero/tiempo).
-      - "title": Título corto del hallazgo (ej. "Objeción de Presupuesto").
+      - "type": "objection" (si el prospecto pone una traba o inquietud) o "cdi" (señales de compra o dolores financieros/operativos).
+      - "title": Título corto del hallazgo (ej. "Objeción de Presupuesto", "Dolor Operativo").
       - "text": Resumen de 1 línea de lo que dijo el prospecto.
-      - "suggestion": Sugerencia táctica accionable de 1-2 líneas para el vendedor (usa frameworks como Aislamiento, MEDDIC, o cálculo de Cost of Inaction).
+      - "suggestion": Sugerencia táctica accionable de 1-2 líneas para el vendedor. Adapta tu táctica al contexto comercial provisto. Usa frameworks como Aislamiento, MEDDIC, o cálculo de Cost of Inaction (CDI).
 
       Solo responde con JSON válido. No incluyas markdown, saludos, ni texto adicional.
       Si no hay objeciones ni dolores claros en el texto, devuelve un arreglo vacío [].
