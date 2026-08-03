@@ -13,8 +13,8 @@ export async function GET() {
     }
 
     const token = await fetchAccessToken({
-      apiKey: apiKey,
-      // secretKey: process.env.HUME_SECRET_KEY // Add this later if you move to a strict prod backend
+      apiKey: String(apiKey),
+      secretKey: String(process.env.HUME_SECRET_KEY || apiKey)
     });
 
     return NextResponse.json({ accessToken: token });
