@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { VoiceProvider, useVoice } from '@humeai/voice-react';
 import { Mic, MicOff, PhoneOff, PhoneCall, Sparkles } from 'lucide-react';
 
-function InterviewControls() {
+function InterviewControls({ accessToken, systemPrompt }: { accessToken: string, systemPrompt: string }) {
   const { connect, disconnect, status, isMuted, mute, unmute } = useVoice();
 
   return (
@@ -28,7 +28,15 @@ function InterviewControls() {
         </>
       ) : (
         <button
-          onClick={() => connect()}
+          onClick={() => {
+            connect({
+              auth: { type: "accessToken", value: accessToken },
+              sessionSettings: {
+                type: "session_settings",
+                systemPrompt: systemPrompt
+              }
+            }).catch(console.error);
+          }}
           className="flex items-center gap-2 px-8 py-4 rounded-full bg-indigo-600 text-white font-medium hover:bg-indigo-700 shadow-lg shadow-indigo-500/30 transition-all"
         >
           <PhoneCall size={20} />
@@ -137,19 +145,13 @@ export default function InterviewSimulator() {
         <p className="text-zinc-500 font-medium">Entrevista en vivo con EVI de Hume AI (StarPago VP)</p>
       </div>
 
-      <VoiceProvider 
-        accessToken={accessToken}
-        sessionSettings={{
-          type: "session_settings",
-          systemPrompt: systemPrompt
-        }}
-      >
+      <VoiceProvider>
         <div className="w-full max-w-4xl h-[600px] glass-panel flex flex-col items-center p-8 bg-white/50 relative overflow-hidden">
           
           <InterviewMessages />
           
           <div className="mt-auto w-full flex justify-center border-t border-zinc-200/60 pt-6">
-            <InterviewControls />
+            <InterviewControls accessToken={accessToken} systemPrompt={systemPrompt} />
           </div>
           
         </div>
