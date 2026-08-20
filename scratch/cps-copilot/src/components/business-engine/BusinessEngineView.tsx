@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useMemo } from 'react';
-import { Briefcase, Sliders, Mail, Copy, Check, ShieldCheck, Plus, Globe, FileText, X, Loader2, Zap } from 'lucide-react';
+import { Briefcase, Sliders, Mail, Copy, Check, ShieldCheck, Plus, Globe, FileText, X, Loader2, Zap, Search, Target, ShieldAlert, Sparkles } from 'lucide-react';
 import defaultProfiles from '@/profiles/client_profiles.json';
 
 interface VariableDef {
@@ -43,6 +43,12 @@ export const BusinessEngineView: React.FC = () => {
   const [targetAccountName, setTargetAccountName] = useState<string>('');
   const [isSyncingHubSpot, setIsSyncingHubSpot] = useState<boolean>(false);
   const [hubspotSyncMsg, setHubspotSyncMsg] = useState<string | null>(null);
+
+  // Pre-Call Intelligence Scanner
+  const [prospectUrlInput, setProspectUrlInput] = useState<string>('');
+  const [isScanningUrl, setIsScanningUrl] = useState<boolean>(false);
+  const [preCallDossier, setPreCallDossier] = useState<any>(null);
+  const [preCallError, setPreCallError] = useState<string | null>(null);
 
   // Modal de Ingestión de Contexto
   const [isIngestModalOpen, setIsIngestModalOpen] = useState<boolean>(false);
@@ -221,6 +227,34 @@ Solución Evaluada: ${p.name}
       setHubspotSyncMsg(`Error: ${e.message}`);
     } finally {
       setIsSyncingHubSpot(false);
+    }
+  };
+
+  const handleScanPreCall = async () => {
+    if (!prospectUrlInput.trim()) return;
+    setIsScanningUrl(true);
+    setPreCallError(null);
+    try {
+      const res = await fetch('/api/pre-call-intelligence', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          companyUrl: prospectUrlInput,
+          companyName: targetAccountName,
+          solutionName: currentProfile.name,
+          solutionContext: currentProfile.tagline
+        })
+      });
+      const data = await res.json();
+      if (data.success && data.dossier) {
+        setPreCallDossier(data.dossier);
+      } else {
+        setPreCallError(data.error || 'No se pudo generar el dossier.');
+      }
+    } catch (e: any) {
+      setPreCallError(e.message || 'Error al conectar con la API de escaneo.');
+    } finally {
+      setIsScanningUrl(false);
     }
   };
 
@@ -433,6 +467,104 @@ Solución Evaluada: ${p.name}
 
         {/* Columna 2: Dictamen Regulatorio & Secuencias de Outreach (7 Col) */}
         <div className="lg:col-span-7 space-y-5">
+
+          {/* Escáner de Brechas Pre-Llamada & Cierre en 1 Reunión */}
+          <div className="bg-[#FFFFFF] border border-[#EAEAEA] rounded-xl p-5 shadow-sm space-y-4">
+            <div className="flex items-center justify-between border-b border-[#EAEAEA] pb-3">
+              <div>
+                <span className="text-xs font-mono font-bold text-[#111111] flex items-center gap-1.5">
+                  <Search size={15} className="text-[#111111]" />
+                  Inteligencia Pre-Llamada (Escáner de Brechas & Cierre en 1 Reunión)
+                </span>
+                <p className="text-[11px] text-[#787774] font-mono mt-0.5">
+                  Pega la URL del prospecto. La IA buscará brechas y vulnerabilidades que TU solución resuelve.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex gap-2">
+              <div className="relative flex-1">
+                <Globe size={14} className="absolute left-3 top-3 text-[#787774]" />
+                <input
+                  type="text"
+                  placeholder="https://sofia.health o dominio-cliente.com"
+                  value={prospectUrlInput}
+                  onChange={(e) => setProspectUrlInput(e.target.value)}
+                  className="w-full bg-[#FBFBFA] border border-[#EAEAEA] rounded-md pl-9 pr-3 py-2 text-xs font-mono text-[#111111] focus:outline-none focus:border-[#111111]"
+                />
+              </div>
+              <button
+                onClick={handleScanPreCall}
+                disabled={isScanningUrl || !prospectUrlInput.trim()}
+                className="bg-[#111111] hover:bg-[#2A2A2A] text-[#FFFFFF] text-xs font-mono font-bold px-4 py-2 rounded-md flex items-center gap-1.5 transition-colors disabled:opacity-50 whitespace-nowrap shadow-sm"
+              >
+                {isScanningUrl ? <Loader2 size={13} className="animate-spin" /> : <Sparkles size={13} />}
+                {isScanningUrl ? 'Escaneando...' : 'Generar Dossier'}
+              </button>
+            </div>
+
+            {preCallError && (
+              <div className="bg-[#FFF4F0] border border-[#FFD5C8] text-[#D9381E] text-xs font-mono px-3 py-2 rounded-md">
+                {preCallError}
+              </div>
+            )}
+
+            {preCallDossier && (
+              <div className="space-y-3 bg-[#FBFBFA] p-4 rounded-lg border border-[#EAEAEA] animate-in fade-in">
+                <div className="flex items-center justify-between border-b border-[#EAEAEA] pb-2">
+                  <span className="text-xs font-mono font-bold text-[#111111] flex items-center gap-1">
+                    <Target size={13} className="text-[#346538]" />
+                    Dossier de Cierre: {preCallDossier.detectedCompany || preCallDossier.prospectDomain}
+                  </span>
+                  <span className="text-[10px] font-mono bg-[#EDF3EC] text-[#346538] px-2 py-0.5 rounded font-bold">
+                    Estrategia 1-Call Close
+                  </span>
+                </div>
+
+                {/* Brechas Críticas Encontradas */}
+                <div>
+                  <span className="text-[10px] font-mono uppercase tracking-wider text-[#787774] font-bold block mb-1.5 flex items-center gap-1">
+                    <ShieldAlert size={12} className="text-[#956400]" />
+                    3 Brechas Críticas Encontradas en su Operación / Sector:
+                  </span>
+                  <div className="space-y-2">
+                    {preCallDossier.criticalBreaches?.map((b: any, idx: number) => (
+                      <div key={idx} className="bg-[#FFFFFF] p-2.5 rounded border border-[#EAEAEA] text-xs font-mono space-y-1">
+                        <div className="font-bold text-[#111111]">{idx + 1}. {b.vulnerability}</div>
+                        <div className="text-[#787774] text-[11px]">{b.impact}</div>
+                        <div className="text-[#346538] text-[11px] font-semibold">✓ Solución: {b.howWeSolveIt}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Gancho Socrático */}
+                <div className="bg-[#FFFFFF] p-3 rounded border border-[#EAEAEA] space-y-1">
+                  <span className="text-[10px] font-mono uppercase tracking-wider text-[#346538] font-bold block">
+                    ⚡ Pregunta de Apertura (Minuto 1):
+                  </span>
+                  <p className="text-xs font-mono text-[#111111] italic">
+                    "{preCallDossier.socraticOpeningHook}"
+                  </p>
+                </div>
+
+                {/* Objeción Pre-Desmantelada */}
+                {preCallDossier.preEmptiveObjection && (
+                  <div className="bg-[#FBF3DB] p-3 rounded border border-[#E9DFBE] space-y-1">
+                    <span className="text-[10px] font-mono uppercase tracking-wider text-[#956400] font-bold block">
+                      🛡️ Objeción Pre-Desmantelada:
+                    </span>
+                    <div className="text-xs font-mono font-bold text-[#111111]">
+                      "{preCallDossier.preEmptiveObjection.expectedObjection}"
+                    </div>
+                    <div className="text-xs font-mono text-[#787774]">
+                      → {preCallDossier.preEmptiveObjection.killerResponse}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
           
           {/* Dictamen Ejecutivo */}
           <div className="bg-[#FFFFFF] border border-[#EAEAEA] rounded-xl p-5 shadow-sm space-y-3">

@@ -68,11 +68,6 @@
         "step": "Email 2 (Día 4) — Ángulo Regulatorio SAT & CFDI Hidrocarburos",
         "subject": "SAT Complemento CFDI Hidrocarburos y margen en bomba",
         "body": "Hola [Nombre],\n\nCon las nuevas disposiciones del SAT para la conciliación de hidrocarburos, la falta de integración entre las terminales de pago y los dispensarios genera discrepancias que pueden comprometer la deducibilidad de sus clientes flotilleros.\n\nUn grupo de [Estaciones] estaciones similares recuperó $180,000 MXN mensuales en margen neto simplemente ajustando la cuota de intercambio y automatizando el CFDI en la terminal.\n\n¿Te hace sentido revisar la simulación financiera esta semana?"
-      },
-      {
-        "step": "Email 3 (Día 8) — Break-up Consultivo",
-        "subject": "¿cerramos la auditoría de adquirencia para [Prospecto]?",
-        "body": "Hola [Nombre],\n\nAsumo que están enfocados en la operación diaria de las estaciones y no es prioridad revisar proveedores de pagos ahora.\n\nCierro el seguimiento con este dato: mantener la adquirencia bancaria tradicional le cuesta al grupo $[Fuga_Mensual] MXN al mes en comisiones cobradas sobre impuestos.\n\nSi deciden revisar la estructura de costos el próximo mes, quedo a la orden.\n\nSaludos,\nAntonio Gutiérrez"
       }
     ]
   },
@@ -131,127 +126,6 @@
         "step": "Email 1 (Día 1) — Ángulo de Horas Desperdiciadas en SDRs",
         "subject": "fuga de horas SDR en [Prospecto]",
         "body": "Hola [Nombre],\n\nEn equipos comerciales B2B, cada vendedor pasa unas 12 horas a la semana buscando manualmente en LinkedIn quién cambió de puesto o qué empresa está contratando.\n\nConstruimos un 'Radar Comercial' que detecta nombramientos de nuevos Directores y cambios de presupuesto en tiempo real, entregándole al ejecutivo el contexto exacto en los primeros 30 minutos del evento.\n\n¿Tiene sentido que te muestre una demo de 5 minutos rastreando los movimientos de sus 50 cuentas clave?"
-      },
-      {
-        "step": "Email 2 (Día 4) — La Ventana de Oportunidad de 90 Días",
-        "subject": "la ventana de 90 días en nuevos directores",
-        "body": "Hola [Nombre],\n\nSegún datos de Gartner, el 70% de los nuevos VPs y Directores toman decisiones de cambio de proveedores en sus primeros 90 días en el cargo.\n\nLlegar en la primera semana con una propuesta de diagnóstico genera hasta 4 veces más reuniones que el correo en frío tradicional. ¿Te gustaría ver cómo el Radar alerta a tu equipo cuando un decisor entra a una cuenta objetivo?"
-      }
-    ]
-  },
-  {
-    "id": "fleetcontrol",
-    "name": "FleetControl MX (Logística & Carga)",
-    "tagline": "Telemetría y control de combustible para transporte terrestre",
-    "targetClientRole": "Empresa de Transporte Terrestre / Flotilla de Carga",
-    "industry": "Logística & Transporte Terrestre",
-    "currency": "MXN",
-    "regulations": [
-      "SAT Complemento Carta Porte 3.1 Digital Obligatorio",
-      "NOM-087-SCT (Horas de Conducción y Descanso de Operadores)",
-      "Normas Ambientales SEMARNAT Control de Emisiones"
-    ],
-    "variables": [
-      {
-        "id": "trucks",
-        "label": "Tamaño de Flotilla (Tractocamiones)",
-        "min": 5,
-        "max": 200,
-        "default": 35,
-        "step": 5,
-        "unit": "unidades"
-      },
-      {
-        "id": "diesel_spend",
-        "label": "Gasto Promedio Mensual Diesel / Unidad",
-        "min": 30000,
-        "max": 120000,
-        "default": 65000,
-        "step": 5000,
-        "unit": "$/camión"
-      },
-      {
-        "id": "leakage_rate",
-        "label": "Tasa Estimada de Fuga / Desvío de Diesel",
-        "min": 4,
-        "max": 22,
-        "default": 11,
-        "step": 1,
-        "unit": "%"
-      },
-      {
-        "id": "saas_cost",
-        "label": "Costo Telemetría IoT + IA por Unidad",
-        "min": 350,
-        "max": 900,
-        "default": 480,
-        "step": 10,
-        "unit": "$/mes"
-      }
-    ],
-    "outreach_emails": [
-      {
-        "step": "Email 1 (Día 1) — Auditoría de Fuga en Diesel",
-        "subject": "desvío de combustible en flota — [Prospecto]",
-        "body": "Hola [Nombre],\n\nEn flotillas de más de 30 unidades, el desvío no autorizado de diesel representa entre el 9% y 14% del costo operativo mensual.\n\nCon sensores CAN-bus e IA predictiva detectamos extracciones inusuales en tiempo real y automatizamos la emisión de la Carta Porte 3.1 del SAT.\n\n¿Tiene sentido que te mande una estimación de ahorro para sus unidades?"
-      }
-    ]
-  },
-  {
-    "id": "talent_shield",
-    "name": "TalentShield (HR-Tech & Retención)",
-    "tagline": "Blindaje laboral y reducción de rotación voluntaria con IA",
-    "targetClientRole": "Empresa Mediana / Corporativo en Crecimiento",
-    "industry": "Recursos Humanos & SaaS",
-    "currency": "USD",
-    "regulations": [
-      "NOM-035 Factores de Riesgo Psicosocial",
-      "Ley Federal del Trabajo (Cumplimiento de Jornadas)",
-      "Regulaciones de Contratación y PTU"
-    ],
-    "variables": [
-      {
-        "id": "headcount",
-        "label": "Total de Empleados en Nómina",
-        "min": 50,
-        "max": 3000,
-        "default": 320,
-        "step": 25,
-        "unit": "colaboradores"
-      },
-      {
-        "id": "avg_salary",
-        "label": "Salario Mensual Promedio",
-        "min": 500,
-        "max": 4000,
-        "default": 1200,
-        "step": 100,
-        "unit": "$ USD/mes"
-      },
-      {
-        "id": "turnover_rate",
-        "label": "Tasa de Rotación Anual de Personal",
-        "min": 5,
-        "max": 45,
-        "default": 18,
-        "step": 1,
-        "unit": "% anual"
-      },
-      {
-        "id": "replacement_cost_multiplier",
-        "label": "Costo de Reemplazo (Meses de Salario)",
-        "min": 1.0,
-        "max": 3.5,
-        "default": 1.75,
-        "step": 0.25,
-        "unit": "x salario"
-      }
-    ],
-    "outreach_emails": [
-      {
-        "step": "Email 1 (Día 1) — El Costo de la Rotación Voluntaria",
-        "subject": "costo de rotación en [Prospecto]",
-        "body": "Hola [Nombre],\n\nReemplazar a un colaborador calificado cuesta en promedio 1.75 veces su salario mensual entre reclutamiento y pérdida de productividad.\n\nPara una plantilla de 300 personas con rotación del 18%, esto representa una fuga de más de $120,000 USD al año. ¿Tiene sentido que te comparta cómo predecir la salida de personal clave antes de que entreguen su renuncia?"
       }
     ]
   }
