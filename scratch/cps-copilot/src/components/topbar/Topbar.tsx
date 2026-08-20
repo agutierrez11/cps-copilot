@@ -74,24 +74,12 @@ export const Topbar: React.FC<TopbarProps> = ({
         </button>
       </div>
 
-      {/* Context Badge */}
+      {/* Context & Privacy Badge */}
       <div className="flex items-center gap-2">
-        {activeMode === 'business' ? (
-          <div className="flex items-center gap-1.5 bg-[#FBF3DB] border border-[#E9DFBE] text-[#956400] text-xs px-2.5 py-1 rounded-md font-mono">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#956400]"></span>
-            <span>{activeProfileName}</span>
-          </div>
-        ) : activeMode === 'interview' ? (
-          <div className="flex items-center gap-1.5 bg-[#E1F3FE] border border-[#C6E4F8] text-[#1F6C9F] text-xs px-2.5 py-1 rounded-md font-mono">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#1F6C9F]"></span>
-            <span>Modo Asesor C-Level</span>
-          </div>
-        ) : (
-          <div className="flex items-center gap-1.5 bg-[#EDF3EC] border border-[#D3E3D2] text-[#346538] text-xs px-2.5 py-1 rounded-md font-mono">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#346538]"></span>
-            <span>Agnóstico</span>
-          </div>
-        )}
+        <div className="flex items-center gap-1.5 bg-[#EDF3EC] border border-[#D3E3D2] text-[#346538] text-xs px-2.5 py-1 rounded-md font-mono shadow-sm" title="Procesamiento en memoria RAM volátil sin almacenamiento de audio en disco ni bots en la llamada">
+          <Shield size={13} className="text-[#346538]" />
+          <span className="font-bold">🔒 Modo Efímero (Zero Audio Storage)</span>
+        </div>
       </div>
     </header>
   );
