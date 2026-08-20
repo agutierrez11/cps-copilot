@@ -24,12 +24,19 @@ export async function POST(req: Request) {
       goal: 'Descubrimiento y Manejo de Objeciones'
     };
 
+    let roleMission = `Tu misión es escuchar al prospecto y actuar como Sparring Partner para el vendedor, generando reflexiones socráticas.`;
+    
+    if (config.mode.includes('Entrevista Laboral')) {
+      roleMission = `Tu misión es escuchar las respuestas del candidato (el usuario que habla al micrófono) en una entrevista de trabajo de alto nivel (Director).
+      Debes evaluar sus respuestas en tiempo real usando el framework CPS. Genera fricciones socráticas (socratic_friction) para corregir si el candidato divaga, suena táctico en vez de estratégico, o no demuestra pensamiento complejo. Genera "factor_x" para recordarle los miedos e incentivos del entrevistador, y "cynefin" para indicarle si el problema que describe es Complejo o Caótico.`;
+    }
+
     const systemPrompt = `
-      Eres el "CPS Socratic Copilot", un asistente táctico de ventas en tiempo real entrenado en Complex Problem Solving (CPS).
+      Eres el "CPS Socratic Copilot", un asistente táctico en tiempo real entrenado en Complex Problem Solving (CPS).
       
-      ESTE ES TU CONTEXTO COMERCIAL ACTUAL:
+      ESTE ES TU CONTEXTO ACTUAL:
       - Modo: ${config.mode}
-      - Cliente: ${config.clientRole}
+      - Interlocutor: ${config.clientRole}
       - Industria: ${config.industry}
       - Objetivo: ${config.goal}
 
@@ -37,14 +44,14 @@ export async function POST(req: Request) {
       
       ${CPS_PERSPECTIVES}
 
-      Tu misión es escuchar al prospecto y actuar como Sparring Partner para el vendedor, generando reflexiones socráticas.
+      ${roleMission}
 
       REGLAS ESTRICTAS DE EXTRACCIÓN (RESPONDER SOLO EN JSON):
       Genera un JSON con un arreglo llamado "insights". Cada insight debe tener:
-      - "type": "cynefin" (Diagnóstico del entorno), "factor_x" (Sesgos, miedos, incentivos humanos), o "socratic_friction" (Pregunta para desafiar al prospecto).
+      - "type": "cynefin" (Diagnóstico del entorno), "factor_x" (Sesgos, miedos, incentivos humanos), o "socratic_friction" (Pregunta o reto para desafiar la situación).
       - "title": Título corto (ej. "Entorno Complejo detectado", "Factor X: Miedo al Riesgo", "Fricción Socrática").
-      - "text": Explicación corta (1-2 líneas) de lo que dice el prospecto o su implicación sistémica.
-      - "suggestion": La pregunta Socrática exacta o el "empujón táctico" que el vendedor debe usar para desarmar la situación y hacer pensar al prospecto.
+      - "text": Explicación corta (1-2 líneas) de la situación detectada en la transcripción.
+      - "suggestion": La pregunta socrática exacta o el "empujón táctico" que el usuario (vendedor o candidato) debe aplicar inmediatamente para mejorar su posición y demostrar autoridad.
 
       Solo responde con JSON válido en este formato. No incluyas markdown, saludos, ni texto adicional.
       Si no hay información útil, devuelve { "insights": [] }.
@@ -55,9 +62,8 @@ export async function POST(req: Request) {
         { role: "system", content: systemPrompt },
         { role: "user", content: `Transcripción de la llamada: "${transcript}"` }
       ],
-      model: "llama3-70b-8192", 
+      model: "groq/compound", 
       temperature: 0.1,
-      response_format: { type: "json_object" },
     });
 
     const responseContent = completion.choices[0]?.message?.content;

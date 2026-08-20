@@ -1,0 +1,259 @@
+[
+  {
+    "id": "radar_linkedin",
+    "name": "Radar Comercial (LinkedIn Signals & Intelligence)",
+    "tagline": "Detección autónoma de cambios de cargo, contrataciones y warm triggers en LinkedIn para B2B",
+    "industry": "SalesTech & Prospección B2B",
+    "currency": "USD",
+    "regulations": [
+      "Gartner Benchmark: Los primeros 90 días de un nuevo C-Level definen el 70% del nuevo presupuesto",
+      "TOPO Research: El outreach por 'Event Trigger' tiene 4.2x mayor tasa de respuesta que el Cold Email",
+      "LinkedIn Data Privacy & Fair Use Protocol"
+    ],
+    "variables": [
+      {
+        "id": "reps",
+        "label": "Vendedores / SDRs / Account Executives",
+        "min": 1,
+        "max": 30,
+        "default": 4,
+        "step": 1,
+        "unit": "reps"
+      },
+      {
+        "id": "hours_wasted",
+        "label": "Horas Semanales Perdidas en Búsqueda Manual",
+        "min": 4,
+        "max": 25,
+        "default": 12,
+        "step": 1,
+        "unit": "hrs/semana por rep"
+      },
+      {
+        "id": "rep_hourly_rate",
+        "label": "Costo Hora Promedio del SDR / Ejecutivo",
+        "min": 10,
+        "max": 60,
+        "default": 22,
+        "step": 2,
+        "unit": "$ USD/hr"
+      },
+      {
+        "id": "missed_triggers",
+        "label": "Eventos de Compra / Cambios de Cargo Perdidos / Mes",
+        "min": 5,
+        "max": 100,
+        "default": 28,
+        "step": 2,
+        "unit": "triggers/mes"
+      }
+    ],
+    "outreach_emails": [
+      {
+        "step": "Email 1 (Día 1) — El Desperdicio de Horas SDR en LinkedIn",
+        "subject": "fuga de horas SDR en [Empresa]",
+        "body": "Hola [Nombre],\n\nEn equipos comerciales B2B, cada SDR pasa entre 10 y 15 horas a la semana haciendo scroll manual en LinkedIn buscando qué decisor cambió de puesto o quién está contratando.\n\nConstruimos un 'Radar Comercial' que rastrea en tiempo real promociones, nombramientos de nuevos Directores y rondas de inversión, entregándole a tu equipo el mensaje de felicitación hiperpersonalizado listo para enviar en los primeros 30 minutos del evento.\n\n¿Tiene sentido que te muestre una demo de 5 minutos rastreando los movimientos de sus 50 cuentas objetivo?"
+      },
+      {
+        "step": "Email 2 (Día 4) — La Ventana de los 90 Días",
+        "subject": "la ventana de 90 días en nuevos directores",
+        "body": "Hola [Nombre],\n\nSegún datos de Gartner, el 70% de los nuevos VPs y Directores toman decisiones de cambio de proveedores y asignación de presupuesto en sus primeros 90 días en el cargo.\n\nLlegar en la semana 1 con un gancho contextual genera hasta 4 veces más reuniones que un correo en frío tradicional. ¿Te gustaría ver cómo el Radar alerta a tu equipo en el momento exacto en que un decisor entra a una cuenta clave?"
+      },
+      {
+        "step": "Email 3 (Día 8) — Caso de Éxito de Prospección Caliente",
+        "subject": "cómo duplicar la tasa de respuesta en LinkedIn",
+        "body": "Hola [Nombre],\n\nTe comparto un número rápido: un equipo de 3 SDRs reemplazó la prospección fría por el Radar de Eventos en LinkedIn, reduciendo 48 horas mensuales de scraping manual y subiendo la tasa de agendamiento de 2.1% a 8.4% al contactar decisores con el contexto de su nuevo nombramiento.\n\n¿Tienes 7 minutos este jueves para ver cómo funciona con tus cuentas?"
+      },
+      {
+        "step": "Email 4 (Día 12) — Break-up con Costo de Inacción",
+        "subject": "¿cerramos el expediente del Radar?",
+        "body": "Hola [Nombre],\n\nEntiendo que el equipo está saturado ejecutando las metas del mes. Cierro el seguimiento por ahora.\n\nSolo te dejo este cálculo: mantener a [Reps] vendedores buscando prospectos a mano en LinkedIn le cuesta a [Empresa] más de $[Fuga_Mensual] USD mensuales en horas no productivas y oportunidades a destiempo.\n\nSi deciden automatizar el radar antes del próximo trimestre, avísame.\n\nSaludos,\nAntonio Gutiérrez"
+      }
+    ]
+  },
+  {
+    "id": "paymind",
+    "name": "PayMind (Fintech / Adquirencia)",
+    "tagline": "Infraestructura de pagos y SmartPOS para gasolineras y hoteles",
+    "industry": "Fintech & Adquirencia",
+    "currency": "MXN",
+    "regulations": [
+      "Acuerdo DOF 124/2026 (Estímulos Fiscales a Combustibles)",
+      "SAT Complemento CFDI Hidrocarburos (24 de Abril)",
+      "Banco de México (Reglas de Cuota de Intercambio)"
+    ],
+    "variables": [
+      {
+        "id": "stations",
+        "label": "Número de Estaciones / Sucursales",
+        "min": 1,
+        "max": 50,
+        "default": 4,
+        "step": 1,
+        "unit": "estaciones"
+      },
+      {
+        "id": "volume",
+        "label": "Volumen Mensual por Estación",
+        "min": 100000,
+        "max": 2000000,
+        "default": 450000,
+        "step": 50000,
+        "unit": "litros/mes"
+      },
+      {
+        "id": "pvp",
+        "label": "Precio Venta al Público (PVP)",
+        "min": 19.50,
+        "max": 26.00,
+        "default": 24.50,
+        "step": 0.10,
+        "unit": "$/litro"
+      },
+      {
+        "id": "current_fee",
+        "label": "Tasa Bancaria Tradicional",
+        "min": 0.80,
+        "max": 2.20,
+        "default": 1.45,
+        "step": 0.05,
+        "unit": "%"
+      },
+      {
+        "id": "paymind_spread",
+        "label": "Spread Optimizado PayMind",
+        "min": 0.35,
+        "max": 0.90,
+        "default": 0.55,
+        "step": 0.05,
+        "unit": "%"
+      }
+    ],
+    "outreach_emails": [
+      {
+        "step": "Email 1 (Día 1) — El Gancho de la Fuga Oculta",
+        "subject": "fuga en comisiones [Nombre Estación]",
+        "body": "Hola [Nombre],\n\nVeo que operan [Estaciones] estaciones en la zona de [Región]. La mayoría de los grupos gasolineros asumen que su costo bancario es de apenas el 1.4%, pero al calcularlo sobre el PVP con 40% de impuestos (IEPS DOF + IVA), el banco se está quedando con más del 40% de su margen neto.\n\nDiseñamos una arquitectura SmartPOS que elimina el cobro sobre la carga impositiva. ¿Tiene sentido que te comparta un desglose de 1 página con el ahorro proyectado para su volumen?"
+      },
+      {
+        "step": "Email 2 (Día 4) — Cita Regulatoria DOF & SAT",
+        "subject": "Acuerdo DOF 124/2026 y facturación de combustible",
+        "body": "Hola [Nombre],\n\nCon la entrada en vigor del nuevo Complemento CFDI de Hidrocarburos del SAT este 24 de abril, la conciliación automática de pagos en bomba se vuelve crítica para no frenar la deducibilidad.\n\nEn grupos medianos similares en [Región], PayMind recupera entre $180,000 y $340,000 MXN mensuales en margen neto directo a su cuenta concentradora. ¿Te gustaría ver la simulación matemática de su grupo?"
+      }
+    ]
+  },
+  {
+    "id": "fleetcontrol",
+    "name": "FleetControl MX (Logística & Carga)",
+    "tagline": "Telemetría e IA para control de combustible y Carta Porte SAT",
+    "industry": "Logística & Transporte Terrestre",
+    "currency": "MXN",
+    "regulations": [
+      "SAT Complemento Carta Porte 3.1 Digital Obligatorio",
+      "NOM-087-SCT (Horas de Conducción y Descanso de Operadores)",
+      "Normas Ambientales SEMARNAT Control de Emisiones"
+    ],
+    "variables": [
+      {
+        "id": "trucks",
+        "label": "Tamaño de Flotilla (Tractocamiones)",
+        "min": 5,
+        "max": 200,
+        "default": 35,
+        "step": 5,
+        "unit": "unidades"
+      },
+      {
+        "id": "diesel_spend",
+        "label": "Gasto Promedio Mensual Diesel / Unidad",
+        "min": 30000,
+        "max": 120000,
+        "default": 65000,
+        "step": 5000,
+        "unit": "$/camión"
+      },
+      {
+        "id": "leakage_rate",
+        "label": "Tasa Estimada de Fuga / Huachicol / Desvío",
+        "min": 4,
+        "max": 22,
+        "default": 11,
+        "step": 1,
+        "unit": "%"
+      },
+      {
+        "id": "saas_cost",
+        "label": "Costo Telemetría IoT + IA por Unidad",
+        "min": 350,
+        "max": 900,
+        "default": 480,
+        "step": 10,
+        "unit": "$/mes"
+      }
+    ],
+    "outreach_emails": [
+      {
+        "step": "Email 1 (Día 1) — Auditoría de Fuga en Diesel",
+        "subject": "fuga de combustible en flota [Empresa]",
+        "body": "Hola [Nombre],\n\nEn flotillas de más de 30 unidades en corredores de [Región], el desvío de diesel representa entre el 9% y 14% del presupuesto operativo mensual.\n\nDesarrollamos sensores CAN-bus e IA predictiva que alertan ordeñas en tiempo real y automatizan la Carta Porte SAT. ¿Tiene sentido que te mande un diagnóstico de 1 página sobre su ruta?"
+      }
+    ]
+  },
+  {
+    "id": "hrtech",
+    "name": "TalentShield (SaaS / HR-Tech)",
+    "tagline": "Retención de talento, blindaje laboral y reducción de rotación con IA",
+    "industry": "Recursos Humanos & SaaS",
+    "currency": "USD",
+    "regulations": [
+      "NOM-035 Factores de Riesgo Psicosocial",
+      "Ley Federal del Trabajo (Cumplimiento de Jornadas y Vacaciones)",
+      "Regulaciones de Contratación y PTU"
+    ],
+    "variables": [
+      {
+        "id": "headcount",
+        "label": "Total de Empleados en Nómina",
+        "min": 50,
+        "max": 3000,
+        "default": 320,
+        "step": 25,
+        "unit": "colaboradores"
+      },
+      {
+        "id": "avg_salary",
+        "label": "Salario Mensual Promedio",
+        "min": 500,
+        "max": 4000,
+        "default": 1200,
+        "step": 100,
+        "unit": "$ USD/mes"
+      },
+      {
+        "id": "turnover_rate",
+        "label": "Tasa de Rotación Anual de Personal",
+        "min": 5,
+        "max": 45,
+        "default": 18,
+        "step": 1,
+        "unit": "% anual"
+      },
+      {
+        "id": "replacement_cost_multiplier",
+        "label": "Costo de Reemplazo (Meses de Salario)",
+        "min": 1.0,
+        "max": 3.5,
+        "default": 1.75,
+        "step": 0.25,
+        "unit": "x salario"
+      }
+    ],
+    "outreach_emails": [
+      {
+        "step": "Email 1 (Día 1) — El Costo Invisible de la Rotación",
+        "subject": "costo de rotación en [Empresa]",
+        "body": "Hola [Nombre],\n\nReemplazar a un colaborador calificado cuesta en promedio 1.75 veces su salario mensual en tiempo de reclutamiento y pérdida de curva de aprendizaje.\n\nPara una plantilla como la de [Empresa], una rotación del 18% representa una fuga de más de $120,000 USD al año. ¿Tiene sentido que te comparta cómo blindar la retención desde el día 30?"
+      }
+    ]
+  }
+]
