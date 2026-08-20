@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Target, Mic, MicOff, Activity, Sparkles, UserCheck, PhoneCall } from 'lucide-react';
 import { useDeepgram } from '@/hooks/useDeepgram';
+import { SocraticSpeedometer } from '@/components/common/SocraticSpeedometer';
 
 type InterviewInsight = {
   interviewerIntent: string;
@@ -171,29 +172,38 @@ export const InterviewView: React.FC = () => {
           {/* Grid Principal: Transcripción (5 Col) + Tarjetas (7 Col) */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
             
-            {/* Transcripción */}
-            <div className="lg:col-span-5 bg-[#FFFFFF] border border-[#EAEAEA] rounded-xl p-5 shadow-sm flex flex-col justify-between h-[450px]">
-              <div className="flex items-center justify-between border-b border-[#EAEAEA] pb-2 mb-2">
-                <span className="text-xs font-mono font-medium text-[#111111] flex items-center gap-2">
-                  <Activity size={13} className={isListening ? "text-[#346538] animate-spin" : "text-[#787774]"} />
-                  Transcripción de la Conversación
-                </span>
-                {isAnalyzing && (
-                  <span className="text-[10px] font-mono text-[#1F6C9F] animate-pulse">Analizando...</span>
-                )}
+            {/* Transcripción + Velocímetro (5 Col) */}
+            <div className="lg:col-span-5 space-y-4">
+              <div className="bg-[#FFFFFF] border border-[#EAEAEA] rounded-xl p-5 shadow-sm flex flex-col justify-between h-[330px]">
+                <div className="flex items-center justify-between border-b border-[#EAEAEA] pb-2 mb-2">
+                  <span className="text-xs font-mono font-medium text-[#111111] flex items-center gap-2">
+                    <Activity size={13} className={isListening ? "text-[#346538] animate-spin" : "text-[#787774]"} />
+                    Transcripción de la Conversación
+                  </span>
+                  {isAnalyzing && (
+                    <span className="text-[10px] font-mono text-[#1F6C9F] animate-pulse">Analizando...</span>
+                  )}
+                </div>
+
+                <div className="flex-1 overflow-y-auto pr-1 text-xs font-mono text-[#2F3437] space-y-2">
+                  {transcript ? (
+                    <p className="leading-relaxed whitespace-pre-wrap">{transcript}</p>
+                  ) : (
+                    <div className="h-full flex flex-col items-center justify-center text-[#787774] italic text-center p-6 space-y-2">
+                      <UserCheck size={28} className="opacity-30" />
+                      <p>Activa el micrófono durante la reunión en Teams o Meet.</p>
+                      <p className="text-[10px] text-[#A0A09E]">El sistema escuchará la pregunta y te entregará la estrategia socrática.</p>
+                    </div>
+                  )}
+                </div>
               </div>
 
-              <div className="flex-1 overflow-y-auto pr-1 text-xs font-mono text-[#2F3437] space-y-2">
-                {transcript ? (
-                  <p className="leading-relaxed whitespace-pre-wrap">{transcript}</p>
-                ) : (
-                  <div className="h-full flex flex-col items-center justify-center text-[#787774] italic text-center p-6 space-y-2">
-                    <UserCheck size={28} className="opacity-30" />
-                    <p>Activa el micrófono durante la reunión en Teams o Meet.</p>
-                    <p className="text-[10px] text-[#A0A09E]">El sistema escuchará la pregunta del entrevistador y te preparará el desglose.</p>
-                  </div>
-                )}
-              </div>
+              {/* Velocímetro Socrático Estilo Editorial Minimalista */}
+              <SocraticSpeedometer
+                value={isListening ? 68 : 65}
+                clientTalkPercent={isListening ? 68 : 65}
+                userTalkPercent={isListening ? 32 : 35}
+              />
             </div>
 
             {/* Desglose Estratégico */}
