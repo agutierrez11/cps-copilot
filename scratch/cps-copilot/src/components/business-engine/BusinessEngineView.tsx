@@ -40,6 +40,7 @@ export const BusinessEngineView: React.FC = () => {
   const [selectedProfileId, setSelectedProfileId] = useState<string>(profiles[0]?.id || 'radar_linkedin');
   const [copiedEmailIdx, setCopiedEmailIdx] = useState<number | null>(null);
   const [copiedDictum, setCopiedDictum] = useState<boolean>(false);
+  const [targetAccountName, setTargetAccountName] = useState<string>('');
   const [isSyncingHubSpot, setIsSyncingHubSpot] = useState<boolean>(false);
   const [hubspotSyncMsg, setHubspotSyncMsg] = useState<string | null>(null);
 
@@ -173,14 +174,19 @@ export const BusinessEngineView: React.FC = () => {
 
   // Dictamen
   const dictumText = useMemo(() => {
-    const p = currentProfile;
+    const p = currentProfile as any;
     const reg1 = p.regulations?.[0] || "Normativas del sector";
     const reg2 = p.regulations?.[1] || "Estándares de mercado";
-    return `DICTAMEN DE AUDITORÍA & CASO DE NEGOCIO EJECUTIVO:
-1. Al evaluar la operación de ${p.name}, detectamos un costo de ineficiencia de $${calculatedSavings.monthly.toLocaleString()} ${p.currency}/mes frente al Statu Quo actual.
-2. Marco Regulatorio y Riesgo: En cumplimiento con ${reg1} y ${reg2}, la optimización rescata $${calculatedSavings.annual.toLocaleString()} ${p.currency} anuales en margen neto directo.
-3. Recomendación BLUF: Iniciar piloto controlado con SLA de recuperación de inversión en menos de 45 días.`;
-  }, [currentProfile, calculatedSavings]);
+    const targetName = targetAccountName.trim() || p.targetClientRole || "Empresa / Cuenta Prospecto";
+
+    return `DICTAMEN DE AUDITORÍA DE INEFICIENCIA FINANCIERA (COI):
+Auditoría Objetivo: ${targetName}
+Solución Evaluada: ${p.name}
+
+1. Diagnóstico de Ineficiencia: Al evaluar la operación de ${targetName}, detectamos una fuga de $${calculatedSavings.monthly.toLocaleString()} ${p.currency}/mes frente a la arquitectura optimizada.
+2. Marco Regulatorio & Retorno Neto: Bajo ${reg1} y ${reg2}, la optimización recupera $${calculatedSavings.annual.toLocaleString()} ${p.currency} anuales en margen neto directo.
+3. Recomendación BLUF: Implementar la arquitectura de ${p.name} con SLA de recuperación de inversión (Payback) estimado en 45 días.`;
+  }, [currentProfile, calculatedSavings, targetAccountName]);
 
   const copyDictum = () => {
     navigator.clipboard.writeText(dictumText);
@@ -452,6 +458,16 @@ export const BusinessEngineView: React.FC = () => {
                   {copiedDictum ? 'Copiado' : 'Copiar'}
                 </button>
               </div>
+            </div>
+            <div className="flex items-center gap-2 pt-1">
+              <label className="text-[11px] font-mono font-medium text-[#787774] whitespace-nowrap">Prospecto Auditado:</label>
+              <input
+                type="text"
+                placeholder={(currentProfile as any).targetClientRole || "ej. Grupo Gasolinero Pemex / Sofía Health"}
+                value={targetAccountName}
+                onChange={(e) => setTargetAccountName(e.target.value)}
+                className="w-full bg-[#FBFBFA] border border-[#EAEAEA] rounded px-2.5 py-1 text-xs font-mono text-[#111111] focus:outline-none focus:border-[#111111]"
+              />
             </div>
             <p className="text-xs font-mono text-[#2F3437] leading-relaxed whitespace-pre-line bg-[#FBFBFA] p-3.5 rounded-lg border border-[#EAEAEA]">
               {dictumText}
