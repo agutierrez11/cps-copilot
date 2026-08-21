@@ -430,7 +430,7 @@ Solución Evaluada: ${p.name}
                 <div key={v.id} className="bg-[#FBFBFA] p-3 rounded-lg border border-[#EAEAEA]">
                   <div className="flex justify-between text-xs font-mono mb-1.5">
                     <span className="text-[#787774]">{v.label}:</span>
-                    <span className="text-[#111111] font-bold">
+                    <span className="text-[#111111] font-bold" suppressHydrationWarning>
                       {currentVal.toLocaleString()} {v.unit}
                     </span>
                   </div>

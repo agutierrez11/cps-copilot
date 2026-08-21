@@ -25,14 +25,14 @@ export const InterviewView: React.FC = () => {
   const [targetCompanyType, setTargetCompanyType] = useState("ACI Worldwide");
 
   const handleSaveTranscript = () => {
-    if (!transcript) return;
-    const content = `==================================================\nREGISTRO DE TRANSCRIPCIÓN Y ANÁLISIS EN VIVO - CPS OS\nFecha: ${new Date().toLocaleString()}\nPosición: ${currentRole}\nEmpresa: ${targetCompanyType}\n==================================================\n\n[TRANSCRIPCIÓN COMPLETA DE LA SESIÓN]\n${transcript}\n\n==================================================\n[RECOMENDACIONES Y ANÁLISIS DE LA IA]\n${liveInsights.map((ins, i) => `\n--- INSIGHT ${i + 1} ---\nIntención del Entrevistador: ${ins.interviewerIntent}\nFactor X / Riesgo Evaluado: ${ins.factorX}\nPuntos Clave de Respuesta:\n${ins.mintoAnswer.join('\n')}\nContra-Pregunta Socrática: "${ins.socraticCounter}"\n`).join('\n')}`;
+    const sessionTranscript = transcript || "(No hay transcripción en vivo capturada aún. Se incluye la Guía ACI de Preparación).";
+    const content = `==================================================\nREGISTRO DE TRANSCRIPCIÓN Y ANÁLISIS EN VIVO - CPS OS\nFecha: ${new Date().toLocaleString()}\nPosición: ${currentRole}\nEmpresa: ${targetCompanyType}\n==================================================\n\n[PITCH MAESTRO DE DOBLE DOMINIO]\nOutbound Auto-Generado: $50.5M MXN (72.7%)\nInbound Marketing: $16.8M MXN (24.2%)\nTicket Promedio Outbound: $555,000 MXN TPV (2x Inbound)\nCuota Cumplida: 109% (Top 3 Podio Nacional)\n\n[TRANSCRIPCIÓN COMPLETA DE LA SESIÓN]\n${sessionTranscript}\n\n==================================================\n[RECOMENDACIONES Y ANÁLISIS DE LA IA]\n${liveInsights.map((ins, i) => `\n--- INSIGHT ${i + 1} ---\nIntención del Entrevistador: ${ins.interviewerIntent}\nFactor X / Riesgo Evaluado: ${ins.factorX}\nPuntos Clave de Respuesta:\n${ins.mintoAnswer.join('\n')}\nContra-Pregunta Socrática: "${ins.socraticCounter}"\n`).join('\n')}`;
 
     const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `Entrevista_${targetCompanyType.replace(/\s+/g, '_')}_Transcripcion_${new Date().toISOString().slice(0, 10)}.txt`;
+    a.download = `Entrevista_${targetCompanyType.replace(/\s+/g, '_')}_Guia_y_Transcripcion.txt`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -208,16 +208,14 @@ export const InterviewView: React.FC = () => {
                     Transcripción de la Conversación
                   </span>
                   <div className="flex items-center gap-2">
-                    {transcript && (
-                      <button
-                        onClick={handleSaveTranscript}
-                        className="flex items-center gap-1 text-[10px] font-mono text-[#346538] bg-[#EDF3EC] hover:bg-[#D3E3D2] px-2 py-0.5 rounded border border-[#D3E3D2] transition-all"
-                        title="Guardar transcripción completa y análisis de la sesión en archivo de texto"
-                      >
-                        <Download size={11} />
-                        <span>Guardar (.txt)</span>
-                      </button>
-                    )}
+                    <button
+                      onClick={handleSaveTranscript}
+                      className="flex items-center gap-1 text-[10px] font-mono font-bold text-[#346538] bg-[#EDF3EC] hover:bg-[#D3E3D2] px-2.5 py-1 rounded border border-[#D3E3D2] shadow-sm transition-all cursor-pointer"
+                      title="Guardar transcripción completa y análisis de la sesión en archivo de texto"
+                    >
+                      <Download size={12} />
+                      <span>💾 Guardar (.txt)</span>
+                    </button>
                     {isAnalyzing && (
                       <span className="text-[10px] font-mono text-[#1F6C9F] animate-pulse">Analizando...</span>
                     )}
