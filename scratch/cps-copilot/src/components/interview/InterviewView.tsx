@@ -12,8 +12,10 @@ type InterviewInsight = {
   socraticCounter: string;
 };
 
+type SubTabType = 'live' | 'simulator' | 'aci_guide';
+
 export const InterviewView: React.FC = () => {
-  const [subTab, setSubTab] = useState<'live' | 'simulator'>('live');
+  const [subTab, setSubTab] = useState<SubTabType>('live');
 
   const { transcript, isListening, startListening, stopListening, error } = useDeepgram();
   const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -115,7 +117,17 @@ export const InterviewView: React.FC = () => {
                 : 'text-[#787774] hover:text-[#111111]'
             }`}
           >
-            🎙️ 1. Copiloto en Vivo (2do Monitor)
+            🎙️ 1. Copiloto en Vivo
+          </button>
+          <button
+            onClick={() => setSubTab('aci_guide')}
+            className={`px-3 py-1.5 rounded-md text-xs font-mono font-medium transition-all ${
+              subTab === 'aci_guide'
+                ? 'bg-[#111111] text-[#FFFFFF] shadow-sm'
+                : 'text-[#787774] hover:text-[#111111]'
+            }`}
+          >
+            📄 2. Guía ACI (Data & Insights)
           </button>
           <button
             onClick={() => setSubTab('simulator')}
@@ -125,7 +137,7 @@ export const InterviewView: React.FC = () => {
                 : 'text-[#787774] hover:text-[#111111]'
             }`}
           >
-            🤖 2. Simulador de Voz
+            🤖 3. Simulador de Voz
           </button>
         </div>
       </div>
@@ -258,15 +270,112 @@ export const InterviewView: React.FC = () => {
         </div>
       )}
 
-      {/* VISTA 2: Simulador con Voz */}
+      {/* VISTA 2: Guía ACI (Data & Insights) */}
+      {subTab === 'aci_guide' && (
+        <div className="space-y-5 font-mono animate-in fade-in duration-200">
+          
+          {/* Header & Quick Pitch Box */}
+          <div className="bg-[#FFFFFF] border border-[#EAEAEA] rounded-xl p-5 shadow-sm space-y-3">
+            <div className="flex items-center justify-between border-b border-[#EAEAEA] pb-3">
+              <div className="flex items-center gap-2">
+                <span className="w-2.5 h-2.5 rounded-full bg-[#346538]"></span>
+                <h3 className="text-sm font-bold text-[#111111]">
+                  El Pitch Maestro de Doble Dominio (Inbound + Outbound)
+                </h3>
+              </div>
+              <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-[#F1F1EF] text-[#787774] border border-[#EAEAEA]">
+                ACI Worldwide BDR LATAM
+              </span>
+            </div>
+
+            <div className="bg-[#FBFBFA] border border-[#EAEAEA] p-4 rounded-lg space-y-3 text-xs">
+              <div>
+                <span className="text-[#346538] font-bold block mb-1">🇺🇸 English Pitch (B2 Natural):</span>
+                <p className="text-[#111111] italic leading-relaxed">
+                  "You should hire me because I dominate BOTH Inbound and Outbound execution with hard data: On Inbound, I converted marketing leads into $16.8M MXN by maximizing response speed; on Outbound, I self-generated $50.5M MXN (72.7% of my $69M portfolio) with deal sizes twice as large as standard inbound leads, leading me to reach 109% quota and the Top 3 National Podium at Clip."
+                </p>
+              </div>
+              <div className="border-t border-[#EAEAEA] pt-2">
+                <span className="text-[#787774] font-bold block mb-1">🇲🇽 Versión en Español:</span>
+                <p className="text-[#2F3437] leading-relaxed">
+                  "Deberían contratarme porque domino AMBOS canales con datos duros: En Inbound convertí leads de marketing en $16.8M MXN respondiendo de inmediato; en Outbound auto-generé $50.5M MXN (72.7% del total) con tratos del doble de tamaño, alcanzando 109% de cuota y el Podio Nacional Top 3."
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Grid: Métricas Reales + Insights ACI */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            
+            {/* Tarjeta 1: Desglose de Data Real de Portafolio */}
+            <div className="bg-[#FFFFFF] border border-[#EAEAEA] rounded-xl p-4 shadow-sm space-y-3">
+              <h4 className="text-xs font-bold text-[#111111] border-b border-[#EAEAEA] pb-2 flex items-center gap-1.5">
+                📊 Data Dura Comprobada (Portafolio Real)
+              </h4>
+              <ul className="text-xs space-y-2 text-[#2F3437]">
+                <li className="flex justify-between items-center bg-[#FBFBFA] p-2 rounded border border-[#EAEAEA]">
+                  <span>Outbound Auto-Generado:</span>
+                  <strong className="text-[#346538]">$50.5M MXN (72.7%)</strong>
+                </li>
+                <li className="flex justify-between items-center bg-[#FBFBFA] p-2 rounded border border-[#EAEAEA]">
+                  <span>Inbound Marketing Convertido:</span>
+                  <strong className="text-[#1F6C9F]">$16.8M MXN (24.2%)</strong>
+                </li>
+                <li className="flex justify-between items-center bg-[#FBFBFA] p-2 rounded border border-[#EAEAEA]">
+                  <span>Ticket Promedio Outbound:</span>
+                  <strong className="text-[#111111]">$555,000 MXN TPV (2x Inbound)</strong>
+                </li>
+                <li className="flex justify-between items-center bg-[#FBFBFA] p-2 rounded border border-[#EAEAEA]">
+                  <span>Cumplimiento Total de Cuota:</span>
+                  <strong className="text-[#956400]">109% (Top 3 Podio Nacional)</strong>
+                </li>
+              </ul>
+            </div>
+
+            {/* Tarjeta 2: Insights de Inteligencia de ACI */}
+            <div className="bg-[#FFFFFF] border border-[#EAEAEA] rounded-xl p-4 shadow-sm space-y-3">
+              <h4 className="text-xs font-bold text-[#111111] border-b border-[#EAEAEA] pb-2 flex items-center gap-1.5">
+                🍊 Insights de Inteligencia ACI para Soltar
+              </h4>
+              <div className="space-y-2 text-xs">
+                <div className="bg-[#FBF3DB] text-[#956400] p-2.5 rounded border border-[#E9DFBE]">
+                  <strong>1. Alberto Olivares (VP LATAM):</strong> Falsos positivos de fraude cuestan millones a comercios antes del Mundial 2026.
+                </div>
+                <div className="bg-[#E1F3FE] text-[#1F6C9F] p-2.5 rounded border border-[#C6E4F8]">
+                  <strong>2. Alianza ACI + dLocal:</strong> Acceso a SPEI, OXXO, Pix en 1 sola integración para comercios multinacionales.
+                </div>
+                <div className="bg-[#EDF3EC] text-[#346538] p-2.5 rounded border border-[#D3E3D2]">
+                  <strong>3. Vertical iGaming & Casinos:</strong> Foco en velocidad de Pay-Out y prevención de fraude en tiempo real.
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          {/* Preguntas Finales */}
+          <div className="bg-[#FFFFFF] border border-[#EAEAEA] rounded-xl p-4 shadow-sm space-y-2">
+            <h4 className="text-xs font-bold text-[#111111] border-b border-[#EAEAEA] pb-2">
+              ❓ Tus 3 Preguntas de Alto Estatus para Andrés Soler
+            </h4>
+            <div className="text-xs text-[#2F3437] space-y-1.5 pt-1">
+              <p>1. <em>"In the current LATAM strategy, is the main prospecting focus more on Large Retail, Gaming, or Financial Institutions?"</em></p>
+              <p>2. <em>"What distinguishes a BDR who succeeds quickly and hits quota in their first 90 days at ACI?"</em></p>
+              <p>3. <em>"What are the next steps in the interview process after our screening call today?"</em></p>
+            </div>
+          </div>
+
+        </div>
+      )}
+
+      {/* VISTA 3: Simulador con Voz */}
       {subTab === 'simulator' && (
-        <div className="bg-[#FFFFFF] border border-[#EAEAEA] rounded-xl p-8 shadow-sm text-center space-y-5 max-w-xl mx-auto">
+        <div className="bg-[#FFFFFF] border border-[#EAEAEA] rounded-xl p-8 shadow-sm text-center space-y-5 max-w-xl mx-auto font-mono">
           <div className="w-12 h-12 rounded-lg bg-[#F4F4F2] border border-[#EAEAEA] flex items-center justify-center text-[#111111] mx-auto shadow-sm">
             <PhoneCall size={20} />
           </div>
           
           <div>
-            <h3 className="text-base font-bold text-[#111111] font-mono">
+            <h3 className="text-base font-bold text-[#111111]">
               Simulador de Entrevista con Voz (Hume EVI)
             </h3>
             <p className="text-xs text-[#787774] max-w-sm mx-auto mt-1">

@@ -1,0 +1,8 @@
+{
+  "num_simulations": 1000,
+  "pass_rate_percentage": 97.4,
+  "average_score": 85.36,
+  "median_score": 85.57,
+  "p5_pessimistic_score": 79.12,
+  "p95_optimistic_score": 91.07
+}
