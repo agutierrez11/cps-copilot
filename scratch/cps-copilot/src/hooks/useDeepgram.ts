@@ -48,23 +48,22 @@ export function useDeepgram() {
 
       const deepgram = createClient(apiKey);
       
-      // Conectar a WebSockets de Deepgram Nova-2 con Impulso Acústico Dialectal de LATAM
+      // Conectar a WebSockets de Deepgram Nova-2 con Autodetect Multilingüe (Español + Inglés)
       const connection = deepgram.listen.live({
         model: "nova-2",
-        language: "es-419",
+        detect_language: true,
         smart_format: true,
         punctuate: true,
         keywords: [
-          "bacán:3",
-          "teso:3",
-          "parce:3",
-          "culiao:3",
-          "cabro chico:3",
-          "po:2",
-          "changarro:2",
-          "lana:2",
-          "luca:2",
-          "chamba:2"
+          "ACI Worldwide:5",
+          "BDR:4",
+          "Outbound:4",
+          "Inbound:4",
+          "dLocal:4",
+          "SPEI:4",
+          "Fiserv:4",
+          "TPV:4",
+          "Clip:4"
         ]
       });
 
