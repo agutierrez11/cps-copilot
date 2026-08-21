@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Target, Mic, MicOff, Activity, Sparkles, UserCheck, PhoneCall } from 'lucide-react';
+import { Target, Mic, MicOff, Activity, Sparkles, UserCheck, PhoneCall, Download } from 'lucide-react';
 import { useDeepgram } from '@/hooks/useDeepgram';
 import { SocraticSpeedometer } from '@/components/common/SocraticSpeedometer';
 
@@ -21,8 +21,23 @@ export const InterviewView: React.FC = () => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const lastAnalyzedLengthRef = useRef(0);
 
-  const [currentRole, setCurrentRole] = useState("Director Comercial / Head of Sales & Growth");
-  const [targetCompanyType, setTargetCompanyType] = useState("Tech / SaaS / Consultoría B2B");
+  const [currentRole, setCurrentRole] = useState("BDR LATAM");
+  const [targetCompanyType, setTargetCompanyType] = useState("ACI Worldwide");
+
+  const handleSaveTranscript = () => {
+    if (!transcript) return;
+    const content = `==================================================\nREGISTRO DE TRANSCRIPCIÓN Y ANÁLISIS EN VIVO - CPS OS\nFecha: ${new Date().toLocaleString()}\nPosición: ${currentRole}\nEmpresa: ${targetCompanyType}\n==================================================\n\n[TRANSCRIPCIÓN COMPLETA DE LA SESIÓN]\n${transcript}\n\n==================================================\n[RECOMENDACIONES Y ANÁLISIS DE LA IA]\n${liveInsights.map((ins, i) => `\n--- INSIGHT ${i + 1} ---\nIntención del Entrevistador: ${ins.interviewerIntent}\nFactor X / Riesgo Evaluado: ${ins.factorX}\nPuntos Clave de Respuesta:\n${ins.mintoAnswer.join('\n')}\nContra-Pregunta Socrática: "${ins.socraticCounter}"\n`).join('\n')}`;
+
+    const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `Entrevista_${targetCompanyType.replace(/\s+/g, '_')}_Transcripcion_${new Date().toISOString().slice(0, 10)}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
 
   const [liveInsights, setLiveInsights] = useState<InterviewInsight[]>([
     {
@@ -192,9 +207,21 @@ export const InterviewView: React.FC = () => {
                     <Activity size={13} className={isListening ? "text-[#346538] animate-spin" : "text-[#787774]"} />
                     Transcripción de la Conversación
                   </span>
-                  {isAnalyzing && (
-                    <span className="text-[10px] font-mono text-[#1F6C9F] animate-pulse">Analizando...</span>
-                  )}
+                  <div className="flex items-center gap-2">
+                    {transcript && (
+                      <button
+                        onClick={handleSaveTranscript}
+                        className="flex items-center gap-1 text-[10px] font-mono text-[#346538] bg-[#EDF3EC] hover:bg-[#D3E3D2] px-2 py-0.5 rounded border border-[#D3E3D2] transition-all"
+                        title="Guardar transcripción completa y análisis de la sesión en archivo de texto"
+                      >
+                        <Download size={11} />
+                        <span>Guardar (.txt)</span>
+                      </button>
+                    )}
+                    {isAnalyzing && (
+                      <span className="text-[10px] font-mono text-[#1F6C9F] animate-pulse">Analizando...</span>
+                    )}
+                  </div>
                 </div>
 
                 <div className="flex-1 overflow-y-auto pr-1 text-xs font-mono text-[#2F3437] space-y-2">
