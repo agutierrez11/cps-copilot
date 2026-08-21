@@ -1,0 +1,115 @@
+{
+  "total_time_sec": 13.49,
+  "results": [
+    {
+      "id": 1,
+      "region": "México",
+      "title": "Objeción de Costo & Petición de Correo Suave",
+      "status": 200,
+      "latency_ms": 1190,
+      "has_insight": false,
+      "intent": "N/A",
+      "socratic_counter": "N/A",
+      "minto_answer": []
+    },
+    {
+      "id": 2,
+      "region": "Colombia",
+      "title": "Validación de Capacidad Técnica & Precio",
+      "status": 200,
+      "latency_ms": 250,
+      "has_insight": false,
+      "intent": "N/A",
+      "socratic_counter": "N/A",
+      "minto_answer": []
+    },
+    {
+      "id": 3,
+      "region": "Chile",
+      "title": "Objeción de Comisión sobre Impuestos (Gasolineras)",
+      "status": 200,
+      "latency_ms": 234,
+      "has_insight": false,
+      "intent": "N/A",
+      "socratic_counter": "N/A",
+      "minto_answer": []
+    },
+    {
+      "id": 4,
+      "region": "Argentina",
+      "title": "Incertidumbre de Presupuesto & Próximo Quarter",
+      "status": 200,
+      "latency_ms": 238,
+      "has_insight": false,
+      "intent": "N/A",
+      "socratic_counter": "N/A",
+      "minto_answer": []
+    },
+    {
+      "id": 5,
+      "region": "México",
+      "title": "Fuga Operativa en Conciliación de Facturación SAT",
+      "status": 200,
+      "latency_ms": 243,
+      "has_insight": false,
+      "intent": "N/A",
+      "socratic_counter": "N/A",
+      "minto_answer": []
+    },
+    {
+      "id": 6,
+      "region": "Colombia",
+      "title": "Fricción de Retención en Clientes Recurrentes",
+      "status": 200,
+      "latency_ms": 320,
+      "has_insight": false,
+      "intent": "N/A",
+      "socratic_counter": "N/A",
+      "minto_answer": []
+    },
+    {
+      "id": 7,
+      "region": "Chile",
+      "title": "Validación del Economic Buyer (Guardaparques)",
+      "status": 200,
+      "latency_ms": 285,
+      "has_insight": false,
+      "intent": "N/A",
+      "socratic_counter": "N/A",
+      "minto_answer": []
+    },
+    {
+      "id": 8,
+      "region": "México",
+      "title": "Ataque Directo de Competidor Bancario",
+      "status": 200,
+      "latency_ms": 214,
+      "has_insight": false,
+      "intent": "N/A",
+      "socratic_counter": "N/A",
+      "minto_answer": []
+    },
+    {
+      "id": 9,
+      "region": "Argentina",
+      "title": "Petición de Descuento Agresivo antes de Firmar",
+      "status": 200,
+      "latency_ms": 246,
+      "has_insight": false,
+      "intent": "N/A",
+      "socratic_counter": "N/A",
+      "minto_answer": []
+    },
+    {
+      "id": 10,
+      "region": "LATAM Enterprise",
+      "title": "Dudas de Seguridad y Privacidad (Zero Storage)",
+      "status": 200,
+      "latency_ms": 247,
+      "has_insight": false,
+      "intent": "N/A",
+      "socratic_counter": "N/A",
+      "minto_answer": []
+    }
+  ]
+}
