@@ -168,7 +168,7 @@ export const InterviewView: React.FC = () => {
             </div>
             <div className="flex items-end">
               <button
-                onClick={isListening ? stopListening : startListening}
+                onClick={isListening ? () => stopListening() : () => startListening()}
                 className={`w-full flex items-center justify-center gap-2 py-2 rounded-md font-mono text-xs font-medium transition-all ${
                   isListening
                     ? 'bg-[#9F2F2D] text-white animate-pulse'
