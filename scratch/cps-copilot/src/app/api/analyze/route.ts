@@ -68,13 +68,13 @@ export async function POST(req: Request) {
         temperature: 0.1,
       });
     } catch (e) {
-      // Fallback a qwen-2.5-32b si llama-3.3-70b falla
+      // Fallback a llama-3.1-8b-instant si llama-3.3-70b falla
       completion = await groq.chat.completions.create({
         messages: [
           { role: "system", content: systemPrompt },
           { role: "user", content: `Transcripción de la llamada: "${transcript}"` }
         ],
-        model: "gemma2-9b-it",
+        model: "llama-3.1-8b-instant",
         temperature: 0.1,
       });
     }
