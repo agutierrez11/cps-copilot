@@ -94,7 +94,7 @@ export const SocraticSparring: React.FC = () => {
             </span>
           )}
           <button
-            onClick={isListening ? stopListening : startListening}
+            onClick={isListening ? () => stopListening() : () => startListening()}
             className={`flex items-center gap-2 px-4 py-2 rounded-md font-mono text-xs font-medium transition-all ${
               isListening
                 ? 'bg-[#9F2F2D] text-white animate-pulse'
